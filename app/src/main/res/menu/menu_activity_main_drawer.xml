@@ -4,14 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_menu_home"
-            android:icon="@drawable/img_home_24"
-            android:title="@string/home" />
-        <item
-            android:id="@+id/nav_menu_settings"
-            android:icon="@drawable/img_settings_24"
-            android:title="@string/settings" />
-    </group>
+    <item android:title="@string/cat_main">
+        <menu>
+            <item
+                android:id="@+id/navMenuMonitor"
+                android:icon="@drawable/img_done_24"
+                android:title="@string/main_price_monitor"/>
+            <item
+                android:id="@+id/navMenuChecker"
+                android:icon="@drawable/img_done_24"
+                android:enabled="false"
+                android:title="@string/main_price_checker"/>
+            <item
+                android:id="@+id/navMenuAlko"
+                android:icon="@drawable/img_done_24"
+                android:enabled="false"
+                android:title="@string/main_alko_checker"/>
+        </menu>
+    </item>
+
+    <item android:title="@string/cat_system">
+        <menu>
+            <item
+                android:id="@+id/navMenuSettings"
+                android:icon="@drawable/img_settings_24"
+                android:title="@string/system_settings"/>
+            <item
+                android:id="@+id/navMenuExit"
+                android:icon="@drawable/img_door_24"
+                android:title="@string/system_exit"/>
+        </menu>
+    </item>
+
+
 </menu>
