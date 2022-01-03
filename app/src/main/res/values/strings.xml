@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Trade Monitor</string>
     <string name="developer_email">development.camelsoft@gmail.com</string>
+    <string name="back_pressed">Нажмите еще раз, чтобы выйти</string>
 
     <string name="cat_main">Основные</string>
-    <string name="main_price_monitor">Мониторинг конкурентов</string>
-    <string name="main_price_checker">Проверить ценники</string>
-    <string name="main_alko_checker">Алкогольные акцизки</string>
+    <string name="main_home">Главная</string>
+    <string name="main_dir">Справочники</string>
 
     <string name="cat_system">Служебные</string>
     <string name="system_settings">Настройки</string>

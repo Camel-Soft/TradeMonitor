@@ -7,19 +7,13 @@
     <item android:title="@string/cat_main">
         <menu>
             <item
-                android:id="@+id/navMenuMonitor"
-                android:icon="@drawable/img_done_24"
-                android:title="@string/main_price_monitor"/>
+                android:id="@+id/navMenuHome"
+                android:icon="@drawable/img_home_24"
+                android:title="@string/main_home"/>
             <item
-                android:id="@+id/navMenuChecker"
-                android:icon="@drawable/img_done_24"
-                android:enabled="false"
-                android:title="@string/main_price_checker"/>
-            <item
-                android:id="@+id/navMenuAlko"
-                android:icon="@drawable/img_done_24"
-                android:enabled="false"
-                android:title="@string/main_alko_checker"/>
+                android:id="@+id/navMenuDir"
+                android:icon="@drawable/img_book_24"
+                android:title="@string/main_dir"/>
         </menu>
     </item>
 
