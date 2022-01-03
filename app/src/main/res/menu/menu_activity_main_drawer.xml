@@ -7,10 +7,6 @@
     <item android:title="@string/cat_main">
         <menu>
             <item
-                android:id="@+id/navMenuHome"
-                android:icon="@drawable/img_home_24"
-                android:title="@string/main_home"/>
-            <item
                 android:id="@+id/navMenuDir"
                 android:icon="@drawable/img_book_24"
                 android:title="@string/main_dir"/>
