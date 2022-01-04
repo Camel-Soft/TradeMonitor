@@ -6,6 +6,10 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.utils.Permissions
+import com.camelsoft.trademonitor._presentation.utils.dialogs.ShowError
+import com.camelsoft.trademonitor._presentation.utils.dialogs.ShowPermShouldGive
+import com.camelsoft.trademonitor.common.resource.ResSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
 
 class ActivityMain : AppCompatActivity() {
@@ -30,6 +34,30 @@ class ActivityMain : AppCompatActivity() {
             }
             binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
             true
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Запрос прав
+        Permissions(this) { result ->
+            when (result) {
+                is ResSync.Success -> {
+                    result.data?.let {
+                        if (!result.data)
+                            ShowPermShouldGive(this) { finish() }
+                    }
+                }
+                is ResSync.Error -> {
+                    val backupMessage = resources.getString(R.string.error_in)+
+                            " onResume.Permissions: "+
+                            resources.getString(R.string.error_text_unknown)
+                    ShowError(this, result.message?:backupMessage) {
+                        finish()
+                    }
+                }
+            }
         }
     }
 
