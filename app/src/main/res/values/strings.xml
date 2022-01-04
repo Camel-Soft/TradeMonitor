@@ -9,6 +9,8 @@
     <string name="settings_app">В настройки приложения</string>
     <string name="need_permissions_title">Отсутствуют разрешения</string>
     <string name="need_permissions_message">Для работы приложения необходимы все запрашиваемые разрешения. Добавить отсутствующие разрешения можно в настройках приложения</string>
+    <string name="scan_message">Сканирование\nПоместите сканкод в центр прямоугольника</string>
+    <string name="scan_message_list">Непрерывное сканирование\nСканируйте поочередно</string>
     <string name="title_menu">Меню</string>
 
     <string name="cat_main">Основные</string>

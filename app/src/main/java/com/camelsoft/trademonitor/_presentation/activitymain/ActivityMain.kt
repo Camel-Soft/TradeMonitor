@@ -35,12 +35,23 @@ class ActivityMain : AppCompatActivity() {
             binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+
+        permissionsRequest()
     }
 
-    override fun onStart() {
-        super.onStart()
+    // Нажатия кнопок верхнего меню
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                binding.mainDrawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> { super.onOptionsItemSelected(item) }
+        }
+    }
 
-        // Запрос прав
+    // Запрос прав
+    private fun permissionsRequest() {
         Permissions(this) { result ->
             when (result) {
                 is ResSync.Success -> {
@@ -58,17 +69,6 @@ class ActivityMain : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-    // Нажатия кнопок верхнего меню
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                binding.mainDrawerLayout.openDrawer(GravityCompat.START)
-                true
-            }
-            else -> { super.onOptionsItemSelected(item) }
         }
     }
 
