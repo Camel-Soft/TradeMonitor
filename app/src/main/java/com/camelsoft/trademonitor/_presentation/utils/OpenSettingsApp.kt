@@ -21,6 +21,7 @@ class OpenSettingsApp(private val context: Context) {
             context.startActivity(intent)
 
         }catch (e: Exception) {
+            e.printStackTrace()
             val errMessage = context.resources.getString(R.string.error_in)+
                     " OpenSettingsApp.openSettingsApp: ${e.message}"
             ShowError(context, errMessage) {}

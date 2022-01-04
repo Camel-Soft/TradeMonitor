@@ -50,6 +50,7 @@ class Permissions(
                 .check()
 
         }catch (e: Exception) {
+            e.printStackTrace()
             val errMessage = context.resources.getString(R.string.error_in)+
                     " Permissions.getPermissions: ${e.message}"
             report(ResSync.Error<Boolean>(errMessage))
