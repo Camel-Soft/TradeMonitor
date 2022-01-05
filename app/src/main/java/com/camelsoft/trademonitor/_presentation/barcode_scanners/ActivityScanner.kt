@@ -24,8 +24,10 @@ class ActivityScanner : AppCompatActivity() {
         setContentView(binding.root)
 
         // Верхняя панель
-        binding.scanToolbar.setNavigationIcon(R.drawable.img_arrowback_white)
+        binding.scanToolbar.setNavigationIcon(R.drawable.img_arrow_back_white_24)
         setSupportActionBar(binding.scanToolbar)
+        supportActionBar?.title = ""
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         captureManager = CaptureManager(this, binding.scanDecorBarView)
         captureManager.initializeFromIntent(intent, savedInstanceState)

@@ -1,16 +1,19 @@
 package com.camelsoft.trademonitor._presentation.activitymain
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.barcode_scanners.ActivityScanner
 import com.camelsoft.trademonitor._presentation.utils.Permissions
 import com.camelsoft.trademonitor._presentation.utils.dialogs.ShowError
 import com.camelsoft.trademonitor._presentation.utils.dialogs.ShowPermShouldGive
 import com.camelsoft.trademonitor.common.resource.ResSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 class ActivityMain : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,13 +24,14 @@ class ActivityMain : AppCompatActivity() {
         setContentView(binding.root)
 
         // Верхняя панель
+        binding.activityMainContent.mainToolbar.setNavigationIcon(R.drawable.img_menu_24)
         setSupportActionBar(binding.activityMainContent.mainToolbar)
-        //supportActionBar?.title = resources.getString(R.string.title_menu)
+        supportActionBar?.title = resources.getString(R.string.title_menu)
 
         // Нажатия Navigation-списка
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navMenuDir -> { }
+                R.id.navMenuDir -> { scanStart() }
                 R.id.navMenuSettings -> {  }
                 R.id.navMenuExit -> { finish() }
                 else -> {}
@@ -81,4 +85,40 @@ class ActivityMain : AppCompatActivity() {
             Toast.makeText(baseContext, resources.getString(R.string.back_pressed), Toast.LENGTH_SHORT).show()
         back_pressed = System.currentTimeMillis()
     }
+
+
+    private val barcodeLauncher = registerForActivityResult( ScanContract() ) {
+        if (it.contents == null) {
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
+            } else {
+
+            Toast.makeText(
+                this,
+                "Scanned: " + it.contents+" Format: ${it.formatName}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+
+
+
+    private fun scanStart() {
+
+        val options = ScanOptions()
+        options.captureActivity = ActivityScanner::class.java
+        options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
+        options.setCameraId(0)
+        options.setBeepEnabled(false)
+        options.setPrompt("")
+        barcodeLauncher.launch(options)
+
+
+    }
+
+
+
+
+
+
 }
