@@ -3,18 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scanDecorBarView"
+    android:id="@+id/camDecorBarView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:zxing_use_texture_view="true"
-    tools:context="._presentation.barcode_scanners.ActivityScanner">
+    tools:context="._presentation.barcode_scanners.ActivityCamera">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/scanToolbar"
+            android:id="@+id/camToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,12 +28,12 @@
             android:textColor="@color/white"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/scanBtnTorch"
+            app:layout_constraintEnd_toStartOf="@+id/camBtnTorch"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scanToolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/camToolbar" />
 
         <ImageButton
-            android:id="@+id/scanBtnTorch"
+            android:id="@+id/camBtnTorch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -41,7 +41,7 @@
             android:contentDescription="@string/torch"
             android:src="@drawable/img_torch_on_white_40"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scanToolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/camToolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.journeyapps.barcodescanner.DecoratedBarcodeView>

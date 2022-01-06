@@ -2,7 +2,7 @@
     <string name="app_name">Trade Monitor</string>
     <string name="developer_email">development.camelsoft@gmail.com</string>
     <string name="back_pressed">Нажмите еще раз, чтобы выйти</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="torch">Фонарик</string>
     <string name="save">Сохранить</string>
     <string name="error">Ошибка</string>

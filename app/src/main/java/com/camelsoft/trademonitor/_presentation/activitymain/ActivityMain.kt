@@ -6,14 +6,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.barcode_scanners.ActivityScanner
-import com.camelsoft.trademonitor._presentation.utils.Permissions
-import com.camelsoft.trademonitor._presentation.utils.dialogs.ShowError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.ShowPermShouldGive
+import com.camelsoft.trademonitor._presentation.barcode_scanners.ScanCamera
+import com.camelsoft.trademonitor._presentation.utils.reqPermissions
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showPermShouldGive
 import com.camelsoft.trademonitor.common.resource.ResSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanOptions
 
 class ActivityMain : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,7 +29,7 @@ class ActivityMain : AppCompatActivity() {
         // Нажатия Navigation-списка
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navMenuDir -> { scanStart() }
+                R.id.navMenuDir -> { ScanCamera { Toast.makeText(this, it, Toast.LENGTH_LONG).show() } }
                 R.id.navMenuSettings -> {  }
                 R.id.navMenuExit -> { finish() }
                 else -> {}
@@ -40,7 +38,7 @@ class ActivityMain : AppCompatActivity() {
             true
         }
 
-        permissionsRequest()
+        getPermissions()
     }
 
     // Нажатия кнопок верхнего меню
@@ -55,20 +53,20 @@ class ActivityMain : AppCompatActivity() {
     }
 
     // Запрос прав
-    private fun permissionsRequest() {
-        Permissions(this) { result ->
+    private fun getPermissions() {
+        reqPermissions(this) { result ->
             when (result) {
                 is ResSync.Success -> {
                     result.data?.let {
                         if (!result.data)
-                            ShowPermShouldGive(this) { finish() }
+                            showPermShouldGive(this) { finish() }
                     }
                 }
                 is ResSync.Error -> {
                     val backupMessage = resources.getString(R.string.error_in)+
-                            " onResume.Permissions: "+
+                            " onResume.ReqPermissions: "+
                             resources.getString(R.string.error_text_unknown)
-                    ShowError(this, result.message?:backupMessage) {
+                    showError(this, result.message?:backupMessage) {
                         finish()
                     }
                 }
@@ -87,34 +85,34 @@ class ActivityMain : AppCompatActivity() {
     }
 
 
-    private val barcodeLauncher = registerForActivityResult( ScanContract() ) {
-        if (it.contents == null) {
-            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
-            } else {
-
-            Toast.makeText(
-                this,
-                "Scanned: " + it.contents+" Format: ${it.formatName}",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
-
-
-
-    private fun scanStart() {
-
-        val options = ScanOptions()
-        options.captureActivity = ActivityScanner::class.java
-        options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
-        options.setCameraId(0)
-        options.setBeepEnabled(false)
-        options.setPrompt("")
-        barcodeLauncher.launch(options)
-
-
-    }
+//    private val barcodeLauncher = registerForActivityResult( ScanContract() ) {
+//        if (it.contents == null) {
+//            Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
+//            } else {
+//
+//            Toast.makeText(
+//                this,
+//                "Scanned: " + it.contents+" Format: ${it.formatName}",
+//                Toast.LENGTH_LONG
+//            ).show()
+//        }
+//    }
+//
+//
+//
+//
+//    private fun scanStart() {
+//
+//        val options = ScanOptions()
+//        options.captureActivity = ActivityCamera::class.java
+//        options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
+//        options.setCameraId(0)
+//        options.setBeepEnabled(true)
+//        options.setPrompt("")
+//        barcodeLauncher.launch(options)
+//
+//
+//    }
 
 
 

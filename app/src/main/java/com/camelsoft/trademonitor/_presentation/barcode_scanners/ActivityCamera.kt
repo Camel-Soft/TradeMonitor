@@ -7,53 +7,53 @@ import android.os.PersistableBundle
 import android.view.KeyEvent
 import android.view.View
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.dialogs.ShowError
-import com.camelsoft.trademonitor.databinding.ActivityScannerBinding
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor.databinding.ActivityCameraBinding
 import com.journeyapps.barcodescanner.CaptureManager
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 
-class ActivityScanner : AppCompatActivity() {
+class ActivityCamera : AppCompatActivity() {
 
-    private lateinit var binding: ActivityScannerBinding
+    private lateinit var binding: ActivityCameraBinding
     private lateinit var captureManager: CaptureManager
     private var flagTorch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityScannerBinding.inflate(layoutInflater)
+        binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Верхняя панель
-        binding.scanToolbar.setNavigationIcon(R.drawable.img_arrow_back_white_24)
-        setSupportActionBar(binding.scanToolbar)
+        binding.camToolbar.setNavigationIcon(R.drawable.img_arrow_back_white_24)
+        setSupportActionBar(binding.camToolbar)
         supportActionBar?.title = ""
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        captureManager = CaptureManager(this, binding.scanDecorBarView)
+        captureManager = CaptureManager(this, binding.camDecorBarView)
         captureManager.initializeFromIntent(intent, savedInstanceState)
         captureManager.decode()
 
-        binding.scanDecorBarView.setTorchListener(object: DecoratedBarcodeView.TorchListener {
+        binding.camDecorBarView.setTorchListener(object: DecoratedBarcodeView.TorchListener {
             override fun onTorchOn() {
-                binding.scanBtnTorch.setImageResource(R.drawable.img_torch_off_white_40)
+                binding.camBtnTorch.setImageResource(R.drawable.img_torch_off_white_40)
             }
 
             override fun onTorchOff() {
-                binding.scanBtnTorch.setImageResource(R.drawable.img_torch_on_white_40)
+                binding.camBtnTorch.setImageResource(R.drawable.img_torch_on_white_40)
             }
         })
 
-        binding.scanBtnTorch.setOnClickListener {
+        binding.camBtnTorch.setOnClickListener {
             flagTorch = if (!flagTorch) {
-                binding.scanDecorBarView.setTorchOn()
+                binding.camDecorBarView.setTorchOn()
                 true
             } else {
-                binding.scanDecorBarView.setTorchOff()
+                binding.camDecorBarView.setTorchOff()
                 false
             }
         }
 
-        if (!hasFlash()) binding.scanBtnTorch.visibility = View.INVISIBLE
+        if (!hasFlash()) binding.camBtnTorch.visibility = View.INVISIBLE
     }
 
     override fun onResume() {
@@ -72,7 +72,7 @@ class ActivityScanner : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return binding.scanDecorBarView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
+        return binding.camDecorBarView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
@@ -90,8 +90,8 @@ class ActivityScanner : AppCompatActivity() {
             applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
         }catch (e: Exception) {
             e.printStackTrace()
-            ShowError(this, resources.getString(R.string.error_in)+
-                    " ActivityScanner.hasFlash: ${e.message}") {}
+            showError(this, resources.getString(R.string.error_in)+
+                    " ActivityCamera.hasFlash: ${e.message}") {}
             false
         }
     }
