@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._presentation.barcode_scanners
+package com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera
 
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -33,25 +33,8 @@ class ActivityCamera : AppCompatActivity() {
         captureManager.initializeFromIntent(intent, savedInstanceState)
         captureManager.decode()
 
-        binding.camDecorBarView.setTorchListener(object: DecoratedBarcodeView.TorchListener {
-            override fun onTorchOn() {
-                binding.camBtnTorch.setImageResource(R.drawable.img_torch_off_white_40)
-            }
-
-            override fun onTorchOff() {
-                binding.camBtnTorch.setImageResource(R.drawable.img_torch_on_white_40)
-            }
-        })
-
-        binding.camBtnTorch.setOnClickListener {
-            flagTorch = if (!flagTorch) {
-                binding.camDecorBarView.setTorchOn()
-                true
-            } else {
-                binding.camDecorBarView.setTorchOff()
-                false
-            }
-        }
+        binding.camDecorBarView.setTorchListener(torchListener)
+        binding.camBtnTorch.setOnClickListener(btnTorchListener)
 
         if (!hasFlash()) binding.camBtnTorch.visibility = View.INVISIBLE
     }
@@ -85,14 +68,64 @@ class ActivityCamera : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    private fun hasFlash(): Boolean {
-        return try {
-            applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
-        }catch (e: Exception) {
-            e.printStackTrace()
-            showError(this, resources.getString(R.string.error_in)+
-                    " ActivityCamera.hasFlash: ${e.message}") {}
+    private val torchListener = object: DecoratedBarcodeView.TorchListener {
+        override fun onTorchOn() {
+            binding.camBtnTorch.setImageResource(R.drawable.img_torch_off_white_40)
+        }
+        override fun onTorchOff() {
+            binding.camBtnTorch.setImageResource(R.drawable.img_torch_on_white_40)
+        }
+    }
+
+    private val btnTorchListener = View.OnClickListener {
+        flagTorch = if (!flagTorch) {
+            binding.camDecorBarView.setTorchOn()
+            true
+        } else {
+            binding.camDecorBarView.setTorchOff()
             false
         }
     }
+
+    private fun hasFlash(): Boolean {
+        return try {
+            applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showError(this, resources.getString(R.string.error_in)+
+                    " ActivityCamera.hasFlash: "+e.message) {}
+            return false
+        }
+    }
 }
+
+//// Фотосканер
+//private fun camStart() {
+//    try {
+//        if (!applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+//            showInfo(this, resources.getString(R.string.attention_cameras)) {}
+//            return
+//        }
+//
+//        val scanOptions = ScanOptions()
+//        scanOptions.captureActivity = ActivityCamera::class.java
+//        scanOptions.setDesiredBarcodeFormats(
+//            ScanOptions.EAN_13,
+//            ScanOptions.EAN_8,
+//            ScanOptions.UPC_A,
+//            ScanOptions.UPC_E)
+//        scanOptions.setCameraId(0)
+//        scanOptions.setBeepEnabled(true)
+//        scanOptions.setPrompt("")
+//        camLauncher.launch(scanOptions)
+//    }catch (e: Exception) {
+//        e.printStackTrace()
+//        showError(this, resources.getString(R.string.error_in)+" _________.camStart: "+e.message) {}
+//    }
+//}
+//
+//// Фотосканер результат
+//private val camLauncher = registerForActivityResult( ScanContract() ) {
+//    if (it.contents != null)
+//        Toast.makeText(this, "Scanned: "+it.contents+" Format: ${it.formatName}", Toast.LENGTH_LONG).show()
+//}

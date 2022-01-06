@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Scan(
-    var content: String = "",
+data class MScan(
+    var scancode: String = "",
     var format: String = ""
 ): Parcelable

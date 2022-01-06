@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:zxing_use_texture_view="true"
-    tools:context="._presentation.barcode_scanners.ActivityCamera">
+    tools:context="._presentation.barcode_scanners.activity_camera.ActivityCamera">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

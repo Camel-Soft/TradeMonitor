@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.journeyapps.barcodescanner.DecoratedBarcodeView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/camListDecorBarView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:zxing_use_texture_view="true"
+    tools:context="._presentation.barcode_scanners.activity_camera_list.ActivityCameraList">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/camListToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/camListTextTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_message_list"
+                android:textColor="@color/white"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/camListBtnTorch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/camListToolbar" />
+
+            <ImageButton
+                android:id="@+id/camListBtnTorch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@null"
+                android:contentDescription="@string/torch"
+                android:src="@drawable/img_torch_on_white_40"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/camListToolbar" />
+
+            <TextView
+                android:id="@+id/camListTextPrompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/camListRecyclerTextImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"/>
+
+    </LinearLayout>
+</com.journeyapps.barcodescanner.DecoratedBarcodeView>

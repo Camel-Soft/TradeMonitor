@@ -8,6 +8,8 @@
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>
     <string name="error_text_unknown">Текст ошибки не определен</string>
+    <string name="attention">Внимание</string>
+    <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
     <string name="settings_app">В настройки приложения</string>
     <string name="need_permissions_title">Отсутствуют разрешения</string>
     <string name="need_permissions_message">Для работы приложения необходимы все запрашиваемые разрешения. Добавить отсутствующие разрешения можно в настройках приложения</string>

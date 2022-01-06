@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="._presentation.activitymain.ActivityMain">
+    tools:context="._presentation.activity_main.ActivityMain">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/mainToolbar"
