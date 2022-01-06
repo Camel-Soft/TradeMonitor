@@ -18,14 +18,9 @@ import com.camelsoft.trademonitor.databinding.ActivityMainBinding
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import android.content.Intent
-
 import android.app.Activity
-
-import androidx.activity.result.ActivityResultCallback
-
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
+import com.camelsoft.trademonitor._presentation.models.MScan
 
 
 class ActivityMain : AppCompatActivity() {
@@ -128,21 +123,51 @@ class ActivityMain : AppCompatActivity() {
 
     // Фотосканер результат
     private val camLauncher = registerForActivityResult( ScanContract() ) {
-        if (it.contents != null)
-            Toast.makeText(this, "Scanned: "+it.contents+" Format: ${it.formatName}", Toast.LENGTH_LONG).show()
+        try {
+            if (it.contents != null && it.formatName != null)
+                Toast.makeText(this, "Scancode: ${it.contents}\nFormat: ${it.formatName}", Toast.LENGTH_LONG).show()
+        }catch (e: Exception) {
+            e.printStackTrace()
+            showError(this, resources.getString(R.string.error_in)+" _________.camLauncher: "+e.message) {}
+        }
     }
+
 
 
     // Фотосканер Список
     private fun camListStart() {
-        val intent = Intent(this, ActivityCameraList::class.java)
-        startActivity(intent)
+        try {
+            val intent = Intent(this, ActivityCameraList::class.java)
 
+            camListLauncher.launch(intent)
+
+
+
+        }catch (e: Exception) {
+            e.printStackTrace()
+            showError(this, resources.getString(R.string.error_in)+" _________.camListStart: "+e.message) {}
+        }
     }
 
-
     // Фотосканер Список результат
-
+    private val camListLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        try {
+            if (it.resultCode == Activity.RESULT_OK) {
+                it.data?.getParcelableArrayListExtra<MScan>("KEY_LIST_SCAN")?.let { listScan ->
+                    if (listScan.size > 0) {
+                        var mes = ""
+                        listScan.forEach { scan ->
+                            mes += "Scancode: ${scan.scancode} Format: ${scan.format}\n"
+                        }
+                        Toast.makeText(this, mes, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }catch (e: Exception) {
+            e.printStackTrace()
+            showError(this, resources.getString(R.string.error_in)+" _________.camListLauncher: "+e.message) {}
+        }
+    }
 
 
 

@@ -99,33 +99,38 @@ class ActivityCamera : AppCompatActivity() {
     }
 }
 
-//// Фотосканер
-//private fun camStart() {
-//    try {
-//        if (!applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-//            showInfo(this, resources.getString(R.string.attention_cameras)) {}
-//            return
+//    // Фотосканер
+//    private fun camStart() {
+//        try {
+//            if (!applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+//                showInfo(this, resources.getString(R.string.attention_cameras)) {}
+//                return
+//            }
+//
+//            val scanOptions = ScanOptions()
+//            scanOptions.captureActivity = ActivityCamera::class.java
+//            scanOptions.setDesiredBarcodeFormats(
+//                ScanOptions.EAN_13,
+//                ScanOptions.EAN_8,
+//                ScanOptions.UPC_A,
+//                ScanOptions.UPC_E)
+//            scanOptions.setCameraId(0)
+//            scanOptions.setBeepEnabled(true)
+//            scanOptions.setPrompt("")
+//            camLauncher.launch(scanOptions)
+//        }catch (e: Exception) {
+//            e.printStackTrace()
+//            showError(this, resources.getString(R.string.error_in)+" _________.camStart: "+e.message) {}
 //        }
-//
-//        val scanOptions = ScanOptions()
-//        scanOptions.captureActivity = ActivityCamera::class.java
-//        scanOptions.setDesiredBarcodeFormats(
-//            ScanOptions.EAN_13,
-//            ScanOptions.EAN_8,
-//            ScanOptions.UPC_A,
-//            ScanOptions.UPC_E)
-//        scanOptions.setCameraId(0)
-//        scanOptions.setBeepEnabled(true)
-//        scanOptions.setPrompt("")
-//        camLauncher.launch(scanOptions)
-//    }catch (e: Exception) {
-//        e.printStackTrace()
-//        showError(this, resources.getString(R.string.error_in)+" _________.camStart: "+e.message) {}
 //    }
-//}
 //
-//// Фотосканер результат
-//private val camLauncher = registerForActivityResult( ScanContract() ) {
-//    if (it.contents != null)
-//        Toast.makeText(this, "Scanned: "+it.contents+" Format: ${it.formatName}", Toast.LENGTH_LONG).show()
-//}
+//    // Фотосканер результат
+//    private val camLauncher = registerForActivityResult( ScanContract() ) {
+//        try {
+//            if (it.contents != null && it.formatName != null)
+//                Toast.makeText(this, "Scancode: ${it.contents}\nFormat: ${it.formatName}", Toast.LENGTH_LONG).show()
+//        }catch (e: Exception) {
+//            e.printStackTrace()
+//            showError(this, resources.getString(R.string.error_in)+" _________.camLauncher: "+e.message) {}
+//        }
+//    }
