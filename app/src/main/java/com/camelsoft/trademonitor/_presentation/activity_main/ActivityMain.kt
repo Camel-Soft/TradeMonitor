@@ -1,6 +1,5 @@
 package com.camelsoft.trademonitor._presentation.activity_main
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -8,30 +7,31 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showPermShouldGive
 import com.camelsoft.trademonitor.common.resource.ResSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanOptions
 import android.content.Intent
 import android.app.Activity
+import com.camelsoft.trademonitor._presentation.api.IResultScan
+import com.camelsoft.trademonitor._presentation.barcode_scanners.HoneywellEDA50K
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
 import com.camelsoft.trademonitor._presentation.models.MScan
-import com.google.zxing.BarcodeFormat
-
+import com.honeywell.aidc.BarcodeReader
 
 class ActivityMain : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var honeywellEDA50K: HoneywellEDA50K
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        honeywellEDA50K = HoneywellEDA50K(this, honeyListener, getScanProperties())
 
         // Верхняя панель
         binding.activityMainContent.mainToolbar.setNavigationIcon(R.drawable.img_menu_24)
@@ -41,7 +41,7 @@ class ActivityMain : AppCompatActivity() {
         // Нажатия Navigation-списка
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navMenuDir -> { camStart() }
+                R.id.navMenuDir -> {  }
                 R.id.navMenuSettings -> { camListStart() }
                 R.id.navMenuExit -> { finish() }
                 else -> {}
@@ -98,41 +98,57 @@ class ActivityMain : AppCompatActivity() {
 
 
 
-    // Фотосканер
-    private fun camStart() {
-        try {
-            if (!applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-                showInfo(this, resources.getString(R.string.attention_cameras)) {}
-                return
+
+
+
+    // HoneywellEDA50K
+
+    override fun onResume() {
+        super.onResume()
+        honeywellEDA50K.reg()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        honeywellEDA50K.unreg()
+    }
+
+    private val honeyListener: IResultScan = object : IResultScan {
+        override fun actionScan(scan: ResSync<MScan>) {
+            when (scan) {
+                is ResSync.Success -> {
+                    Toast.makeText(this@ActivityMain, "Scancode: ${scan.data?.scancode}\nFormat: ${scan.data?.format}", Toast.LENGTH_LONG).show()
+                }
+                is ResSync.Error -> {
+                    Toast.makeText(this@ActivityMain, "Error: ${scan.message}", Toast.LENGTH_LONG).show()
+                }
             }
-
-            val scanOptions = ScanOptions()
-            scanOptions.captureActivity = ActivityCamera::class.java
-            scanOptions.setDesiredBarcodeFormats(
-                ScanOptions.EAN_13,
-                ScanOptions.EAN_8,
-                ScanOptions.UPC_A,
-                ScanOptions.UPC_E)
-            scanOptions.setCameraId(0)
-            scanOptions.setBeepEnabled(true)
-            scanOptions.setPrompt("")
-            camLauncher.launch(scanOptions)
-        }catch (e: Exception) {
-            e.printStackTrace()
-            showError(this, resources.getString(R.string.error_in)+" _________.camStart: "+e.message) {}
         }
     }
 
-    // Фотосканер результат
-    private val camLauncher = registerForActivityResult( ScanContract() ) {
-        try {
-            if (it.contents != null && it.formatName != null)
-                Toast.makeText(this, "Scancode: ${it.contents}\nFormat: ${it.formatName}", Toast.LENGTH_LONG).show()
-        }catch (e: Exception) {
-            e.printStackTrace()
-            showError(this, resources.getString(R.string.error_in)+" _________.camLauncher: "+e.message) {}
-        }
+    private fun getScanProperties(): Map<String, Any> {
+        val scanProperties = HashMap<String, Any>()
+        scanProperties.put(BarcodeReader.PROPERTY_EAN_13_ENABLED, true)
+        scanProperties.put(BarcodeReader.PROPERTY_EAN_8_ENABLED, true)
+        scanProperties.put(BarcodeReader.PROPERTY_UPC_A_ENABLE, true)
+        scanProperties.put(BarcodeReader.PROPERTY_UPC_E_ENABLED, true)
+        scanProperties.put(BarcodeReader.PROPERTY_DATAMATRIX_ENABLED, true)
+        scanProperties.put(BarcodeReader.PROPERTY_QR_CODE_ENABLED, true)
+        scanProperties.put(BarcodeReader.PROPERTY_PDF_417_ENABLED, true)
+        return scanProperties
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
