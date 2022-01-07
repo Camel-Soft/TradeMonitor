@@ -10,12 +10,16 @@ import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
+import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MScanContinuous
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor.databinding.ActivityCameraListBinding
+import com.google.zxing.BarcodeFormat
 import com.google.zxing.client.android.BeepManager
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
+import com.journeyapps.barcodescanner.DefaultDecoderFactory
 
 class ActivityCameraList : AppCompatActivity() {
 
@@ -24,7 +28,7 @@ class ActivityCameraList : AppCompatActivity() {
     private var flagTorch = false
     private var lastScancode = ""
     private val listScan = ArrayList<MScan>()
-    private val listScanContinuous = ArrayList<AdapterCameraList.MScanContinuous>()
+    private val listScanContinuous = ArrayList<MScanContinuous>()
     private lateinit var adapterCameraList: AdapterCameraList
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,10 +60,12 @@ class ActivityCameraList : AppCompatActivity() {
         binding.camListRecyclerTextImage.adapter = adapterCameraList
 
         //DecoratedBarcodeView
-        binding.camListDecorBarView.initializeFromIntent(intent)
-        binding.camListDecorBarView.decodeContinuous(barcodeCallback)
-        ////////formats
-
+        intent.getParcelableArrayListExtra<MBarcodeFormat>("KEY_LIST_FORMAT")?.let {
+            val barFormats = formatConverter(it)
+            binding.camListDecorBarView.initializeFromIntent(intent)
+            binding.camListDecorBarView.barcodeView.decoderFactory = DefaultDecoderFactory(barFormats)
+            binding.camListDecorBarView.decodeContinuous(barcodeCallback)
+        }
 
         binding.camListDecorBarView.setTorchListener(torchListener)
         binding.camListBtnTorch.setOnClickListener(btnTorchListener)
@@ -129,7 +135,7 @@ class ActivityCameraList : AppCompatActivity() {
     private fun itemAdd(scancode: String, format: String, bitmap: Bitmap) {
         try {
             listScan.add(MScan(scancode, format))
-            listScanContinuous.add(AdapterCameraList.MScanContinuous(scancode, bitmap))
+            listScanContinuous.add(MScanContinuous(scancode, bitmap))
 
             adapterCameraList.notifyItemInserted(listScanContinuous.size-1)
             binding.camListRecyclerTextImage.smoothScrollToPosition(listScanContinuous.size-1)
@@ -156,7 +162,7 @@ class ActivityCameraList : AppCompatActivity() {
     private fun sendSave(listScan: ArrayList<MScan>) {
         try {
             val intent = Intent()
-            intent.putExtra("KEY_LIST_SCAN", listScan)
+            intent.putParcelableArrayListExtra("KEY_LIST_SCAN", listScan)
             setResult(RESULT_OK, intent)
             finish()
         }catch (e: Exception) {
@@ -206,4 +212,56 @@ class ActivityCameraList : AppCompatActivity() {
             return false
         }
     }
+
+    private fun formatConverter(listMBF: ArrayList<MBarcodeFormat>): Collection<BarcodeFormat> {
+        return try {
+            val listBF = mutableListOf<BarcodeFormat>()
+            listMBF.forEach {
+                listBF.add(it.barcodeFormat)
+            }
+            listBF
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showError(this, resources.getString(R.string.error_in)+
+                    " ActivityCameraList.formatConverter: "+e.message) {}
+            emptyList()
+        }
+    }
 }
+
+//    // Фотосканер Список
+//    private fun camListStart() {
+//        try {
+//            val intent = Intent(this, ActivityCameraList::class.java)
+//            val listFormats = ArrayList<MBarcodeFormat>()
+////            listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_13))
+////            listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_8))
+////            listFormats.add(MBarcodeFormat(BarcodeFormat.UPC_A))
+////            listFormats.add(MBarcodeFormat(BarcodeFormat.UPC_E))
+//            intent.putParcelableArrayListExtra("KEY_LIST_FORMAT", listFormats)
+//            camListLauncher.launch(intent)
+//        }catch (e: Exception) {
+//            e.printStackTrace()
+//            showError(this, resources.getString(R.string.error_in)+" _________.camListStart: "+e.message) {}
+//        }
+//    }
+//
+//    // Фотосканер Список результат
+//    private val camListLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//        try {
+//            if (it.resultCode == Activity.RESULT_OK) {
+//                it.data?.getParcelableArrayListExtra<MScan>("KEY_LIST_SCAN")?.let { listScan ->
+//                    if (listScan.size > 0) {
+//                        var mes = ""
+//                        listScan.forEach { scan ->
+//                            mes += "Scancode: ${scan.scancode} Format: ${scan.format}\n"
+//                        }
+//                        Toast.makeText(this, mes, Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//            }
+//        }catch (e: Exception) {
+//            e.printStackTrace()
+//            showError(this, resources.getString(R.string.error_in)+" _________.camListLauncher: "+e.message) {}
+//        }
+//    }

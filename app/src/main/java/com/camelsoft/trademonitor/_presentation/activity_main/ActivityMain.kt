@@ -20,7 +20,9 @@ import com.journeyapps.barcodescanner.ScanOptions
 import android.content.Intent
 import android.app.Activity
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
+import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
 import com.camelsoft.trademonitor._presentation.models.MScan
+import com.google.zxing.BarcodeFormat
 
 
 class ActivityMain : AppCompatActivity() {
@@ -138,11 +140,13 @@ class ActivityMain : AppCompatActivity() {
     private fun camListStart() {
         try {
             val intent = Intent(this, ActivityCameraList::class.java)
-
+            val listFormats = ArrayList<MBarcodeFormat>()
+//            listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_13))
+//            listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_8))
+//            listFormats.add(MBarcodeFormat(BarcodeFormat.UPC_A))
+//            listFormats.add(MBarcodeFormat(BarcodeFormat.UPC_E))
+            intent.putParcelableArrayListExtra("KEY_LIST_FORMAT", listFormats)
             camListLauncher.launch(intent)
-
-
-
         }catch (e: Exception) {
             e.printStackTrace()
             showError(this, resources.getString(R.string.error_in)+" _________.camListStart: "+e.message) {}

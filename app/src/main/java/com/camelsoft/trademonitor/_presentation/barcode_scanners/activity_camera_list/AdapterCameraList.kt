@@ -1,6 +1,5 @@
 package com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MScanContinuous
 
 class AdapterCameraList(
     private val listScanContinuous: List<MScanContinuous>,
@@ -49,9 +49,4 @@ class AdapterCameraList(
     }
 
     override fun getItemCount() = listScanContinuous.size
-
-    data class MScanContinuous(
-        var scancode: String,
-        var bitmap: Bitmap
-    )
 }
