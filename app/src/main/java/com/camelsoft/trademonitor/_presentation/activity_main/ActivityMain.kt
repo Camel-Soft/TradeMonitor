@@ -14,11 +14,14 @@ import com.camelsoft.trademonitor.common.resource.ResSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
 import android.content.Intent
 import android.app.Activity
+import com.camelsoft.trademonitor._presentation.activity_settings.ActivitySettings
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.barcode_scanners.HoneywellEDA50K
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
 import com.camelsoft.trademonitor._presentation.models.MScan
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
+import com.camelsoft.trademonitor.common.Settings
 import com.honeywell.aidc.BarcodeReader
 
 class ActivityMain : AppCompatActivity() {
@@ -42,7 +45,10 @@ class ActivityMain : AppCompatActivity() {
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navMenuDir -> { camListStart() }
-                R.id.navMenuSettings -> {  }
+                R.id.navMenuSettings -> {
+                    val intent = Intent(this, ActivitySettings::class.java)
+                    startActivity(intent)
+                }
                 R.id.navMenuExit -> { finish() }
                 else -> {}
             }

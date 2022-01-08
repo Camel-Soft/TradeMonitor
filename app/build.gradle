@@ -54,6 +54,11 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     // User permissions in runtime
     implementation 'com.karumi:dexter:6.2.3'
+    // Navigation Components
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    // Settings Shared Preference
+    implementation 'androidx.preference:preference-ktx:1.1.1'
     // Honeywell EDA50K
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
 }
