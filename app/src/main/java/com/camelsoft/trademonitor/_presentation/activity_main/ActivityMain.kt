@@ -41,8 +41,8 @@ class ActivityMain : AppCompatActivity() {
         // Нажатия Navigation-списка
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navMenuDir -> {  }
-                R.id.navMenuSettings -> { camListStart() }
+                R.id.navMenuDir -> { camListStart() }
+                R.id.navMenuSettings -> {  }
                 R.id.navMenuExit -> { finish() }
                 else -> {}
             }
