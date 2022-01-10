@@ -62,7 +62,7 @@ class HoneywellEDA50K(private val context: Context,
             handler.post(Runnable {
                 try {
                     if (result != null)
-                        iResultScan.actionScan(ResSync.Success(MScan(result.barcodeData, result.codeId)))
+                        iResultScan.actionScan(ResSync.Success(MScan(result.barcodeData, codeIdConverter(result.codeId))))
                 }catch (e: Exception) {
                     e.printStackTrace()
                     val errMessage = getAppContext().resources.getString(R.string.error_in)+
@@ -76,52 +76,77 @@ class HoneywellEDA50K(private val context: Context,
         }
     }
 
+    private fun codeIdConverter(codeId: String): String {
+        try {
+            return when (codeId) {
+                "d" -> "EAN_13"
+                "D" -> "EAN_8"
+                "c" -> "UPC_A"
+                "E" -> "UPC_E"
+                "s" -> "QR_CODE"
+                "w" -> "DATA_MATRIX"
+                "r" -> "PDF_417"
+                else -> "unknown"
+            }
+
+        }catch (e: Exception) {
+            e.printStackTrace()
+            val errMessage = getAppContext().resources.getString(R.string.error_in)+
+                    " HoneywellEDA50K.codeIdConverter: ${e.message}"
+            iResultScan.actionScan(ResSync.Error(errMessage))
+            return "error"
+        }
+    }
+
     private fun addScanProperties(propStart: Map<String, Any>): Map<String, Any> {
         try {
             val propFinish = HashMap<String, Any>()
 
-            propFinish.put(BarcodeReader.PROPERTY_EAN_13_CHECK_DIGIT_TRANSMIT_ENABLED, true)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_13_ADDENDA_REQUIRED_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_13_ADDENDA_SEPARATOR_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_13_TWO_CHAR_ADDENDA_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_13_FIVE_CHAR_ADDENDA_ENABLED, false)
+            propFinish[BarcodeReader.PROPERTY_EAN_13_CHECK_DIGIT_TRANSMIT_ENABLED] = true
+            propFinish[BarcodeReader.PROPERTY_EAN_13_ADDENDA_REQUIRED_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_EAN_13_ADDENDA_SEPARATOR_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_EAN_13_TWO_CHAR_ADDENDA_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_EAN_13_FIVE_CHAR_ADDENDA_ENABLED] = false
 
-            propFinish.put(BarcodeReader.PROPERTY_EAN_8_CHECK_DIGIT_TRANSMIT_ENABLED, true)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_8_ADDENDA_REQUIRED_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_8_ADDENDA_SEPARATOR_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_8_TWO_CHAR_ADDENDA_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_EAN_8_FIVE_CHAR_ADDENDA_ENABLED, false)
+            propFinish[BarcodeReader.PROPERTY_EAN_8_CHECK_DIGIT_TRANSMIT_ENABLED] = true
+            propFinish[BarcodeReader.PROPERTY_EAN_8_ADDENDA_REQUIRED_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_EAN_8_ADDENDA_SEPARATOR_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_EAN_8_TWO_CHAR_ADDENDA_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_EAN_8_FIVE_CHAR_ADDENDA_ENABLED] = false
 
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_NUMBER_SYSTEM_TRANSMIT_ENABLED, true)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_CHECK_DIGIT_TRANSMIT_ENABLED, true)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_TRANSLATE_EAN13, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_ADDENDA_REQUIRED_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_ADDENDA_SEPARATOR_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_TWO_CHAR_ADDENDA_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_FIVE_CHAR_ADDENDA_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_COUPON_CODE_MODE_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_A_COMBINE_COUPON_CODE_MODE_ENABLED, false)
+            propFinish[BarcodeReader.PROPERTY_UPC_A_NUMBER_SYSTEM_TRANSMIT_ENABLED] = true
+            propFinish[BarcodeReader.PROPERTY_UPC_A_CHECK_DIGIT_TRANSMIT_ENABLED] = true
+            propFinish[BarcodeReader.PROPERTY_UPC_A_TRANSLATE_EAN13] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_A_ADDENDA_REQUIRED_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_A_ADDENDA_SEPARATOR_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_A_TWO_CHAR_ADDENDA_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_A_FIVE_CHAR_ADDENDA_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_A_COUPON_CODE_MODE_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_A_COMBINE_COUPON_CODE_MODE_ENABLED] = false
 
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_NUMBER_SYSTEM_TRANSMIT_ENABLED, true)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_CHECK_DIGIT_TRANSMIT_ENABLED, true)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_EXPAND_TO_UPC_A, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_ADDENDA_REQUIRED_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_ADDENDA_SEPARATOR_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_TWO_CHAR_ADDENDA_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_FIVE_CHAR_ADDENDA_ENABLED, false)
-            propFinish.put(BarcodeReader.PROPERTY_UPC_E_E1_ENABLED, false)
+            propFinish[BarcodeReader.PROPERTY_UPC_E_NUMBER_SYSTEM_TRANSMIT_ENABLED] = true
+            propFinish[BarcodeReader.PROPERTY_UPC_E_CHECK_DIGIT_TRANSMIT_ENABLED] = true
+            propFinish[BarcodeReader.PROPERTY_UPC_E_EXPAND_TO_UPC_A] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_E_ADDENDA_REQUIRED_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_E_ADDENDA_SEPARATOR_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_E_TWO_CHAR_ADDENDA_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_E_FIVE_CHAR_ADDENDA_ENABLED] = false
+            propFinish[BarcodeReader.PROPERTY_UPC_E_E1_ENABLED] = false
 
-            propFinish.put(BarcodeReader.PROPERTY_DATAMATRIX_MINIMUM_LENGTH, 1)
-            propFinish.put(BarcodeReader.PROPERTY_DATAMATRIX_MAXIMUM_LENGTH, 3116)
+            propFinish[BarcodeReader.PROPERTY_DATAMATRIX_MINIMUM_LENGTH] = 1
+            propFinish[BarcodeReader.PROPERTY_DATAMATRIX_MAXIMUM_LENGTH] = 3116
 
-            propFinish.put(BarcodeReader.PROPERTY_QR_CODE_MINIMUM_LENGTH, 1)
-            propFinish.put(BarcodeReader.PROPERTY_QR_CODE_MAXIMUM_LENGTH, 7089)
+            propFinish[BarcodeReader.PROPERTY_QR_CODE_MINIMUM_LENGTH] = 1
+            propFinish[BarcodeReader.PROPERTY_QR_CODE_MAXIMUM_LENGTH] = 7089
 
-            propFinish.put(BarcodeReader.PROPERTY_PDF_417_MINIMUM_LENGTH, 1)
-            propFinish.put(BarcodeReader.PROPERTY_PDF_417_MAXIMUM_LENGTH, 2750)
+            propFinish[BarcodeReader.PROPERTY_PDF_417_MINIMUM_LENGTH] = 1
+            propFinish[BarcodeReader.PROPERTY_PDF_417_MAXIMUM_LENGTH] = 2750
+
+            // All
+            propFinish[BarcodeReader.PROPERTY_DATA_PROCESSOR_LAUNCH_BROWSER] = false
 
             propStart.forEach { (string, any) ->
-                propFinish.put(string, any)
+                propFinish[string] = any
             }
 
             return propFinish
@@ -145,12 +170,12 @@ class HoneywellEDA50K(private val context: Context,
 //        super.onResume()
 //        honeywellEDA50K.reg()
 //    }
-//
+
 //    override fun onPause() {
 //        super.onPause()
 //        honeywellEDA50K.unreg()
 //    }
-//
+
 //    private val honeyListener: IResultScan = object : IResultScan {
 //        override fun actionScan(scan: ResSync<MScan>) {
 //            when (scan) {
@@ -163,15 +188,15 @@ class HoneywellEDA50K(private val context: Context,
 //            }
 //        }
 //    }
-//
+
 //    private fun getScanProperties(): Map<String, Any> {
 //        val scanProperties = HashMap<String, Any>()
-//        scanProperties.put(BarcodeReader.PROPERTY_EAN_13_ENABLED, true)
-//        scanProperties.put(BarcodeReader.PROPERTY_EAN_8_ENABLED, true)
-//        scanProperties.put(BarcodeReader.PROPERTY_UPC_A_ENABLE, true)
-//        scanProperties.put(BarcodeReader.PROPERTY_UPC_E_ENABLED, true)
-//        scanProperties.put(BarcodeReader.PROPERTY_DATAMATRIX_ENABLED, true)
-//        scanProperties.put(BarcodeReader.PROPERTY_QR_CODE_ENABLED, true)
-//        scanProperties.put(BarcodeReader.PROPERTY_PDF_417_ENABLED, true)
+//        scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = true
+//        scanProperties[BarcodeReader.PROPERTY_EAN_8_ENABLED] = true
+//        scanProperties[BarcodeReader.PROPERTY_UPC_A_ENABLE] = true
+//        scanProperties[BarcodeReader.PROPERTY_UPC_E_ENABLED] = true
+//        scanProperties[BarcodeReader.PROPERTY_DATAMATRIX_ENABLED] = true
+//        scanProperties[BarcodeReader.PROPERTY_QR_CODE_ENABLED] = true
+//        scanProperties[BarcodeReader.PROPERTY_PDF_417_ENABLED] = true
 //        return scanProperties
 //    }

@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="@string/cat_main">
+    <item android:title="@string/generals">
         <menu>
             <item
-                android:id="@+id/navMenuDir"
-                android:icon="@drawable/img_book_24"
-                android:title="@string/main_dir"/>
+                android:id="@+id/navMenuMenu"
+                android:icon="@drawable/img_menu_24"
+                android:title="@string/menu"/>
         </menu>
     </item>
 
-    <item android:title="@string/cat_system">
+    <item android:title="@string/systems">
         <menu>
             <item
                 android:id="@+id/navMenuSettings"
                 android:icon="@drawable/img_settings_24"
-                android:title="@string/system_settings"/>
+                android:title="@string/settings"/>
             <item
                 android:id="@+id/navMenuExit"
                 android:icon="@drawable/img_door_24"
-                android:title="@string/system_exit"/>
+                android:title="@string/exit"/>
         </menu>
     </item>
 

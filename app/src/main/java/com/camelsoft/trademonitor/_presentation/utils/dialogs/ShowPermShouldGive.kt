@@ -18,7 +18,7 @@ fun showPermShouldGive(context: Context, click: () -> Unit) {
                 openSettingsApp(context)
                 click()
             })
-        .setNegativeButton(R.string.system_exit,
+        .setNegativeButton(R.string.exit,
             DialogInterface.OnClickListener { dialog, id ->
                 dialog.dismiss()
                 click()

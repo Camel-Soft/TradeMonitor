@@ -1,36 +1,37 @@
 <resources>
-    <!-- All -->
     <string name="app_name">Trade Monitor</string>
     <string name="developer_email">development.camelsoft@gmail.com</string>
     <string name="back_pressed">Нажмите еще раз, чтобы выйти</string>
+
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
-    <string name="torch">Фонарик</string>
+    <string name="exit">Выход</string>
     <string name="save">Сохранить</string>
+    <string name="menu">Меню</string>
+    <string name="generals">Основные</string>
+    <string name="systems">Системные</string>
+    <string name="optional">Дополнительно</string>
+    <string name="torch">Фонарик</string>
+
+    <string name="settings">Настройки</string>
+    <string name="settings_app">В настройки приложения</string>
+
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>
     <string name="error_text_unknown">Текст ошибки не определен</string>
+    <string name="error_root_fragment_id">Id корневого фрагмента не определен</string>
+
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
-    <string name="settings">Настройки</string>
-    <string name="settings_app">В настройки приложения</string>
+
     <string name="need_permissions_title">Отсутствуют разрешения</string>
     <string name="need_permissions_message">Для работы приложения необходимы все запрашиваемые разрешения. Добавить отсутствующие разрешения можно в настройках приложения</string>
+
     <string name="scan_message">Сканирование\nПоместите сканкод в центр прямоугольника</string>
     <string name="scan_message_list">Непрерывное сканирование\nСканируйте поочередно</string>
-    <string name="title_menu">Меню</string>
 
-    <!-- ActivityMain Navigation View -->
-    <string name="cat_main">Основные</string>
-    <string name="main_dir">Справочники</string>
-
-    <string name="cat_system">Служебные</string>
-    <string name="system_settings">Настройки</string>
-    <string name="system_exit">Выход</string>
-
-    <!-- ActivitySettings -->
-    <string name="cat_optional">Дополнительно</string>
-    <string name="title_scanner">Встроенный сканер</string>
+    <!-- Entry Scanner_ -->
+    <string name="entry_scanner_title">Встроенный сканер</string>
     <string name="entry_scanner_empty">Отсутствует</string>
     <string name="entry_scanner_HoneywellEDA50K">Honeywell EDA50K</string>
 </resources>

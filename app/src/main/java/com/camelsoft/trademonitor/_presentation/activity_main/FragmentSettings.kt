@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._presentation.activity_settings
+package com.camelsoft.trademonitor._presentation.activity_main
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
