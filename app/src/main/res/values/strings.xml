@@ -30,6 +30,9 @@
     <string name="scan_message">Сканирование\nПоместите сканкод в центр прямоугольника</string>
     <string name="scan_message_list">Непрерывное сканирование\nСканируйте поочередно</string>
 
+    <string name="monitor_price">Мониторинг цен конкурентов</string>
+    <string name="monitor_alko">Мониторинг акцизных марок</string>
+
     <!-- Entry Scanner_ -->
     <string name="entry_scanner_title">Встроенный сканер</string>
     <string name="entry_scanner_empty">Отсутствует</string>
