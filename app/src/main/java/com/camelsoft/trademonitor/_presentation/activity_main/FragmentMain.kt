@@ -5,20 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor.databinding.FragmentMainBinding
 
 class FragmentMain : Fragment() {
+    private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        binding = FragmentMainBinding.inflate(inflater)
+        return binding.root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = FragmentMain()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.mainCardPrice.setOnClickListener {
+            findNavController().navigate(R.id.action_fragGraphMain_to_fragmentPrice)
+        }
     }
 }

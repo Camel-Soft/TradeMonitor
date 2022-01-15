@@ -2,6 +2,7 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
     app:startDestination="@id/fragGraphMain">
 
@@ -12,6 +13,12 @@
         <action
             android:id="@+id/action_fragGraphMain_to_fragGraphSettings"
             app:destination="@id/fragGraphSettings" />
+        <action
+            android:id="@+id/action_fragGraphMain_to_fragmentPrice"
+            app:destination="@id/fragGraphPrice" />
+        <action
+            android:id="@+id/action_fragGraphMain_to_fragGraphAlko"
+            app:destination="@id/fragGraphAlko" />
     </fragment>
 
     <fragment
@@ -20,6 +27,26 @@
         android:label="@string/settings">
         <action
             android:id="@+id/action_fragGraphSettings_to_fragGraphMain"
+            app:destination="@id/fragGraphMain" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphPrice"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.FragmentPrice"
+        android:label="@string/monitor_price_label"
+        tools:layout="@layout/fragment_price" >
+        <action
+            android:id="@+id/action_fragmentPrice_to_fragGraphMain"
+            app:destination="@id/fragGraphMain" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphAlko"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.FragmentAlko"
+        android:label="@string/monitor_alko_label"
+        tools:layout="@layout/fragment_alko" >
+        <action
+            android:id="@+id/action_fragGraphAlko_to_fragGraphMain"
             app:destination="@id/fragGraphMain" />
     </fragment>
 

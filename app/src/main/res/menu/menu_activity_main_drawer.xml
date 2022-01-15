@@ -7,9 +7,13 @@
     <item android:title="@string/generals">
         <menu>
             <item
-                android:id="@+id/navMenuMenu"
-                android:icon="@drawable/img_menu_24"
-                android:title="@string/menu"/>
+                android:id="@+id/navMenuPrice"
+                android:icon="@drawable/img_done_24"
+                android:title="@string/monitor_price_short"/>
+            <item
+                android:id="@+id/navMenuAlko"
+                android:icon="@drawable/img_done_24"
+                android:title="@string/monitor_alko_short"/>
         </menu>
     </item>
 

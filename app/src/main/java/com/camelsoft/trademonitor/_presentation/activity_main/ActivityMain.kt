@@ -46,7 +46,8 @@ class ActivityMain : AppCompatActivity() {
         // Нажатия Navigation-списка
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navMenuMenu -> {  }
+                R.id.navMenuPrice -> { navController.navigate(R.id.fragGraphPrice) }
+                R.id.navMenuAlko -> { navController.navigate(R.id.fragGraphAlko) }
                 R.id.navMenuSettings -> { navController.navigate(R.id.fragGraphSettings) }
                 R.id.navMenuExit -> { finish() }
                 else -> {}

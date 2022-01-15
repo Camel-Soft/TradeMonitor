@@ -31,7 +31,11 @@
     <string name="scan_message_list">Непрерывное сканирование\nСканируйте поочередно</string>
 
     <string name="monitor_price">Мониторинг цен конкурентов</string>
+    <string name="monitor_price_short">Мониторинг цен</string>
+    <string name="monitor_price_label">Цены</string>
     <string name="monitor_alko">Мониторинг акцизных марок</string>
+    <string name="monitor_alko_short">Мониторинг акцизок</string>
+    <string name="monitor_alko_label">Акцизки</string>
 
     <!-- Entry Scanner_ -->
     <string name="entry_scanner_title">Встроенный сканер</string>
