@@ -14,7 +14,7 @@
             android:id="@+id/action_fragGraphMain_to_fragGraphSettings"
             app:destination="@id/fragGraphSettings" />
         <action
-            android:id="@+id/action_fragGraphMain_to_fragmentPrice"
+            android:id="@+id/action_fragGraphMain_to_fragGraphPrice"
             app:destination="@id/fragGraphPrice" />
         <action
             android:id="@+id/action_fragGraphMain_to_fragGraphAlko"
@@ -36,7 +36,7 @@
         android:label="@string/monitor_price_label"
         tools:layout="@layout/fragment_price" >
         <action
-            android:id="@+id/action_fragmentPrice_to_fragGraphMain"
+            android:id="@+id/action_fragGraphPrice_to_fragGraphMain"
             app:destination="@id/fragGraphMain" />
     </fragment>
 

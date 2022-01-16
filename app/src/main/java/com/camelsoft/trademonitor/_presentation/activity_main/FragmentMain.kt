@@ -25,7 +25,11 @@ class FragmentMain : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mainCardPrice.setOnClickListener {
-            findNavController().navigate(R.id.action_fragGraphMain_to_fragmentPrice)
+            findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphPrice)
+        }
+
+        binding.mainCardAlko.setOnClickListener {
+            findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphAlko)
         }
     }
 }
