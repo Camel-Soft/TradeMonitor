@@ -18,7 +18,7 @@ class FragmentAlko : Fragment() {
     }
 
     companion object {
+        @JvmStatic
         fun newInstance() = FragmentAlko()
     }
-
 }
