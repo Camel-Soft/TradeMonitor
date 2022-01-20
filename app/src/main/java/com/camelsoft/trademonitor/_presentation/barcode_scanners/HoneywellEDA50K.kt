@@ -7,7 +7,7 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
-import com.camelsoft.trademonitor.common.resource.ResSync
+import com.camelsoft.trademonitor.common.events.EventsSync
 import com.honeywell.aidc.AidcManager
 import com.honeywell.aidc.BarcodeFailureEvent
 import com.honeywell.aidc.BarcodeReadEvent
@@ -37,7 +37,7 @@ class HoneywellEDA50K(private val context: Context,
             e.printStackTrace()
             val errMessage = getAppContext().resources.getString(R.string.error_in)+
                     " HoneywellEDA50K.reg: ${e.message}"
-            iResultScan.actionScan(ResSync.Error(errMessage))
+            iResultScan.actionScan(EventsSync.Error(errMessage))
         }
     }
 
@@ -53,7 +53,7 @@ class HoneywellEDA50K(private val context: Context,
             e.printStackTrace()
             val errMessage = getAppContext().resources.getString(R.string.error_in)+
                     " HoneywellEDA50K.unreg: ${e.message}"
-            iResultScan.actionScan(ResSync.Error(errMessage))
+            iResultScan.actionScan(EventsSync.Error(errMessage))
         }
     }
 
@@ -62,12 +62,12 @@ class HoneywellEDA50K(private val context: Context,
             handler.post(Runnable {
                 try {
                     if (result != null)
-                        iResultScan.actionScan(ResSync.Success(MScan(result.barcodeData, codeIdConverter(result.codeId))))
+                        iResultScan.actionScan(EventsSync.Success(MScan(result.barcodeData, codeIdConverter(result.codeId))))
                 }catch (e: Exception) {
                     e.printStackTrace()
                     val errMessage = getAppContext().resources.getString(R.string.error_in)+
                             " HoneywellEDA50K.barcodeListener: ${e.message}"
-                    iResultScan.actionScan(ResSync.Error(errMessage))
+                    iResultScan.actionScan(EventsSync.Error(errMessage))
                 }
             })
         }
@@ -93,7 +93,7 @@ class HoneywellEDA50K(private val context: Context,
             e.printStackTrace()
             val errMessage = getAppContext().resources.getString(R.string.error_in)+
                     " HoneywellEDA50K.codeIdConverter: ${e.message}"
-            iResultScan.actionScan(ResSync.Error(errMessage))
+            iResultScan.actionScan(EventsSync.Error(errMessage))
             return "error"
         }
     }
@@ -155,7 +155,7 @@ class HoneywellEDA50K(private val context: Context,
             e.printStackTrace()
             val errMessage = getAppContext().resources.getString(R.string.error_in)+
                     " HoneywellEDA50K.addScanProperties: ${e.message}"
-            iResultScan.actionScan(ResSync.Error(errMessage))
+            iResultScan.actionScan(EventsSync.Error(errMessage))
             return emptyMap()
         }
     }
@@ -177,12 +177,12 @@ class HoneywellEDA50K(private val context: Context,
 //    }
 
 //    private val honeyListener: IResultScan = object : IResultScan {
-//        override fun actionScan(scan: ResSync<MScan>) {
+//        override fun actionScan(scan: EventsSync<MScan>) {
 //            when (scan) {
-//                is ResSync.Success -> {
+//                is EventsSync.Success -> {
 //                    Toast.makeText(this@ActivityMain, "Scancode: ${scan.data?.scancode}\nFormat: ${scan.data?.format}", Toast.LENGTH_LONG).show()
 //                }
-//                is ResSync.Error -> {
+//                is EventsSync.Error -> {
 //                    Toast.makeText(this@ActivityMain, "Error: ${scan.message}", Toast.LENGTH_LONG).show()
 //                }
 //            }

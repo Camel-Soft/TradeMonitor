@@ -16,7 +16,7 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showPermShouldGive
-import com.camelsoft.trademonitor.common.resource.ResSync
+import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,13 +77,13 @@ class ActivityMain : AppCompatActivity() {
     private fun getPermissions() {
         reqPermissions(this) { result ->
             when (result) {
-                is ResSync.Success -> {
+                is EventsSync.Success -> {
                     result.data?.let {
                         if (!result.data)
                             showPermShouldGive(this) { finish() }
                     }
                 }
-                is ResSync.Error -> {
+                is EventsSync.Error -> {
                     val backupMessage = resources.getString(R.string.error_in)+
                             " ActivityMain.getPermissions: "+
                             resources.getString(R.string.error_text_unknown)

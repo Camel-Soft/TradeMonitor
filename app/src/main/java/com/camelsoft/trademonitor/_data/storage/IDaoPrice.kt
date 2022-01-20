@@ -25,6 +25,9 @@ interface IDaoPrice {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePriceGoods(priceGoods: REPriceGoods)
 
+    @Query("SELECT * FROM price_collections")
+    suspend fun getPriceCollAll(): List<REPriceColl>
+
     @Query("SELECT * FROM price_goods WHERE id_coll = :id_coll")
     suspend fun getPriceGoodes(id_coll: Long): List<REPriceGoods>
 }

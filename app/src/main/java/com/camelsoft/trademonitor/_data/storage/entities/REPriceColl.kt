@@ -3,7 +3,7 @@ package com.camelsoft.trademonitor._data.storage.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.camelsoft.trademonitor._domain.entities.EPriceColl
+import com.camelsoft.trademonitor._domain.models.MPriceColl
 
 @Entity(
     tableName = "price_collections"
@@ -17,7 +17,7 @@ data class REPriceColl(
     @ColumnInfo(name = "note") val note: String
 ) {
 
-    fun toEPriceColl(): EPriceColl = EPriceColl(
+    fun toMPriceColl(): MPriceColl = MPriceColl(
         id_coll = id_coll,
         created = created,
         changed = changed,
@@ -26,7 +26,7 @@ data class REPriceColl(
     )
 
     companion object {
-        fun toREPriceColl(collection: EPriceColl) = REPriceColl(
+        fun toREPriceColl(collection: MPriceColl) = REPriceColl(
             id_coll = collection.id_coll, // need 0
             created = collection.created,
             changed = collection.changed,

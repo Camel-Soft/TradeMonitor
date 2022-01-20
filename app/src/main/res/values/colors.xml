@@ -11,13 +11,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="teal_900">#004E4D</color>
 
-    <color name="green_100">#00D62F</color>
+    <color name="green_100">#0CA61A</color>
     <color name="green_200">#0F7819</color>
     <color name="green_300">#064E0D</color>
 
     <color name="red_100">#FF1A1A</color>
     <color name="red_200">#B81515</color>
     <color name="red_300">#810B0B</color>
+
+    <color name="orange_100">#F44B08</color>
+    <color name="orange_200">#C14313</color>
+    <color name="orange_300">#8F2E07</color>
 
     <color name="gray_100">#878181</color>
     <color name="gray_200">#5A5555</color>

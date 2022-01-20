@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._presentation.activity_main
+package com.camelsoft.trademonitor._presentation.activity_main.fragment_alko
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

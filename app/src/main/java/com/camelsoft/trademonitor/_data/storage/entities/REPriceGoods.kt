@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._data.storage.entities
 
 import androidx.room.*
-import com.camelsoft.trademonitor._domain.entities.EPriceGoods
+import com.camelsoft.trademonitor._domain.models.MPriceGoods
 
 @Entity(
     tableName = "price_goods",
@@ -29,7 +29,7 @@ data class REPriceGoods(
     @ColumnInfo(name = "name") val name: String
 ) {
 
-    fun toEPriceGoods(): EPriceGoods = EPriceGoods(
+    fun toMPriceGoods(): MPriceGoods = MPriceGoods(
         id = id,
         id_coll = id_coll,
         scancode = scancode,
@@ -40,7 +40,7 @@ data class REPriceGoods(
     )
 
     companion object {
-        fun toREPriceGoods(goods: EPriceGoods) = REPriceGoods(
+        fun toREPriceGoods(goods: MPriceGoods) = REPriceGoods(
             id = goods.id, // need 0
             id_coll = goods.id_coll,
             scancode = goods.scancode,

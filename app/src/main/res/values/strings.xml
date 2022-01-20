@@ -2,6 +2,7 @@
     <string name="app_name">Trade Monitor</string>
     <string name="developer_email">development.camelsoft@gmail.com</string>
     <string name="back_pressed">Нажмите еще раз, чтобы выйти</string>
+    <string name="add_collection">Добавить сборку</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
@@ -31,11 +32,9 @@
     <string name="scan_message_list">Непрерывное сканирование\nСканируйте поочередно</string>
 
     <string name="monitor_price">Мониторинг цен конкурентов</string>
-    <string name="monitor_price_short">Мониторинг цен</string>
-    <string name="monitor_price_label">Цены</string>
+    <string name="monitor_price_label">Цены конкурентов</string>
     <string name="monitor_alko">Мониторинг акцизных марок</string>
-    <string name="monitor_alko_short">Мониторинг акцизок</string>
-    <string name="monitor_alko_label">Акцизки</string>
+    <string name="monitor_alko_label">Акцизные марки</string>
 
     <!-- Entry Scanner_ -->
     <string name="entry_scanner_title">Встроенный сканер</string>

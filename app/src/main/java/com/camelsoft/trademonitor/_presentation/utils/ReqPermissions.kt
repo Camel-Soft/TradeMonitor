@@ -3,7 +3,7 @@ package com.camelsoft.trademonitor._presentation.utils
 import android.Manifest
 import android.content.Context
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor.common.resource.ResSync
+import com.camelsoft.trademonitor.common.events.EventsSync
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -11,7 +11,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import java.lang.Exception
 
-fun reqPermissions(context: Context, report: (ResSync<Boolean>) -> Unit) {
+fun reqPermissions(context: Context, report: (EventsSync<Boolean>) -> Unit) {
     try {
         Dexter.withContext(context)
             .withPermissions(
@@ -23,9 +23,9 @@ fun reqPermissions(context: Context, report: (ResSync<Boolean>) -> Unit) {
                 override fun onPermissionsChecked(permReport: MultiplePermissionsReport?) {
                     permReport?.let {
                         if(permReport.areAllPermissionsGranted())
-                            report(ResSync.Success<Boolean>(true))
+                            report(EventsSync.Success<Boolean>(true))
                         else
-                            report(ResSync.Success<Boolean>(false))
+                            report(EventsSync.Success<Boolean>(false))
                     }
                 }
 
@@ -37,7 +37,7 @@ fun reqPermissions(context: Context, report: (ResSync<Boolean>) -> Unit) {
             .withErrorListener {
                 val errMessage = context.resources.getString(R.string.error_in)+
                         " ReqPermissions.DexterError: ${it.name}"
-                report(ResSync.Error<Boolean>(errMessage))
+                report(EventsSync.Error<Boolean>(errMessage))
             }
             .check()
 
@@ -45,6 +45,6 @@ fun reqPermissions(context: Context, report: (ResSync<Boolean>) -> Unit) {
         e.printStackTrace()
         val errMessage = context.resources.getString(R.string.error_in)+
                 " ReqPermissions.getPermissions: ${e.message}"
-        report(ResSync.Error<Boolean>(errMessage))
+        report(EventsSync.Error<Boolean>(errMessage))
     }
 }

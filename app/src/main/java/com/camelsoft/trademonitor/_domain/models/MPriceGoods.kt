@@ -1,6 +1,6 @@
-package com.camelsoft.trademonitor._domain.entities
+package com.camelsoft.trademonitor._domain.models
 
-data class EPriceGoods(
+data class MPriceGoods(
     val id: Long,
     val id_coll: Long,
     val scancode: String,

@@ -1,6 +1,6 @@
-package com.camelsoft.trademonitor._domain.entities
+package com.camelsoft.trademonitor._domain.models
 
-data class EPriceColl(
+data class MPriceColl(
     val id_coll: Long,
     val created: Long,
     val changed: Long,
