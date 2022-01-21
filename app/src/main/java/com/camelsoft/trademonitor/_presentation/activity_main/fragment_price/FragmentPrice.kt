@@ -1,18 +1,20 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_price
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
 import com.camelsoft.trademonitor.databinding.FragmentPriceBinding
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -33,31 +35,53 @@ class FragmentPrice : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Дабавить пустую сборку
         binding.btnAddColl.setOnClickListener {
-            viewModel.onEvent(EventVm.OnAddCollClick)
+            showConfirm(requireContext(),
+                resources.getString(R.string.coll_add_title),
+                resources.getString(R.string.coll_add_message)) {
+                viewModel.onEvent(EventVm.OnAddCollClick)
+            }
         }
 
+        // Обработка событий от View Model
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventUi.collect { eventUi ->
                 when(eventUi) {
                     is EventUi.ShowError -> { showError(requireContext(), eventUi.message) {} }
-                    is EventUi.ShowInfo -> { showInfo(requireContext(), eventUi.message) {} }
-                    is EventUi.ShowSnackbar -> {
-                        Snackbar.make(
-                            view,
-                            eventUi.message,
-                            Snackbar.LENGTH_INDEFINITE)
-                            .setBackgroundTint(Color.MAGENTA)
-                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
-                            .setAction(eventUi.action) {
-                            }
-
-
-                            .show()
-
-                    }
+                    is EventUi.ScrollToPos -> { binding.rvColl.scrollToPosition(eventUi.position)}
                 }
             }
         }
+
+        // Список сборок
+        binding.rvColl.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+
+        viewModel.listPriceColl.observe(this, Observer { listPriceColl ->
+            binding.rvColl.adapter = FragmentPriceAdapter(listPriceColl,
+                // clickHolder
+                // Переход к товарам внутри выбранной сборки
+                { priceColl ->
+
+                    Toast.makeText(requireContext(), priceColl.created.toString()+" - "+priceColl.changed.toString(), Toast.LENGTH_SHORT).show()
+
+
+                },
+                // clickHolderLong
+                // Удаление выбранной сборки
+                { priceColl ->
+                    showConfirm(requireContext(),
+                        resources.getString(R.string.coll_del_title),
+                        resources.getString(R.string.coll_del_message)+": ${priceColl.note}") {
+                        viewModel.onEvent(EventVm.OnDeleteCollClick(priceColl))
+                    }
+                },
+                // clickBtnUpdate
+                // Обновления Примечания у выбранной сборки
+                { priceCollUpdate ->
+                    viewModel.onEvent(EventVm.OnUpdateCollClick(priceCollUpdate.priceColl, priceCollUpdate.newNote))
+                })
+        })
     }
 }
