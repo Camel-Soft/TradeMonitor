@@ -40,20 +40,26 @@ class FragmentPriceViewModel @Inject constructor(
                         iPrice.insertPriceColl(priceColl = createNewColl())
                         _listPriceColl.value = iPrice.getPriceCollAll()
                         _listPriceColl.value?.let {
-                            sendEventUi(EventUi.ScrollToPos(it.size-1))
+                            if (it.isNotEmpty()) sendEventUi(EventUi.ScrollToPos(it.size-1))
                         }
                     }
                 }
                 is EventVm.OnUpdateCollClick -> {
                     viewModelScope.launch {
-                        iPrice.updatePriceColl(priceColl = updateColl(eventVm.priceColl, eventVm.newNote))
-                        _listPriceColl.value = iPrice.getPriceCollAll()
+                        _listPriceColl.value?.let {
+                            iPrice.updatePriceColl(priceColl = updateColl(it[eventVm.pos], eventVm.newNote))
+                            _listPriceColl.value = iPrice.getPriceCollAll()
+                            if (it.isNotEmpty()) sendEventUi(EventUi.ScrollToPos(eventVm.pos))
+                        }
                     }
                 }
                 is EventVm.OnDeleteCollClick -> {
                     viewModelScope.launch {
-                        iPrice.deletePriceColl(priceColl = eventVm.priceColl)
-                        _listPriceColl.value = iPrice.getPriceCollAll()
+                        _listPriceColl.value?.let {
+                            iPrice.deletePriceColl(priceColl = it[eventVm.pos])
+                            _listPriceColl.value = iPrice.getPriceCollAll()
+                            if (it.isNotEmpty()) sendEventUi(EventUi.ScrollToPos(eventVm.pos-1))
+                        }
                     }
                 }
             }

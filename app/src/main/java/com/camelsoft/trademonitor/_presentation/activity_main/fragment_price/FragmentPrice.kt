@@ -62,25 +62,24 @@ class FragmentPrice : Fragment() {
             binding.rvColl.adapter = FragmentPriceAdapter(listPriceColl,
                 // clickHolder
                 // Переход к товарам внутри выбранной сборки
-                { priceColl ->
+                { pos ->
 
-                    Toast.makeText(requireContext(), priceColl.created.toString()+" - "+priceColl.changed.toString(), Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(requireContext(), "нажатие на позицию $pos", Toast.LENGTH_SHORT).show()
 
                 },
                 // clickHolderLong
                 // Удаление выбранной сборки
-                { priceColl ->
+                { pos ->
                     showConfirm(requireContext(),
                         resources.getString(R.string.coll_del_title),
-                        resources.getString(R.string.coll_del_message)+": ${priceColl.note}") {
-                        viewModel.onEvent(EventVm.OnDeleteCollClick(priceColl))
+                        resources.getString(R.string.coll_del_message)+": ${listPriceColl[pos].note}") {
+                        viewModel.onEvent(EventVm.OnDeleteCollClick(pos))
                     }
                 },
                 // clickBtnUpdate
                 // Обновления Примечания у выбранной сборки
                 { priceCollUpdate ->
-                    viewModel.onEvent(EventVm.OnUpdateCollClick(priceCollUpdate.priceColl, priceCollUpdate.newNote))
+                    viewModel.onEvent(EventVm.OnUpdateCollClick(priceCollUpdate.pos, priceCollUpdate.newNote))
                 })
         })
     }

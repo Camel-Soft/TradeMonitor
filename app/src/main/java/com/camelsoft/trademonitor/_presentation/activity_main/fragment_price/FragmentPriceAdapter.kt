@@ -1,8 +1,11 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_price
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -17,12 +20,16 @@ import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 
 class FragmentPriceAdapter(
     private val listPriceColl: List<MPriceColl>,
-    private val clickHolder: (MPriceColl) -> Unit,
-    private val clickHolderLong: (MPriceColl) -> Unit,
+    private val clickHolder: (Int) -> Unit,
+    private val clickHolderLong: (Int) -> Unit,
     private val clickBtnUpdate: (MPriceCollUpdate) -> Unit
 ): RecyclerView.Adapter<FragmentPriceAdapter.ViewHolder>()  {
 
-    class ViewHolder(itemView: View, click: (Triple<String, Int, String>) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(
+        itemView: View,
+        private val click: (Triple<String, Int, String>) -> Unit
+    ): RecyclerView.ViewHolder(itemView) {
+
         var textCreated: TextView = itemView.findViewById(R.id.textCreated)
         var textChanged: TextView = itemView.findViewById(R.id.textChanged)
         var textTotal: TextView = itemView.findViewById(R.id.textTotal)
@@ -35,6 +42,7 @@ class FragmentPriceAdapter(
         var expandLayout: ConstraintLayout = itemView.findViewById(R.id.expandLayout)
 
         init {
+
             itemView.setOnClickListener {
                 click(Triple("clickHolder", adapterPosition, ""))
             }
@@ -44,10 +52,29 @@ class FragmentPriceAdapter(
                 true
             }
 
-            btnUpdate.setOnClickListener {
-                click(Triple("clickBtnUpdate", adapterPosition, editNote.text.toString()))
+            // Обновить Примечание у Сборки кнопкой РИСОВАННОЙ
+            btnUpdate.setOnClickListener { updateNote() }
 
+            // Обновить Примечание у Сборки кнопкой КЛАВИАТУРНОЙ
+            editNote.setOnEditorActionListener { textView, actionId, keyEvent ->
+                return@setOnEditorActionListener when (actionId) {
+                    EditorInfo.IME_ACTION_DONE -> {
+                        updateNote()
+                        true
+                    }
+                    else -> false
+                }
             }
+        }
+
+        private fun updateNote() {
+            var note = editNote.text.toString()
+            if (note == "") note = editNote.hint.toString()
+            click(Triple("clickBtnUpdate", adapterPosition, note))
+
+            // Спрятать клавиатуру
+            val imm = getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(itemView.windowToken, 0)
         }
     }
 
@@ -55,10 +82,10 @@ class FragmentPriceAdapter(
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.fragment_price_item, parent, false)
         return ViewHolder(itemView) {
             when (it.first) {
-                "clickHolder" -> { clickHolder(listPriceColl[it.second]) }
-                "clickHolderLong" -> { clickHolderLong(listPriceColl[it.second]) }
+                "clickHolder" -> { clickHolder(it.second) }
+                "clickHolderLong" -> { clickHolderLong(it.second) }
                 "clickBtnUpdate" -> { clickBtnUpdate(MPriceCollUpdate(
-                    priceColl = listPriceColl[it.second],
+                    pos = it.second,
                     newNote = it.third)) }
                 else -> {}
             }
