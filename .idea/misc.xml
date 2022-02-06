@@ -15,6 +15,7 @@
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/img_menu_24.xml" value="0.11574074074074074" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/img_save_white_40.xml" value="0.3828125" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/img_settings_24.xml" value="0.20208333333333334" />
+        <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/img_share_30.xml" value="0.18611111111111112" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/img_store_24.xml" value="0.2796296296296296" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/img_torch_off_white_40.xml" value="0.225" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/img_torch_on_white_40.xml" value="0.225" />
@@ -37,7 +38,7 @@
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_main_home.xml" value="0.3375" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_main_settings.xml" value="0.3375" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_price.xml" value="0.36666666666666664" />
-        <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_price_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_price_item.xml" value="0.33" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_settings.xml" value="0.3375" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/item_capture_list_image.xml" value="0.36666666666666664" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/menu/activity_main_drawer.xml" value="0.3375" />

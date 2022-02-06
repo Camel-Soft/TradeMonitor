@@ -64,10 +64,17 @@ class FragmentPrice : Fragment() {
                 // Переход к товарам внутри выбранной сборки
                 { pos ->
 
-                    Toast.makeText(requireContext(), "нажатие на позицию $pos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Переход к товарам внутри выбранной сборки. Позиция $pos", Toast.LENGTH_SHORT).show()
 
                 },
-                // clickHolderLong
+                // clickBtnShare
+                // Поделиться выбранной сборкой
+                { pos ->
+
+                    Toast.makeText(requireContext(), "Поделиться выбранной сборкой. Позиция $pos", Toast.LENGTH_SHORT).show()
+
+                },
+                // clickBtnDelete
                 // Удаление выбранной сборки
                 { pos ->
                     showConfirm(requireContext(),
@@ -78,8 +85,8 @@ class FragmentPrice : Fragment() {
                 },
                 // clickBtnUpdate
                 // Обновления Примечания у выбранной сборки
-                { priceCollUpdate ->
-                    viewModel.onEvent(EventVm.OnUpdateCollClick(priceCollUpdate.pos, priceCollUpdate.newNote))
+                { mIntString ->
+                    viewModel.onEvent(EventVm.OnUpdateCollClick(mIntString.int, mIntString.string))
                 })
         })
     }

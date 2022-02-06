@@ -14,8 +14,6 @@
     <string name="optional">Дополнительно</string>
     <string name="torch">Фонарик</string>
     <string name="collection">Сборка</string>
-    <string name="created">Создано</string>
-    <string name="changed">Изменено</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -39,6 +37,8 @@
     <string name="monitor_alko">Мониторинг акцизных марок</string>
     <string name="monitor_alko_label">Акцизные марки</string>
 
+    <string name="coll_created">Сборка создана</string>
+    <string name="coll_changed">Сборка изменена</string>
     <string name="coll_add_title">Добавление сборки</string>
     <string name="coll_add_message">Дабавить пустую сборку</string>
     <string name="coll_del_title">Удаление сборки</string>
