@@ -7,6 +7,7 @@
         android:id="@+id/camListSave"
         android:icon="@drawable/img_save_white_40"
         android:title="@string/save"
+        android:contentDescription="@string/save"
         android:orderInCategory="1"
         app:showAsAction="always">
     </item>

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
@@ -40,16 +41,16 @@ class FragmentPrice : Fragment() {
             showConfirm(requireContext(),
                 resources.getString(R.string.coll_add_title),
                 resources.getString(R.string.coll_add_message)) {
-                viewModel.onEvent(EventVm.OnAddCollClick)
+                viewModel.onEventPrice(EventVmPrice.OnAddCollClick)
             }
         }
 
         // Обработка событий от View Model
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.eventUi.collect { eventUi ->
-                when(eventUi) {
-                    is EventUi.ShowError -> { showError(requireContext(), eventUi.message) {} }
-                    is EventUi.ScrollToPos -> { binding.rvColl.scrollToPosition(eventUi.position)}
+            viewModel.eventUiPrice.collect { eventUiPrice ->
+                when(eventUiPrice) {
+                    is EventUiPrice.ShowError -> { showError(requireContext(), eventUiPrice.message) {} }
+                    is EventUiPrice.ScrollToPos -> { binding.rvColl.scrollToPosition(eventUiPrice.position)}
                 }
             }
         }
@@ -63,9 +64,9 @@ class FragmentPrice : Fragment() {
                 // clickHolder
                 // Переход к товарам внутри выбранной сборки
                 { pos ->
-
-                    Toast.makeText(requireContext(), "Переход к товарам внутри выбранной сборки. Позиция $pos", Toast.LENGTH_SHORT).show()
-
+                    val bundle = Bundle()
+                    bundle.putParcelable("priceColl", listPriceColl[pos])
+                    findNavController().navigate(R.id.action_fragGraphPrice_to_fragGraphPriceGoods, bundle)
                 },
                 // clickBtnShare
                 // Поделиться выбранной сборкой
@@ -80,13 +81,13 @@ class FragmentPrice : Fragment() {
                     showConfirm(requireContext(),
                         resources.getString(R.string.coll_del_title),
                         resources.getString(R.string.coll_del_message)+": ${listPriceColl[pos].note}") {
-                        viewModel.onEvent(EventVm.OnDeleteCollClick(pos))
+                        viewModel.onEventPrice(EventVmPrice.OnDeleteCollClick(pos))
                     }
                 },
                 // clickBtnUpdate
                 // Обновления Примечания у выбранной сборки
                 { mIntString ->
-                    viewModel.onEvent(EventVm.OnUpdateCollClick(mIntString.int, mIntString.string))
+                    viewModel.onEventPrice(EventVmPrice.OnUpdateCollClick(mIntString.int, mIntString.string))
                 })
         })
     }

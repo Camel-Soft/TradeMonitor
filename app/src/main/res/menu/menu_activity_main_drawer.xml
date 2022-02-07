@@ -4,29 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="@string/generals">
+    <item
+        android:title="@string/generals"
+        android:contentDescription="@string/generals">
         <menu>
             <item
                 android:id="@+id/navMenuPrice"
                 android:icon="@drawable/img_done_24"
-                android:title="@string/monitor_price_label"/>
+                android:title="@string/monitor_price_label"
+                android:contentDescription="@string/monitor_price_label"/>
             <item
                 android:id="@+id/navMenuAlko"
                 android:icon="@drawable/img_done_24"
-                android:title="@string/monitor_alko_label"/>
+                android:title="@string/monitor_alko_label"
+                android:contentDescription="@string/monitor_alko_label"/>
         </menu>
     </item>
 
-    <item android:title="@string/systems">
+    <item
+        android:title="@string/systems"
+        android:contentDescription="@string/systems">
         <menu>
             <item
                 android:id="@+id/navMenuSettings"
                 android:icon="@drawable/img_settings_24"
-                android:title="@string/settings"/>
+                android:title="@string/settings"
+                android:contentDescription="@string/settings"/>
             <item
                 android:id="@+id/navMenuExit"
                 android:icon="@drawable/img_door_24"
-                android:title="@string/exit"/>
+                android:title="@string/exit"
+                android:contentDescription="@string/exit"/>
         </menu>
     </item>
 

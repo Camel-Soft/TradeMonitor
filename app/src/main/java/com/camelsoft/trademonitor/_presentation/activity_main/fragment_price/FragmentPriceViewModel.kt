@@ -19,8 +19,8 @@ class FragmentPriceViewModel @Inject constructor(
     private val iPrice: IPrice
 ) : ViewModel() {
 
-    private val _eventUi =  Channel<EventUi>()
-    val eventUi = _eventUi.receiveAsFlow()
+    private val _eventUiPrice =  Channel<EventUiPrice>()
+    val eventUiPrice = _eventUiPrice.receiveAsFlow()
 
     // Список сборок
     private val _listPriceColl = MutableLiveData<List<MPriceColl>>()
@@ -32,41 +32,41 @@ class FragmentPriceViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(eventVm: EventVm) {
+    fun onEventPrice(eventVmPrice: EventVmPrice) {
         try {
-            when(eventVm) {
-                is EventVm.OnAddCollClick -> {
+            when(eventVmPrice) {
+                is EventVmPrice.OnAddCollClick -> {
                     viewModelScope.launch {
                         iPrice.insertPriceColl(priceColl = createNewColl())
                         _listPriceColl.value = iPrice.getPriceCollAll()
                         _listPriceColl.value?.let {
-                            if (it.isNotEmpty()) sendEventUi(EventUi.ScrollToPos(it.size-1))
+                            if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(it.size-1))
                         }
                     }
                 }
-                is EventVm.OnUpdateCollClick -> {
+                is EventVmPrice.OnUpdateCollClick -> {
                     viewModelScope.launch {
                         _listPriceColl.value?.let {
-                            iPrice.updatePriceColl(priceColl = updateColl(it[eventVm.pos], eventVm.newNote))
+                            iPrice.updatePriceColl(priceColl = updateColl(it[eventVmPrice.pos], eventVmPrice.newNote))
                             _listPriceColl.value = iPrice.getPriceCollAll()
-                            if (it.isNotEmpty()) sendEventUi(EventUi.ScrollToPos(eventVm.pos))
+                            if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(eventVmPrice.pos))
                         }
                     }
                 }
-                is EventVm.OnDeleteCollClick -> {
+                is EventVmPrice.OnDeleteCollClick -> {
                     viewModelScope.launch {
                         _listPriceColl.value?.let {
-                            iPrice.deletePriceColl(priceColl = it[eventVm.pos])
+                            iPrice.deletePriceColl(priceColl = it[eventVmPrice.pos])
                             _listPriceColl.value = iPrice.getPriceCollAll()
-                            if (it.isNotEmpty()) sendEventUi(EventUi.ScrollToPos(eventVm.pos-1))
+                            if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(eventVmPrice.pos-1))
                         }
                     }
                 }
             }
         }catch (e: Exception) {
             e.printStackTrace()
-            sendEventUi(EventUi.ShowError(getAppContext().resources.getString(R.string.error_in)+
-                    " FragmentPriceViewModel.onEvent: "+e.message))
+            sendEventUiPrice(EventUiPrice.ShowError(getAppContext().resources.getString(R.string.error_in)+
+                    " FragmentPriceViewModel.onEventPrice: "+e.message))
         }
     }
 
@@ -89,9 +89,9 @@ class FragmentPriceViewModel @Inject constructor(
         )
     }
 
-    private fun sendEventUi(eventUi: EventUi) {
+    private fun sendEventUiPrice(eventUiPrice: EventUiPrice) {
         viewModelScope.launch {
-            _eventUi.send(eventUi)
+            _eventUiPrice.send(eventUiPrice)
         }
     }
 }
