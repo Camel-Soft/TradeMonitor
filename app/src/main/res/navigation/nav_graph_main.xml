@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/fragGraphPrice"
         android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_price.FragmentPrice"
-        android:label="@string/monitor_price_label"
+        android:label="@string/monitor_price_call"
         tools:layout="@layout/fragment_price" >
         <action
             android:id="@+id/action_fragGraphPrice_to_fragGraphMain"
@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/fragGraphAlko"
         android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_alko.FragmentAlko"
-        android:label="@string/monitor_alko_label"
+        android:label="@string/monitor_alko_call"
         tools:layout="@layout/fragment_alko" >
         <action
             android:id="@+id/action_fragGraphAlko_to_fragGraphMain"

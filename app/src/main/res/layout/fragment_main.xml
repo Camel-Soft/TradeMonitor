@@ -28,7 +28,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mainCardAlko"
-                    android:contentDescription="@string/monitor_alko"
+                    android:contentDescription="@string/monitor_alko_label"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="20dp"
@@ -71,7 +71,7 @@
                             android:layout_marginRight="1dp"
                             android:gravity="center"
                             android:maxLines="3"
-                            android:text="@string/monitor_alko"
+                            android:text="@string/monitor_alko_label"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mainCardPrice"
-                    android:contentDescription="@string/monitor_price"
+                    android:contentDescription="@string/monitor_price_label"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="20dp"
@@ -120,7 +120,7 @@
                             android:id="@+id/textViewPrice"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:text="@string/monitor_price"
+                            android:text="@string/monitor_price_label"
                             android:gravity="center"
                             android:maxLines="3"
                             android:layout_marginLeft="1dp"
