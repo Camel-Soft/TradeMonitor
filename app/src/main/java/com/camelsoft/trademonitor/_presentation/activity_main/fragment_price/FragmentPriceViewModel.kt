@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._data.storage.IPrice
 import com.camelsoft.trademonitor._domain.models.MPriceColl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollDelete
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollGetAll
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollInsert
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollUpdate
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -16,7 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FragmentPriceViewModel @Inject constructor(
-    private val iPrice: IPrice
+    private val useCaseStorageCollDelete: UseCaseStorageCollDelete,
+    private val useCaseStorageCollInsert: UseCaseStorageCollInsert,
+    private val useCaseStorageCollUpdate: UseCaseStorageCollUpdate,
+    private val useCaseStorageCollGetAll: UseCaseStorageCollGetAll
 ) : ViewModel() {
 
     private val _eventUiPrice =  Channel<EventUiPrice>()
@@ -28,7 +34,7 @@ class FragmentPriceViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _listPriceColl.value = iPrice.getPriceCollAll()
+            _listPriceColl.value = useCaseStorageCollGetAll.execute()
         }
     }
 
@@ -37,8 +43,8 @@ class FragmentPriceViewModel @Inject constructor(
             when(eventVmPrice) {
                 is EventVmPrice.OnAddCollClick -> {
                     viewModelScope.launch {
-                        iPrice.insertPriceColl(priceColl = createNewColl())
-                        _listPriceColl.value = iPrice.getPriceCollAll()
+                        useCaseStorageCollInsert.execute(priceColl = createNewColl())
+                        _listPriceColl.value = useCaseStorageCollGetAll.execute()
                         _listPriceColl.value?.let {
                             if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(it.size-1))
                         }
@@ -47,8 +53,8 @@ class FragmentPriceViewModel @Inject constructor(
                 is EventVmPrice.OnUpdateCollClick -> {
                     viewModelScope.launch {
                         _listPriceColl.value?.let {
-                            iPrice.updatePriceColl(priceColl = updateColl(it[eventVmPrice.pos], eventVmPrice.newNote))
-                            _listPriceColl.value = iPrice.getPriceCollAll()
+                            useCaseStorageCollUpdate.execute(priceColl = updateColl(it[eventVmPrice.pos], eventVmPrice.newNote))
+                            _listPriceColl.value = useCaseStorageCollGetAll.execute()
                             if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(eventVmPrice.pos))
                         }
                     }
@@ -56,8 +62,8 @@ class FragmentPriceViewModel @Inject constructor(
                 is EventVmPrice.OnDeleteCollClick -> {
                     viewModelScope.launch {
                         _listPriceColl.value?.let {
-                            iPrice.deletePriceColl(priceColl = it[eventVmPrice.pos])
-                            _listPriceColl.value = iPrice.getPriceCollAll()
+                            useCaseStorageCollDelete.execute(priceColl = it[eventVmPrice.pos])
+                            _listPriceColl.value = useCaseStorageCollGetAll.execute()
                             if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(eventVmPrice.pos-1))
                         }
                     }

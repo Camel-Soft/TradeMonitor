@@ -2,9 +2,9 @@ package com.camelsoft.trademonitor.common.di
 
 import android.app.Application
 import androidx.room.Room
-import com.camelsoft.trademonitor._data.storage.IPrice
-import com.camelsoft.trademonitor._data.storage.PriceImpl
-import com.camelsoft.trademonitor._data.storage.StorageDataBase
+import com.camelsoft.trademonitor._data.storage.room.IRoom
+import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
+import com.camelsoft.trademonitor._data.storage.room.RoomImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,17 +17,17 @@ object DataModuleSingl {
 
     @Provides
     @Singleton
-    fun provideStorageDataBase(app: Application): StorageDataBase {
+    fun provideStorageDataBase(app: Application): RoomDataBase {
         return Room.databaseBuilder(
             app,
-            StorageDataBase::class.java,
-            "storage_db"
+            RoomDataBase::class.java,
+            "storage_db_room"
         ).build()
     }
 
     @Provides
     @Singleton
-    fun providePrice(db: StorageDataBase): IPrice {
-        return PriceImpl(db.getDaoPrice())
+    fun provideRoom(db: RoomDataBase): IRoom {
+        return RoomImpl(db.getDaoRoom())
     }
 }

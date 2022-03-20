@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._data.storage.entities
+package com.camelsoft.trademonitor._data.storage.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 import com.camelsoft.trademonitor._domain.models.MPriceColl
 
 @Entity(
-    tableName = "price_collections"
+    tableName = "room_collections"
 )
-data class REPriceColl(
+data class ERoomColl(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_coll") val id_coll: Long,
     @ColumnInfo(name = "created") val created: Long,
@@ -26,7 +26,7 @@ data class REPriceColl(
     )
 
     companion object {
-        fun toREPriceColl(collection: MPriceColl) = REPriceColl(
+        fun toERoomColl(collection: MPriceColl) = ERoomColl(
             id_coll = collection.id_coll, // need 0
             created = collection.created,
             changed = collection.changed,

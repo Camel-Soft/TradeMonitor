@@ -1,13 +1,13 @@
-package com.camelsoft.trademonitor._data.storage.entities
+package com.camelsoft.trademonitor._data.storage.room.entities
 
 import androidx.room.*
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
 
 @Entity(
-    tableName = "price_goods",
+    tableName = "room_goods",
     foreignKeys = [
         ForeignKey(
-            entity = REPriceColl::class,
+            entity = ERoomColl::class,
             parentColumns = ["id_coll"],
             childColumns = ["id_coll"],
             onDelete = ForeignKey.CASCADE,
@@ -18,7 +18,7 @@ import com.camelsoft.trademonitor._domain.models.MPriceGoods
         Index("id_coll", unique = false)
     ]
 )
-data class REPriceGoods(
+data class ERoomGoods(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id: Long,
     @ColumnInfo(name = "id_coll") val id_coll: Long,
@@ -40,7 +40,7 @@ data class REPriceGoods(
     )
 
     companion object {
-        fun toREPriceGoods(goods: MPriceGoods) = REPriceGoods(
+        fun toERoomGoods(goods: MPriceGoods) = ERoomGoods(
             id = goods.id, // need 0
             id_coll = goods.id_coll,
             scancode = goods.scancode,
