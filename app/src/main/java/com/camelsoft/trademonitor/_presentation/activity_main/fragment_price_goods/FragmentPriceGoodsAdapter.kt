@@ -19,48 +19,39 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
             return oldItem == newItem
         }
     }
-
     private val differ = AsyncListDiffer(this, diffCallback)
-
     fun setList(list: List<MPriceGoods>) = differ.submitList(list)
 
-    inner class ViewHolder(var binding : FragmentPriceGoodsItemBinding): RecyclerView.ViewHolder(binding.root)
-
-    override fun getItemCount() = differ.currentList.size
+    inner class ViewHolder(var binding : FragmentPriceGoodsItemBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind (priceGoods: MPriceGoods, position: Int) {
+            binding.apply {
+                textScancode.text = priceGoods.scancode
+                textScancodeType.text = priceGoods.scancode_type
+                textName.text = priceGoods.name
+                textNote.text = priceGoods.note
+                textCena.text = priceGoods.cena.toString()
+            }
+            itemView.apply {
+                setOnClickListener {
+                    setOnItemClickListener?.invoke(position)
+                }
+                setOnLongClickListener {
+                    setOnItemLongClickListener?.invoke(position)
+                    true
+                }
+            }
+        }
+    }
+    var setOnItemClickListener: ((Int) -> Unit)? = null
+    var setOnItemLongClickListener: ((Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(FragmentPriceGoodsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val priceGoods = differ.currentList[position]
-        holder.binding.apply {
-            textScancode.text = priceGoods.scancode
-            textScancodeType.text = priceGoods.scancode_type
-            textName.text = priceGoods.name
-            textNote.text = priceGoods.note
-            textCena.text = priceGoods.cena.toString()
-        }
-        holder.itemView.apply {
-            setOnClickListener {
-                onItemClickListener?.let { it(priceGoods) }
-            }
-            setOnLongClickListener {
-                onItemLongClickListener?.let { it(priceGoods) }
-                true
-            }
-        }
+        holder.bind(priceGoods = differ.currentList[position], position = position)
     }
 
-    private var onItemClickListener: ((MPriceGoods) -> Unit)? = null
-
-    fun setOnItemClickListener(listener: (MPriceGoods) -> Unit) {
-        onItemClickListener = listener
-    }
-
-    private var onItemLongClickListener: ((MPriceGoods) -> Unit)? = null
-
-    fun setOnItemLongClickListener(listener: (MPriceGoods) -> Unit) {
-        onItemLongClickListener = listener
-    }
+    override fun getItemCount() = differ.currentList.size
 }

@@ -22,6 +22,7 @@
     <string name="error_in">Ошибка в</string>
     <string name="error_text_unknown">Текст ошибки не определен</string>
     <string name="error_root_fragment_id">Id корневого фрагмента не определен</string>
+    <string name="error_parent_coll">Сборка не определена</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>

@@ -1,6 +1,6 @@
 package com.camelsoft.trademonitor.common.events
 
-sealed class EventsSync<T>(val data: T? = null, val message: String? = null) {
-    class Success<T>(data: T) : EventsSync<T>(data)
-    class Error<T>(message: String, data: T? = null) : EventsSync<T>(data, message)
+sealed class EventsSync<T> {
+    class Success<T>(val data: T) : EventsSync<T>()
+    class Error<T>(val message: String) : EventsSync<T>()
 }
