@@ -19,6 +19,7 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MPriceColl
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.api.IResultScanList
+import com.camelsoft.trademonitor._presentation.barcode_scanners.HoneywellEDA50K
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
@@ -26,9 +27,11 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsBinding
 import com.google.zxing.BarcodeFormat
+import com.honeywell.aidc.BarcodeReader
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +42,8 @@ class FragmentPriceGoods : Fragment() {
     private lateinit var binding: FragmentPriceGoodsBinding
     private val viewModel: FragmentPriceGoodsViewModel by viewModels()
     private lateinit var parentPriceColl: MPriceColl
+    private val settings = Settings()
+    private lateinit var honeywellEDA50K: HoneywellEDA50K
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +55,9 @@ class FragmentPriceGoods : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (settings.getScanner() == "honeywell_eda50k")
+            honeywellEDA50K = HoneywellEDA50K(requireContext(), resultScanImpl, getScanProperties())
 
         // Забираем данные о родительской сборке в переменную и проверяем на null
         // Если null, то показываем сообщение об ошибке и выходим
@@ -70,7 +78,7 @@ class FragmentPriceGoods : Fragment() {
                 viewModel.eventUiGoods.collect { eventUiGoods ->
                     when(eventUiGoods) {
                         is EventUiGoods.ShowError -> { showError(requireContext(), eventUiGoods.message) {} }
-                        is EventUiGoods.ScrollToPos -> { binding.rvGoods.scrollToPosition(eventUiGoods.position)}
+                        is EventUiGoods.ScrollToPos -> { binding.rvGoods.scrollToPosition(eventUiGoods.position) }
                     }
                 }
             }
@@ -94,6 +102,16 @@ class FragmentPriceGoods : Fragment() {
             // Фотосканер Список
             binding.btnScanList.setOnClickListener { camListStart() }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.reg()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
     }
 
     // Фотосканер одиночный
@@ -199,5 +217,18 @@ class FragmentPriceGoods : Fragment() {
                 showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoods.resultScanListImpl: "+e.message) {}
             }
         }
+    }
+
+    // HoneywellEDA50K форматы принимаемых сканкодов
+    private fun getScanProperties(): Map<String, Any> {
+        val scanProperties = HashMap<String, Any>()
+        scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = true
+        scanProperties[BarcodeReader.PROPERTY_EAN_8_ENABLED] = true
+        scanProperties[BarcodeReader.PROPERTY_UPC_A_ENABLE] = true
+        scanProperties[BarcodeReader.PROPERTY_UPC_E_ENABLED] = true
+        scanProperties[BarcodeReader.PROPERTY_DATAMATRIX_ENABLED] = false
+        scanProperties[BarcodeReader.PROPERTY_QR_CODE_ENABLED] = false
+        scanProperties[BarcodeReader.PROPERTY_PDF_417_ENABLED] = false
+        return scanProperties
     }
 }

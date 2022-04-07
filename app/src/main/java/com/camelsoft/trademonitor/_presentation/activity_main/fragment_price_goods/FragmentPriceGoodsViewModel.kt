@@ -14,6 +14,7 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor.common.App
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +42,10 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(eventVmGoods.id_coll, eventVmGoods.scan))
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            if (it.isNotEmpty()) {
+                                delay(100)
+                                sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            }
                         }
                     }
                 }
@@ -52,25 +56,34 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         }
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            if (it.isNotEmpty()) {
+                                delay(100)
+                                sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            }
                         }
                     }
                 }
                 is EventVmGoods.OnUpdateGoods -> {
                     viewModelScope.launch {
                         _listPriceGoods.value?.let {
-                            useCaseStorageGoodsUpdate.execute(priceGoods = eventVmGoods.priceGoods)
+                            if (it.isNotEmpty()) useCaseStorageGoodsUpdate.execute(priceGoods = eventVmGoods.priceGoods)
                             _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
-                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos))
+                            if (it.isNotEmpty()) {
+                                delay(100)
+                                sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos))
+                            }
                         }
                     }
                 }
                 is EventVmGoods.OnDeleteGoods -> {
                     viewModelScope.launch {
                         _listPriceGoods.value?.let {
-                            useCaseStorageGoodsDelete.execute(priceGoods = it[eventVmGoods.pos])
+                            if (it.isNotEmpty()) useCaseStorageGoodsDelete.execute(priceGoods = it[eventVmGoods.pos])
                             _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
-                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos-1))
+                            if (it.isNotEmpty()) {
+                                delay(100)
+                                sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos-1))
+                            }
                         }
                     }
                 }
