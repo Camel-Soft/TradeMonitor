@@ -2,7 +2,6 @@ package com.camelsoft.trademonitor._presentation.activity_main.fragment_price_go
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
@@ -10,20 +9,46 @@ import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsItemBinding
 
 class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter.ViewHolder>() {
 
-    private val diffCallback = object : DiffUtil.ItemCallback<MPriceGoods>() {
-        override fun areItemsTheSame(oldItem: MPriceGoods, newItem: MPriceGoods): Boolean {
-            return oldItem.id == newItem.id
+    private var list: List<MPriceGoods> = ArrayList()
+    var setOnItemClickListener: ((Int) -> Unit)? = null
+    var setOnItemLongClickListener: ((Int) -> Unit)? = null
+
+    fun getList() = list
+
+    fun submitList(newList: List<MPriceGoods>) {
+        val oldList = list
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
+            ListItemsDiffCallback (oldList = oldList, newList = newList)
+        )
+        list = newList
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    private class ListItemsDiffCallback (
+        var oldList: List<MPriceGoods>,
+        var newList: List<MPriceGoods>
+    ): DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int {
+            return oldList.size
         }
 
-        override fun areContentsTheSame(oldItem: MPriceGoods, newItem: MPriceGoods): Boolean {
-            return oldItem == newItem
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
-    private val differ = AsyncListDiffer(this, diffCallback)
-    fun setList(list: List<MPriceGoods>) = differ.submitList(list)
 
     inner class ViewHolder(var binding : FragmentPriceGoodsItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind (priceGoods: MPriceGoods, position: Int) {
+        fun bind (priceGoods: MPriceGoods) {
             binding.apply {
                 textScancode.text = priceGoods.scancode
                 textScancodeType.text = priceGoods.scancode_type
@@ -33,25 +58,23 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
             }
             itemView.apply {
                 setOnClickListener {
-                    setOnItemClickListener?.invoke(position)
+                    setOnItemClickListener?.invoke(adapterPosition)
                 }
                 setOnLongClickListener {
-                    setOnItemLongClickListener?.invoke(position)
+                    setOnItemLongClickListener?.invoke(adapterPosition)
                     true
                 }
             }
         }
     }
-    var setOnItemClickListener: ((Int) -> Unit)? = null
-    var setOnItemLongClickListener: ((Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(FragmentPriceGoodsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(priceGoods = differ.currentList[position], position = position)
+        holder.bind(priceGoods = list[position])
     }
 
-    override fun getItemCount() = differ.currentList.size
+    override fun getItemCount() = list.size
 }

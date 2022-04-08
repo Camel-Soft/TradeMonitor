@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._domain.models.MPriceColl
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageGoodsDelete
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageGoodsGetAll
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageGoodsInsert
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageGoodsUpdate
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor.common.App
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +22,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
     private val useCaseStorageGoodsDelete: UseCaseStorageGoodsDelete,
     private val useCaseStorageGoodsInsert: UseCaseStorageGoodsInsert,
     private val useCaseStorageGoodsUpdate: UseCaseStorageGoodsUpdate,
-    private val useCaseStorageGoodsGetAll: UseCaseStorageGoodsGetAll
+    private val useCaseStorageGoodsGetAll: UseCaseStorageGoodsGetAll,
+    private val useCaseStorageCollUpdate: UseCaseStorageCollUpdate
 ): ViewModel() {
 
     private val _eventUiGoods =  Channel<EventUiGoods>()
@@ -34,27 +33,36 @@ class FragmentPriceGoodsViewModel @Inject constructor(
     private val _listPriceGoods = MutableLiveData<List<MPriceGoods>>()
     val listPriceGoods: LiveData<List<MPriceGoods>> = _listPriceGoods
 
+    private var countGoodes = 0
+
     fun onEventGoods(eventVmGoods: EventVmGoods) {
         try {
             when(eventVmGoods) {
                 is EventVmGoods.OnInsertGoods -> {
                     viewModelScope.launch {
-                        useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(eventVmGoods.id_coll, eventVmGoods.scan))
-                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
+                        useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
+                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
                             if (it.isNotEmpty()) {
-                                delay(100)
-                                sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                                sendEventUiGoods(EventUiGoods.ScrollToPos(it.count()-1))
+                                countGoodes = it.count()
                             }
                         }
+                        useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
+                            id_coll = eventVmGoods.parentColl.id_coll,
+                            created = eventVmGoods.parentColl.created,
+                            changed = System.currentTimeMillis(),
+                            total = countGoodes,
+                            note = eventVmGoods.parentColl.note
+                        ))
                     }
                 }
                 is EventVmGoods.OnInsertGoodes -> {
                     viewModelScope.launch {
                         eventVmGoods.scanList.forEach {
-                            useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(eventVmGoods.id_coll, it))
+                            useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = it))
                         }
-                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
+                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
                             if (it.isNotEmpty()) {
                                 delay(100)
@@ -67,11 +75,11 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                     viewModelScope.launch {
                         _listPriceGoods.value?.let {
                             if (it.isNotEmpty()) useCaseStorageGoodsUpdate.execute(priceGoods = eventVmGoods.priceGoods)
-                            _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
-                            if (it.isNotEmpty()) {
-                                delay(100)
-                                sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos))
-                            }
+                            _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
+//                            if (it.isNotEmpty()) {
+//                                delay(100)
+//                                sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos))
+//                            }
                         }
                     }
                 }
@@ -79,17 +87,13 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                     viewModelScope.launch {
                         _listPriceGoods.value?.let {
                             if (it.isNotEmpty()) useCaseStorageGoodsDelete.execute(priceGoods = it[eventVmGoods.pos])
-                            _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
-                            if (it.isNotEmpty()) {
-                                delay(100)
-                                sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos-1))
-                            }
+                            _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         }
                     }
                 }
                 is EventVmGoods.OnGetGoodes -> {
                     viewModelScope.launch {
-                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.id_coll)
+                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                     }
                 }
             }

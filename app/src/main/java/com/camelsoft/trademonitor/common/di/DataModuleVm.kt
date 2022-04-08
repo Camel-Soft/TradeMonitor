@@ -1,10 +1,7 @@
 package com.camelsoft.trademonitor.common.di
 
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollDelete
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollGetAll
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollInsert
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollUpdate
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,5 +29,25 @@ object DataModuleVm {
     @Provides
     fun provideUseCaseStorageCollGetAll(iRoom: IRoom): UseCaseStorageCollGetAll {
         return UseCaseStorageCollGetAll(iRoom = iRoom)
+    }
+
+    @Provides
+    fun provideUseCaseStorageGoodsDelete(iRoom: IRoom): UseCaseStorageGoodsDelete {
+        return UseCaseStorageGoodsDelete(iRoom = iRoom)
+    }
+
+    @Provides
+    fun provideUseCaseStorageGoodsInsert(iRoom: IRoom): UseCaseStorageGoodsInsert {
+        return UseCaseStorageGoodsInsert(iRoom = iRoom)
+    }
+
+    @Provides
+    fun provideUseCaseStorageGoodsUpdate(iRoom: IRoom): UseCaseStorageGoodsUpdate {
+        return UseCaseStorageGoodsUpdate(iRoom = iRoom)
+    }
+
+    @Provides
+    fun provideUseCaseStorageGoodsGetAll(iRoom: IRoom): UseCaseStorageGoodsGetAll {
+        return UseCaseStorageGoodsGetAll(iRoom = iRoom)
     }
 }

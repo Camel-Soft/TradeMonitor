@@ -24,6 +24,7 @@ import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
 import com.camelsoft.trademonitor._presentation.models.MScan
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
@@ -88,13 +89,18 @@ class FragmentPriceGoods : Fragment() {
             adapterGoods.setOnItemClickListener = {
 
             }
-            adapterGoods.setOnItemLongClickListener = {
-
+            adapterGoods.setOnItemLongClickListener = { pos ->
+                showConfirm(
+                    context = requireContext(),
+                    title = resources.getString(R.string.goods_del_title),
+                    message = resources.getString(R.string.goods_del_message)+": ${adapterGoods.getList()[pos].scancode}"
+                )
+                { viewModel.onEventGoods(EventVmGoods.OnDeleteGoods(parentPriceColl, pos)) }
             }
             binding.rvGoods.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
             binding.rvGoods.adapter = adapterGoods
-            viewModel.listPriceGoods.observe(this, { adapterGoods.setList(it) })
-            viewModel.onEventGoods(EventVmGoods.OnGetGoodes(parentPriceColl.id_coll))
+            viewModel.listPriceGoods.observe(this, { adapterGoods.submitList(it) })
+            viewModel.onEventGoods(EventVmGoods.OnGetGoodes(parentPriceColl))
 
             // Фотосканер одиночный
             binding.btnScan.setOnClickListener { camStart() }
@@ -156,7 +162,7 @@ class FragmentPriceGoods : Fragment() {
             try {
                 when(scan) {
                     is EventsSync.Success -> {
-                        viewModel.onEventGoods(EventVmGoods.OnInsertGoods(parentPriceColl.id_coll, scan.data))
+                        viewModel.onEventGoods(EventVmGoods.OnInsertGoods(parentPriceColl, scan.data))
                     }
                     is EventsSync.Error -> {
                         showError(requireContext(), scan.message) {}
@@ -206,7 +212,7 @@ class FragmentPriceGoods : Fragment() {
             try {
                 when(scanList) {
                     is EventsSync.Success -> {
-                        viewModel.onEventGoods(EventVmGoods.OnInsertGoodes(parentPriceColl.id_coll, scanList.data))
+                        viewModel.onEventGoods(EventVmGoods.OnInsertGoodes(parentPriceColl, scanList.data))
                     }
                     is EventsSync.Error -> {
                         showError(requireContext(), scanList.message) {}

@@ -45,6 +45,9 @@
     <string name="coll_del_title">Удаление сборки</string>
     <string name="coll_del_message">Удалить сборку</string>
 
+    <string name="goods_del_title">Удаление товара</string>
+    <string name="goods_del_message">Удалить товар</string>
+
     <!-- Entry Scanner_ -->
     <string name="entry_scanner_title">Встроенный сканер</string>
     <string name="entry_scanner_empty">Отсутствует</string>
