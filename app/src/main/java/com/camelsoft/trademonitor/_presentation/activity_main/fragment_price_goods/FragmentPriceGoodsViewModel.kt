@@ -12,7 +12,6 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor.common.App
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,18 +42,16 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty()) {
-                                sendEventUiGoods(EventUiGoods.ScrollToPos(it.count()-1))
-                                countGoodes = it.count()
-                            }
+                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(it.count()-1))
+                            countGoodes = it.count()
+                            useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
+                                id_coll = eventVmGoods.parentColl.id_coll,
+                                created = eventVmGoods.parentColl.created,
+                                changed = System.currentTimeMillis(),
+                                total = countGoodes,
+                                note = eventVmGoods.parentColl.note
+                            ))
                         }
-                        useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
-                            id_coll = eventVmGoods.parentColl.id_coll,
-                            created = eventVmGoods.parentColl.created,
-                            changed = System.currentTimeMillis(),
-                            total = countGoodes,
-                            note = eventVmGoods.parentColl.note
-                        ))
                     }
                 }
                 is EventVmGoods.OnInsertGoodes -> {
@@ -64,10 +61,15 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         }
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty()) {
-                                delay(100)
-                                sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
-                            }
+                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            countGoodes = it.count()
+                            useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
+                                id_coll = eventVmGoods.parentColl.id_coll,
+                                created = eventVmGoods.parentColl.created,
+                                changed = System.currentTimeMillis(),
+                                total = countGoodes,
+                                note = eventVmGoods.parentColl.note
+                            ))
                         }
                     }
                 }
@@ -76,10 +78,16 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         _listPriceGoods.value?.let {
                             if (it.isNotEmpty()) useCaseStorageGoodsUpdate.execute(priceGoods = eventVmGoods.priceGoods)
                             _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
-//                            if (it.isNotEmpty()) {
-//                                delay(100)
-//                                sendEventUiGoods(EventUiGoods.ScrollToPos(eventVmGoods.pos))
-//                            }
+                            _listPriceGoods.value?.let {
+                                countGoodes = it.count()
+                                useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
+                                    id_coll = eventVmGoods.parentColl.id_coll,
+                                    created = eventVmGoods.parentColl.created,
+                                    changed = System.currentTimeMillis(),
+                                    total = countGoodes,
+                                    note = eventVmGoods.parentColl.note
+                                ))
+                            }
                         }
                     }
                 }
@@ -88,6 +96,16 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         _listPriceGoods.value?.let {
                             if (it.isNotEmpty()) useCaseStorageGoodsDelete.execute(priceGoods = it[eventVmGoods.pos])
                             _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
+                            _listPriceGoods.value?.let {
+                                countGoodes = it.count()
+                                useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
+                                    id_coll = eventVmGoods.parentColl.id_coll,
+                                    created = eventVmGoods.parentColl.created,
+                                    changed = System.currentTimeMillis(),
+                                    total = countGoodes,
+                                    note = eventVmGoods.parentColl.note
+                                ))
+                            }
                         }
                     }
                 }
