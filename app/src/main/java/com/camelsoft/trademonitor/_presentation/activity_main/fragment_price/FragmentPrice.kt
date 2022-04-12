@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,39 +54,28 @@ class FragmentPrice : Fragment() {
         }
 
         // Список сборок
-        binding.rvColl.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+        val adapterColl = FragmentPriceAdapter()
+        adapterColl.clickHolder = { pos ->
+            val bundle = Bundle()
+            bundle.putParcelable("priceColl", adapterColl.getList()[pos])
+            findNavController().navigate(R.id.action_fragGraphPrice_to_fragGraphPriceGoods, bundle)
+        }
+        adapterColl.clickBtnShare = { pos ->
 
-        viewModel.listPriceColl.observe(this, Observer { listPriceColl ->
-            binding.rvColl.adapter = FragmentPriceAdapter(listPriceColl,
-                // clickHolder
-                // Переход к товарам внутри выбранной сборки
-                { pos ->
-                    val bundle = Bundle()
-                    bundle.putParcelable("priceColl", listPriceColl[pos])
-                    findNavController().navigate(R.id.action_fragGraphPrice_to_fragGraphPriceGoods, bundle)
-                },
-                // clickBtnShare
-                // Поделиться выбранной сборкой
-                { pos ->
-
-                    Toast.makeText(requireContext(), "Поделиться выбранной сборкой. Позиция $pos", Toast.LENGTH_SHORT).show()
-
-                },
-                // clickBtnDelete
-                // Удаление выбранной сборки
-                { pos ->
-                    showConfirm(requireContext(),
-                        resources.getString(R.string.coll_del_title),
-                        resources.getString(R.string.coll_del_message)+": ${listPriceColl[pos].note}") {
-                        viewModel.onEventPrice(EventVmPrice.OnDeleteCollClick(pos))
-                    }
-                },
-                // clickBtnUpdate
-                // Обновления Примечания у выбранной сборки
-                { mIntString ->
-                    viewModel.onEventPrice(EventVmPrice.OnUpdateCollClick(mIntString.int, mIntString.string))
-                })
-        })
+        }
+        adapterColl.clickBtnDelete = { pos ->
+            showConfirm(requireContext(),
+                resources.getString(R.string.coll_del_title),
+                resources.getString(R.string.coll_del_message)+": ${adapterColl.getList()[pos].note}") {
+                viewModel.onEventPrice(EventVmPrice.OnDeleteCollClick(pos))
+            }
+        }
+        adapterColl.clickBtnUpdate = {
+            viewModel.onEventPrice(EventVmPrice.OnUpdateCollClick(it.int, it.string))
+        }
+        binding.rvColl.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+        binding.rvColl.adapter = adapterColl
+        viewModel.listPriceColl.observe(this, { adapterColl.submitList(it) })
+        viewModel.onEventPrice(EventVmPrice.OnGetColl)
     }
 }

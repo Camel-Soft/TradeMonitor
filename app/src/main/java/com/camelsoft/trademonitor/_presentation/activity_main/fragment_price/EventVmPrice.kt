@@ -4,4 +4,5 @@ sealed class EventVmPrice {
     object OnAddCollClick: EventVmPrice()
     data class OnDeleteCollClick(val pos: Int): EventVmPrice()
     data class OnUpdateCollClick(val pos: Int, val newNote: String): EventVmPrice()
+    object OnGetColl: EventVmPrice()
 }

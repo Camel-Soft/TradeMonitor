@@ -32,12 +32,6 @@ class FragmentPriceViewModel @Inject constructor(
     private val _listPriceColl = MutableLiveData<List<MPriceColl>>()
     val listPriceColl: LiveData<List<MPriceColl>> = _listPriceColl
 
-    init {
-        viewModelScope.launch {
-            _listPriceColl.value = useCaseStorageCollGetAll.execute()
-        }
-    }
-
     fun onEventPrice(eventVmPrice: EventVmPrice) {
         try {
             when(eventVmPrice) {
@@ -53,19 +47,22 @@ class FragmentPriceViewModel @Inject constructor(
                 is EventVmPrice.OnUpdateCollClick -> {
                     viewModelScope.launch {
                         _listPriceColl.value?.let {
-                            useCaseStorageCollUpdate.execute(priceColl = updateColl(it[eventVmPrice.pos], eventVmPrice.newNote))
+                            if (it.isNotEmpty()) useCaseStorageCollUpdate.execute(priceColl = updateColl(it[eventVmPrice.pos], eventVmPrice.newNote))
                             _listPriceColl.value = useCaseStorageCollGetAll.execute()
-                            if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(eventVmPrice.pos))
                         }
                     }
                 }
                 is EventVmPrice.OnDeleteCollClick -> {
                     viewModelScope.launch {
                         _listPriceColl.value?.let {
-                            useCaseStorageCollDelete.execute(priceColl = it[eventVmPrice.pos])
+                            if (it.isNotEmpty()) useCaseStorageCollDelete.execute(priceColl = it[eventVmPrice.pos])
                             _listPriceColl.value = useCaseStorageCollGetAll.execute()
-                            if (it.isNotEmpty()) sendEventUiPrice(EventUiPrice.ScrollToPos(eventVmPrice.pos-1))
                         }
+                    }
+                }
+                is EventVmPrice.OnGetColl -> {
+                    viewModelScope.launch {
+                        _listPriceColl.value = useCaseStorageCollGetAll.execute()
                     }
                 }
             }

@@ -47,7 +47,7 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
         }
     }
 
-    inner class ViewHolder(var binding : FragmentPriceGoodsItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private var binding : FragmentPriceGoodsItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind (priceGoods: MPriceGoods) {
             binding.apply {
                 textScancode.text = priceGoods.scancode
