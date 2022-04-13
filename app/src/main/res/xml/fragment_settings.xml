@@ -1,5 +1,18 @@
-<PreferenceScreen
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/entry_weight_goods"
+        app:icon="@drawable/img_scale_24">
+
+        <EditTextPreference
+            android:title="@string/entry_weight_prefix"
+            android:key="weight_prefix"
+            android:defaultValue="99"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
 
     <PreferenceCategory
         app:title="@string/optional"
@@ -13,7 +26,6 @@
             app:entryValues="@array/scanner_values"
             app:negativeButtonText="@string/cancel"
             app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -2,6 +2,7 @@ package com.camelsoft.trademonitor.common.di
 
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
+import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,5 +50,10 @@ object DataModuleVm {
     @Provides
     fun provideUseCaseStorageGoodsGetAll(iRoom: IRoom): UseCaseStorageGoodsGetAll {
         return UseCaseStorageGoodsGetAll(iRoom = iRoom)
+    }
+
+    @Provides
+    fun provideUseCaseStorageGoodsInsertOrUpdate(iRoom: IRoom, settings: Settings): UseCaseStorageGoodsInsertOrUpdate {
+        return UseCaseStorageGoodsInsertOrUpdate(iRoom = iRoom, settings = settings)
     }
 }

@@ -61,6 +61,19 @@
         <action
             android:id="@+id/action_fragGraphPriceGoods_to_fragGraphPrice"
             app:destination="@id/fragGraphPrice" />
+        <action
+            android:id="@+id/action_fragGraphPriceGoods_to_fragGraphPriceGoodsDetail"
+            app:destination="@id/fragGraphPriceGoodsDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphPriceGoodsDetail"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_price_goods_detail.FragmentPriceGoodsDetail"
+        android:label=""
+        tools:layout="@layout/fragment_price_goods_detail" >
+        <action
+            android:id="@+id/action_fragGraphPriceGoodsDetail_to_fragGraphPriceGoods"
+            app:destination="@id/fragGraphPriceGoods" />
     </fragment>
 
 </navigation>

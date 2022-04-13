@@ -20,4 +20,5 @@ interface IRoom {
     // Query
     suspend fun getRoomCollAll(): List<MPriceColl>
     suspend fun getRoomGoodes(id_coll: Long): List<MPriceGoods>
+    suspend fun getRoomRightGoods(id_coll: Long, scancode: String): List<MPriceGoods>
 }

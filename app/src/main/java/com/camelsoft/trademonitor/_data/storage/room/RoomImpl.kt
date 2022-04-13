@@ -39,4 +39,8 @@ class RoomImpl(private val daoRoom: IDaoRoom): IRoom {
     override suspend fun getRoomGoodes(id_coll: Long): List<MPriceGoods> {
         return daoRoom.getRoomGoodes(id_coll).map { it.toMPriceGoods() }
     }
+
+    override suspend fun getRoomRightGoods(id_coll: Long, scancode: String): List<MPriceGoods> {
+        return daoRoom.getRoomRightGoods(id_coll, scancode).map { it.toMPriceGoods() }
+    }
 }

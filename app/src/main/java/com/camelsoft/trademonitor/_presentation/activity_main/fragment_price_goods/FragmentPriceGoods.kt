@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class FragmentPriceGoods : Fragment() {
+
     private lateinit var binding: FragmentPriceGoodsBinding
     private val viewModel: FragmentPriceGoodsViewModel by viewModels()
     private lateinit var parentPriceColl: MPriceColl
@@ -86,8 +87,10 @@ class FragmentPriceGoods : Fragment() {
 
             // Список товаров
             val adapterGoods = FragmentPriceGoodsAdapter()
-            adapterGoods.setOnItemClickListener = {
-
+            adapterGoods.setOnItemClickListener = { pos ->
+                val bundle = Bundle()
+                bundle.putParcelable("priceGoods", adapterGoods.getList()[pos])
+                findNavController().navigate(R.id.action_fragGraphPriceGoods_to_fragGraphPriceGoodsDetail, bundle)
             }
             adapterGoods.setOnItemLongClickListener = { pos ->
                 showConfirm(
@@ -162,7 +165,7 @@ class FragmentPriceGoods : Fragment() {
             try {
                 when(scan) {
                     is EventsSync.Success -> {
-                        viewModel.onEventGoods(EventVmGoods.OnInsertGoods(parentPriceColl, scan.data))
+                        viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoods(parentPriceColl, scan.data))
                     }
                     is EventsSync.Error -> {
                         showError(requireContext(), scan.message) {}
@@ -212,7 +215,7 @@ class FragmentPriceGoods : Fragment() {
             try {
                 when(scanList) {
                     is EventsSync.Success -> {
-                        viewModel.onEventGoods(EventVmGoods.OnInsertGoodes(parentPriceColl, scanList.data))
+                        viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoodes(parentPriceColl, scanList.data))
                     }
                     is EventsSync.Error -> {
                         showError(requireContext(), scanList.message) {}

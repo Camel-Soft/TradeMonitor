@@ -30,4 +30,7 @@ interface IDaoRoom {
 
     @Query("SELECT * FROM room_goods WHERE id_coll = :id_coll")
     suspend fun getRoomGoodes(id_coll: Long): List<ERoomGoods>
+
+    @Query("SELECT * FROM room_goods WHERE id_coll = :id_coll AND scancode = :scancode")
+    suspend fun getRoomRightGoods(id_coll: Long, scancode: String): List<ERoomGoods>
 }

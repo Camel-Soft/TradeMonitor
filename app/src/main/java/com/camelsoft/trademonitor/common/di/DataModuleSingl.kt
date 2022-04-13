@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
 import com.camelsoft.trademonitor._data.storage.room.RoomImpl
+import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,5 +30,11 @@ object DataModuleSingl {
     @Singleton
     fun provideRoom(db: RoomDataBase): IRoom {
         return RoomImpl(db.getDaoRoom())
+    }
+
+    @Provides
+    @Singleton
+    fun provideSettings(): Settings {
+        return Settings()
     }
 }

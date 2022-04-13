@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
+import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsItemBinding
 
 class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter.ViewHolder>() {
@@ -54,7 +56,12 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
                 textScancodeType.text = priceGoods.scancode_type
                 textName.text = priceGoods.name
                 textNote.text = priceGoods.note
-                textCena.text = priceGoods.cena.toString()
+                textCena.text = priceGoods.cena.toString()+" "+getAppContext().resources.getString(R.string.money)
+                textQuantity.text = priceGoods.quantity.toString()+" "+priceGoods.ed_izm
+                when (priceGoods.status_code) {
+                    1 -> { textStatus.text = getAppContext().resources.getString(R.string.error_scancode) }
+                    else -> {textStatus.text = ""}
+                }
             }
             itemView.apply {
                 setOnClickListener {

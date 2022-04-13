@@ -26,7 +26,11 @@ data class ERoomGoods(
     @ColumnInfo(name = "scancode_type") val scancode_type: String,
     @ColumnInfo(name = "cena") val cena: Float,
     @ColumnInfo(name = "note") val note: String,
-    @ColumnInfo(name = "name") val name: String
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "quantity") val quantity: Float,
+    @ColumnInfo(name = "ed_izm") val ed_izm: String,
+    @ColumnInfo(name = "status_code") val status_code: Int,
+    @ColumnInfo(name = "holder_color") val holder_color: String
 ) {
 
     fun toMPriceGoods(): MPriceGoods = MPriceGoods(
@@ -36,7 +40,11 @@ data class ERoomGoods(
         scancode_type = scancode_type,
         cena = cena,
         note = note,
-        name = name
+        name = name,
+        quantity = quantity,
+        ed_izm = ed_izm,
+        status_code = status_code,
+        holder_color = holder_color
     )
 
     companion object {
@@ -47,7 +55,11 @@ data class ERoomGoods(
             scancode_type = goods.scancode_type,
             cena = goods.cena,
             note = goods.note,
-            name = goods.name
+            name = goods.name,
+            quantity = goods.quantity,
+            ed_izm = goods.ed_izm,
+            status_code = goods.status_code,
+            holder_color = goods.holder_color
         )
     }
 }

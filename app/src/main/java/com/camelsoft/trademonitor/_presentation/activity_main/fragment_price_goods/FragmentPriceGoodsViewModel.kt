@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FragmentPriceGoodsViewModel @Inject constructor(
     private val useCaseStorageGoodsDelete: UseCaseStorageGoodsDelete,
-    private val useCaseStorageGoodsInsert: UseCaseStorageGoodsInsert,
+    private val useCaseStorageGoodsInsertOrUpdate: UseCaseStorageGoodsInsertOrUpdate,
     private val useCaseStorageGoodsUpdate: UseCaseStorageGoodsUpdate,
     private val useCaseStorageGoodsGetAll: UseCaseStorageGoodsGetAll,
     private val useCaseStorageCollUpdate: UseCaseStorageCollUpdate
@@ -37,12 +37,12 @@ class FragmentPriceGoodsViewModel @Inject constructor(
     fun onEventGoods(eventVmGoods: EventVmGoods) {
         try {
             when(eventVmGoods) {
-                is EventVmGoods.OnInsertGoods -> {
+                is EventVmGoods.OnInsertOrUpdateGoods -> {
                     viewModelScope.launch {
-                        useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
+                        val isScroll = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(it.count()-1))
+                            if (it.isNotEmpty() && isScroll) sendEventUiGoods(EventUiGoods.ScrollToPos(it.count()-1))
                             countGoodes = it.count()
                             useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
                                 id_coll = eventVmGoods.parentColl.id_coll,
@@ -54,14 +54,15 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         }
                     }
                 }
-                is EventVmGoods.OnInsertGoodes -> {
+                is EventVmGoods.OnInsertOrUpdateGoodes -> {
                     viewModelScope.launch {
+                        var isScroll = true
                         eventVmGoods.scanList.forEach {
-                            useCaseStorageGoodsInsert.execute(priceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = it))
+                            isScroll = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = it))
                         }
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty()) sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            if (it.isNotEmpty() && isScroll) sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
                             countGoodes = it.count()
                             useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
                                 id_coll = eventVmGoods.parentColl.id_coll,
@@ -132,7 +133,11 @@ class FragmentPriceGoodsViewModel @Inject constructor(
             scancode_type = scan.format,
             cena = 0F,
             note = "",
-            name = ""
+            name = "",
+            quantity = 1F,
+            ed_izm = App.getAppContext().resources.getString(R.string.ed_sht),
+            status_code = 0,
+            holder_color = "#FFFFFF"
         )
     }
 
