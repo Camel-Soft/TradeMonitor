@@ -39,10 +39,13 @@ class FragmentPriceGoodsViewModel @Inject constructor(
             when(eventVmGoods) {
                 is EventVmGoods.OnInsertOrUpdateGoods -> {
                     viewModelScope.launch {
-                        val isScroll = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
+                        val returnPriceGoods = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty() && isScroll) sendEventUiGoods(EventUiGoods.ScrollToPos(it.count()-1))
+                            if (it.isNotEmpty()) {
+                                if (returnPriceGoods.id != 0L) sendEventUiGoods(EventUiGoods.ScrollToPos(it.indexOf(returnPriceGoods)))
+                                else sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            }
                             countGoodes = it.count()
                             useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
                                 id_coll = eventVmGoods.parentColl.id_coll,
@@ -56,13 +59,16 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                 }
                 is EventVmGoods.OnInsertOrUpdateGoodes -> {
                     viewModelScope.launch {
-                        var isScroll = true
+                        var returnPriceGoods: MPriceGoods? = null
                         eventVmGoods.scanList.forEach {
-                            isScroll = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = it))
+                            returnPriceGoods = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = it))
                         }
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
-                            if (it.isNotEmpty() && isScroll) sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            if (it.isNotEmpty()) {
+                                if (returnPriceGoods?.id != 0L) sendEventUiGoods(EventUiGoods.ScrollToPos(it.indexOf(returnPriceGoods)))
+                                else sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            }
                             countGoodes = it.count()
                             useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
                                 id_coll = eventVmGoods.parentColl.id_coll,

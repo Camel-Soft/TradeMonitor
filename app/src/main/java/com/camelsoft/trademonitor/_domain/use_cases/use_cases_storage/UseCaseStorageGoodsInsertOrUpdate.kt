@@ -11,14 +11,14 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
     private val iRoom: IRoom,
     private val settings: Settings
 ) {
-    suspend fun execute(newPriceGoods: MPriceGoods): Boolean {  // True - Insert, False - Update
+    suspend fun execute(newPriceGoods: MPriceGoods): MPriceGoods {  // return for scroll
         val prefix = settings.getPrefix()
         if (prefix == newPriceGoods.scancode.substring(0,2)) {
             // Весовой
             val dbPriceGoodsVes = iRoom.getRoomRightGoods(id_coll = newPriceGoods.id_coll, scancode = newPriceGoods.scancode.substring(0,7))
             if (dbPriceGoodsVes.isEmpty()) {
                 // Insert
-                iRoom.insertRoomGoods(priceGoods = MPriceGoods(
+                val priceGoods = MPriceGoods(
                     id = newPriceGoods.id,
                     id_coll = newPriceGoods.id_coll,
                     scancode = newPriceGoods.scancode.substring(0,7),
@@ -30,12 +30,13 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
                     ed_izm = getAppContext().resources.getString(R.string.ed_kg),
                     status_code = newPriceGoods.status_code,
                     holder_color = newPriceGoods.holder_color
-                ))
-                return true
+                )
+                iRoom.insertRoomGoods(priceGoods = priceGoods)
+                return priceGoods
             }
             else {
                 // Update
-                iRoom.updateRoomGoods(priceGoods = MPriceGoods(
+                val priceGoods = MPriceGoods(
                     id = dbPriceGoodsVes[0].id,
                     id_coll = dbPriceGoodsVes[0].id_coll,
                     scancode = dbPriceGoodsVes[0].scancode,
@@ -47,8 +48,9 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
                     ed_izm = dbPriceGoodsVes[0].ed_izm,
                     status_code = newPriceGoods.status_code,
                     holder_color = dbPriceGoodsVes[0].holder_color
-                ))
-                return false
+                )
+                iRoom.updateRoomGoods(priceGoods = priceGoods)
+                return priceGoods
             }
         }
         else {
@@ -57,11 +59,11 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
             if (dbPriceGoods.isEmpty()) {
                 // Insert
                 iRoom.insertRoomGoods(priceGoods = newPriceGoods)
-                return true
+                return newPriceGoods
             }
             else {
                 // Update
-                iRoom.updateRoomGoods(priceGoods = MPriceGoods(
+                val priceGoods = MPriceGoods(
                     id = dbPriceGoods[0].id,
                     id_coll = dbPriceGoods[0].id_coll,
                     scancode = dbPriceGoods[0].scancode,
@@ -73,8 +75,9 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
                     ed_izm = dbPriceGoods[0].ed_izm,
                     status_code = newPriceGoods.status_code,
                     holder_color = dbPriceGoods[0].holder_color
-                ))
-                return false
+                )
+                iRoom.updateRoomGoods(priceGoods = priceGoods)
+                return priceGoods
             }
         }
     }

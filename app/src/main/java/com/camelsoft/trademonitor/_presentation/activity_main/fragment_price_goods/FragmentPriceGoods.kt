@@ -101,6 +101,7 @@ class FragmentPriceGoods : Fragment() {
                 { viewModel.onEventGoods(EventVmGoods.OnDeleteGoods(parentPriceColl, pos)) }
             }
             binding.rvGoods.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+            //binding.rvGoods.itemAnimator = DefaultItemAnimator()
             binding.rvGoods.adapter = adapterGoods
             viewModel.listPriceGoods.observe(this, { adapterGoods.submitList(it) })
             viewModel.onEventGoods(EventVmGoods.OnGetGoodes(parentPriceColl))
