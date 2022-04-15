@@ -87,11 +87,13 @@ class FragmentPriceGoods : Fragment() {
 
             // Список товаров
             val adapterGoods = FragmentPriceGoodsAdapter()
+            // Нажатие - Обновление товара
             adapterGoods.setOnItemClickListener = { pos ->
                 val bundle = Bundle()
                 bundle.putParcelable("priceGoods", adapterGoods.getList()[pos])
                 findNavController().navigate(R.id.action_fragGraphPriceGoods_to_fragGraphPriceGoodsDetail, bundle)
             }
+            // Нажатие - Удаление товара
             adapterGoods.setOnItemLongClickListener = { pos ->
                 showConfirm(
                     context = requireContext(),
@@ -111,6 +113,10 @@ class FragmentPriceGoods : Fragment() {
 
             // Фотосканер Список
             binding.btnScanList.setOnClickListener { camListStart() }
+
+            // Update-наблюдение. Ловим обновленный товар
+
+
         }
     }
 

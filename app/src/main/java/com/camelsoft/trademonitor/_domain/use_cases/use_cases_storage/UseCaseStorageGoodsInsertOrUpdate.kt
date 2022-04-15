@@ -3,6 +3,7 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_storage
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.utils.getErrCode
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
                     name = newPriceGoods.name,
                     quantity = newPriceGoods.scancode.substring(7,12).toFloat()/1000,
                     ed_izm = getAppContext().resources.getString(R.string.ed_kg),
-                    status_code = newPriceGoods.status_code,
+                    status_code = 100 + getErrCode(newPriceGoods.status_code),
                     holder_color = newPriceGoods.holder_color
                 )
                 iRoom.insertRoomGoods(priceGoods = priceGoods)
@@ -46,7 +47,7 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
                     name = dbPriceGoodsVes[0].name,
                     quantity = (dbPriceGoodsVes[0].quantity)+(newPriceGoods.scancode.substring(7,12).toFloat()/1000),
                     ed_izm = dbPriceGoodsVes[0].ed_izm,
-                    status_code = newPriceGoods.status_code,
+                    status_code = 200 + getErrCode(dbPriceGoodsVes[0].status_code),
                     holder_color = dbPriceGoodsVes[0].holder_color
                 )
                 iRoom.updateRoomGoods(priceGoods = priceGoods)
@@ -54,12 +55,25 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
             }
         }
         else {
-            // Не весовой
+            // Штучный
             val dbPriceGoods = iRoom.getRoomRightGoods(id_coll = newPriceGoods.id_coll, scancode = newPriceGoods.scancode)
             if (dbPriceGoods.isEmpty()) {
                 // Insert
-                iRoom.insertRoomGoods(priceGoods = newPriceGoods)
-                return newPriceGoods
+                val priceGoods = MPriceGoods(
+                    id = newPriceGoods.id,
+                    id_coll = newPriceGoods.id_coll,
+                    scancode = newPriceGoods.scancode,
+                    scancode_type = newPriceGoods.scancode_type,
+                    cena = newPriceGoods.cena,
+                    note = newPriceGoods.note,
+                    name = newPriceGoods.name,
+                    quantity = newPriceGoods.quantity,
+                    ed_izm = newPriceGoods.ed_izm,
+                    status_code = 100 + getErrCode(newPriceGoods.status_code),
+                    holder_color = newPriceGoods.holder_color
+                )
+                iRoom.insertRoomGoods(priceGoods = priceGoods)
+                return priceGoods
             }
             else {
                 // Update
@@ -73,7 +87,7 @@ class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(
                     name = dbPriceGoods[0].name,
                     quantity = (dbPriceGoods[0].quantity)+(newPriceGoods.quantity),
                     ed_izm = dbPriceGoods[0].ed_izm,
-                    status_code = newPriceGoods.status_code,
+                    status_code = 200 + getErrCode(dbPriceGoods[0].status_code),
                     holder_color = dbPriceGoods[0].holder_color
                 )
                 iRoom.updateRoomGoods(priceGoods = priceGoods)

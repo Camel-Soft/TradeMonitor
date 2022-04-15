@@ -24,7 +24,8 @@
 
     <color name="red_100">#FF1A1A</color>
     <color name="red_200">#B81515</color>
-    <color name="red_300">#810B0B</color>
+    <color name="red_300">#970404</color>
+    <color name="red_400">#600101</color>
 
     <color name="orange_100">#F44B08</color>
     <color name="orange_200">#C14313</color>
@@ -42,4 +43,17 @@
     <color name="yellow_500">#835B0A</color>
     <color name="yellow_600">#674603</color>
     <color name="yellow_700">#513702</color>
+
+    <!-- Colors of holders for Goods RV -->
+    <color name="rv_goods_0">#FFCBCB</color>
+    <color name="rv_goods_1">#FFE79F</color>
+    <color name="rv_goods_2">#E2FFAD</color>
+    <color name="rv_goods_3">#ADFFCE</color>
+    <color name="rv_goods_4">#97E1DB</color>
+    <color name="rv_goods_5">#ADB8FF</color>
+    <color name="rv_goods_6">#E6ADFF</color>
+    <color name="rv_goods_7">#F171D1</color>
+    <color name="rv_goods_8">#FF8CBB</color>
+    <color name="rv_goods_9">#D5889A</color>
+
 </resources>

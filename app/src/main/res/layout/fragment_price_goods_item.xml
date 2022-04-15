@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -47,11 +46,26 @@
         android:layout_margin="2dp"
         android:gravity="end"
         android:maxLines="1"
-        android:text="! Возможна неточность в сканкоде"
-        android:textColor="@color/red_100"
+        android:text="Добавлено"
         android:textSize="11sp"
-        android:textStyle="italic"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:maxLines="1"
+        android:text="! Сканкод"
+        android:textSize="11sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toStartOf="@+id/textStatus"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -62,7 +76,7 @@
         android:gravity="end"
         android:maxLines="1"
         android:text="99896.99 руб"
-        android:textColor="@color/green_300"
+        android:textColor="@color/yellow_600"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +93,7 @@
         android:gravity="end"
         android:maxLines="1"
         android:text="896 шт"
-        android:textColor="@color/blue_300"
+        android:textColor="@color/yellow_600"
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/textCena"
@@ -115,10 +129,35 @@
         app:layout_constraintTop_toBottomOf="@+id/textName" />
 
     <View
-        android:id="@+id/viewHor"
+        android:id="@+id/viewHorUp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_100"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewHorDown"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_100"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/viewVerLeft"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/gray_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewVerRight"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/gray_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,8 @@
     <string name="torch">Фонарик</string>
     <string name="collection">Сборка</string>
     <string name="money">руб</string>
+    <string name="inserted">Добавлено</string>
+    <string name="updated">Обновлено</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -24,7 +26,7 @@
     <string name="error_text_unknown">Текст ошибки не определен</string>
     <string name="error_root_fragment_id">Id корневого фрагмента не определен</string>
     <string name="error_parent_coll">Сборка не определена</string>
-    <string name="error_scancode">! Возможна неточность в сканкоде</string>
+    <string name="error_scancode">! Сканкод</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>

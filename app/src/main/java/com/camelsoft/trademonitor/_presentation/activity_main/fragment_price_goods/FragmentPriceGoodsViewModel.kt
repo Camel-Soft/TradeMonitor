@@ -9,7 +9,10 @@ import com.camelsoft.trademonitor._domain.models.MPriceColl
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._presentation.models.MScan
+import com.camelsoft.trademonitor._presentation.utils.genColorIdFromList
+import com.camelsoft.trademonitor._presentation.utils.scan.checkBarcode
 import com.camelsoft.trademonitor.common.App
+import com.camelsoft.trademonitor.common.Settings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,7 +25,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
     private val useCaseStorageGoodsInsertOrUpdate: UseCaseStorageGoodsInsertOrUpdate,
     private val useCaseStorageGoodsUpdate: UseCaseStorageGoodsUpdate,
     private val useCaseStorageGoodsGetAll: UseCaseStorageGoodsGetAll,
-    private val useCaseStorageCollUpdate: UseCaseStorageCollUpdate
+    private val useCaseStorageCollUpdate: UseCaseStorageCollUpdate,
+    private val settings: Settings
 ): ViewModel() {
 
     private val _eventUiGoods =  Channel<EventUiGoods>()
@@ -132,6 +136,11 @@ class FragmentPriceGoodsViewModel @Inject constructor(
     }
 
     private fun createNewGoods(id_coll: Long, scan: MScan): MPriceGoods {
+        var colorIdFromList = "0"
+        _listPriceGoods.value?.let {
+            colorIdFromList = genColorIdFromList(it)
+        }
+
         return MPriceGoods(
             id = 0L,
             id_coll = id_coll,
@@ -142,8 +151,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
             name = "",
             quantity = 1F,
             ed_izm = App.getAppContext().resources.getString(R.string.ed_sht),
-            status_code = 0,
-            holder_color = "#FFFFFF"
+            status_code = if (checkBarcode(prefix = settings.getPrefix(), barcode = scan.scancode)) 0 else 1,
+            holder_color = colorIdFromList
         )
     }
 
