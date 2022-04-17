@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -115,6 +116,9 @@ class FragmentPriceGoods : Fragment() {
             binding.btnScanList.setOnClickListener { camListStart() }
 
             // Update-наблюдение. Ловим обновленный товар
+//            setFragmentResultListener("request_key") { key, bundle ->
+//                //val selectedSort = bundle.getParcelable<Sort>("extra_key")
+//            }
 
 
         }

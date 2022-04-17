@@ -18,6 +18,13 @@
     <string name="inserted">Добавлено</string>
     <string name="updated">Обновлено</string>
 
+    <string name="scancode">Сканкод</string>
+    <string name="cena">Цена</string>
+    <string name="note">Примечание</string>
+    <string name="name">Наименование</string>
+    <string name="quantity">Количество</string>
+    <string name="ed_izm">Единица измерения</string>
+
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
 
