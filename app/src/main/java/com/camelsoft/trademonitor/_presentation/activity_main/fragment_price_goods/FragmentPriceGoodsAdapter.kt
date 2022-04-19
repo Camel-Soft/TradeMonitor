@@ -6,10 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
-import com.camelsoft.trademonitor._presentation.utils.getErrCode
-import com.camelsoft.trademonitor._presentation.utils.getWrkCode
-import com.camelsoft.trademonitor._presentation.utils.toMoney
-import com.camelsoft.trademonitor._presentation.utils.toQuantity
+import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsItemBinding
 
@@ -62,30 +59,14 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
                 textNote.text = priceGoods.note
                 textCena.text = toMoney(priceGoods.cena)+" "+getAppContext().resources.getString(R.string.money)
                 textQuantity.text = toQuantity(priceGoods.quantity)+" "+priceGoods.ed_izm
-                when (getWrkCode(priceGoods.status_code)) {
-                    1 -> {
-                        textStatus.text = getAppContext().resources.getString(R.string.inserted)
-                        textStatus.setTextColor(getAppContext().getColor(R.color.green_300))
-                    }
-                    2 -> {
-                        textStatus.text = getAppContext().resources.getString(R.string.updated)
-                        textStatus.setTextColor(getAppContext().getColor(R.color.blue_300))
-                    }
-                    else -> {
-                        textStatus.text = ""
-                        textStatus.setTextColor(getAppContext().getColor(R.color.black))
-                    }
-                }
-                when (getErrCode(priceGoods.status_code)) {
-                    1 -> {
-                        textError.text = getAppContext().resources.getString(R.string.error_scancode)
-                        textError.setTextColor(getAppContext().getColor(R.color.red_100))
-                    }
-                    else -> {
-                        textError.text = ""
-                        textError.setTextColor(getAppContext().getColor(R.color.black))
-                    }
-                }
+                // Обработка Рабочего кода
+                val wrkMess = getWrkMess(priceGoods.status_code)
+                textStatus.text = wrkMess.first
+                textStatus.setTextColor(getAppContext().getColor(wrkMess.second))
+                // Обработка Кода ошибки
+                val errMess = getErrMess(priceGoods.status_code)
+                textError.text = errMess.first
+                textError.setTextColor(getAppContext().getColor(errMess.second))
             }
             itemView.apply {
                 setOnClickListener {
@@ -95,19 +76,7 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
                     setOnItemLongClickListener?.invoke(adapterPosition)
                     true
                 }
-                when (priceGoods.holder_color) {
-                    "0" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_0))}
-                    "1" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_1))}
-                    "2" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_2))}
-                    "3" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_3))}
-                    "4" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_4))}
-                    "5" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_5))}
-                    "6" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_6))}
-                    "7" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_7))}
-                    "8" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_8))}
-                    "9" -> {setBackgroundColor(getAppContext().getColor(R.color.rv_goods_9))}
-                    else -> {setBackgroundColor(getAppContext().getColor(R.color.white))}
-                }
+                setBackgroundColor(getAppContext().getColor(getHolderColor(priceGoods.holder_color)))
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._presentation.barcode_scanners
+package com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k
 
 import android.content.Context
 import android.os.Handler

@@ -17,13 +17,15 @@
     <string name="money">руб</string>
     <string name="inserted">Добавлено</string>
     <string name="updated">Обновлено</string>
+    <string name="change">Изменить</string>
+    <string name="insert_hand">Добавить вручную</string>
 
     <string name="scancode">Сканкод</string>
     <string name="cena">Цена</string>
     <string name="note">Примечание</string>
     <string name="name">Наименование</string>
     <string name="quantity">Количество</string>
-    <string name="ed_izm">Единица измерения</string>
+    <string name="ed_izm">Единицы измерения</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -38,6 +40,7 @@
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
 
+    <string name="need_fill_fields">Необходимо заполнить поля</string>
     <string name="need_permissions_title">Отсутствуют разрешения</string>
     <string name="need_permissions_message">Для работы приложения необходимы все запрашиваемые разрешения. Добавить отсутствующие разрешения можно в настройках приложения</string>
 
