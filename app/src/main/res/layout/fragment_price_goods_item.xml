@@ -109,7 +109,7 @@
         android:text="Наименование:"
         android:textColor="@color/gray_300"
         android:textSize="11sp"
-        android:textStyle="italic"
+        android:textStyle="italic|bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textScancodeType" />
 

@@ -1,24 +1,32 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_alko
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.databinding.FragmentAlkoBinding
+import java.lang.ref.WeakReference
 
 class FragmentAlko : Fragment() {
 
+    private lateinit var binding: FragmentAlkoBinding
+    private val settings = Settings()
+    private lateinit var weakContext: WeakReference<Context>
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_alko, container, false)
+    ): View {
+        binding = FragmentAlkoBinding.inflate(inflater)
+        return binding.root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = FragmentAlko()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        weakContext = WeakReference<Context>(requireContext())
     }
 }

@@ -1,5 +1,6 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_price_goods_detail
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,9 +24,12 @@ import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsDetailBinding
+import java.lang.ref.WeakReference
 
 class FragmentPriceGoodsDetail : Fragment() {
     private lateinit var binding: FragmentPriceGoodsDetailBinding
+    private lateinit var weakContext: WeakReference<Context>
+    private lateinit var weakView: WeakReference<View>
     private var argPriceGoods: MPriceGoods? = null
     private var argPriceColl: MPriceColl? = null
     private val settings = Settings()
@@ -42,6 +46,9 @@ class FragmentPriceGoodsDetail : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        weakContext = WeakReference<Context>(requireContext())
+        weakView = WeakReference<View>(view)
+
         // Устанавливаем заголовок
         (requireActivity() as AppCompatActivity).supportActionBar?.title = ""
 
@@ -51,7 +58,7 @@ class FragmentPriceGoodsDetail : Fragment() {
 
         // Встроенный сканер
         if (settings.getScanner() == "honeywell_eda50k")
-            honeywellEDA50K = HoneywellEDA50K(requireContext(), resultScanImpl, honeyScanPropShort())
+            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanPropShort())
 
         argPriceColl = arguments?.getParcelable("parentPriceColl")
 
@@ -81,10 +88,10 @@ class FragmentPriceGoodsDetail : Fragment() {
                         findNavController().popBackStack()
                     }
                     else
-                        showInfo(requireContext(), resources.getString(R.string.need_fill_fields)+": $missFields") {}
+                        showInfo(weakContext.get()!!, resources.getString(R.string.need_fill_fields)+": $missFields") {}
                 }
                 else
-                    showError(requireContext(), resources.getString(R.string.error_in)+
+                    showError(weakContext.get()!!, resources.getString(R.string.error_in)+
                             " FragmentPriceGoodsDetail.cardSave: "+resources.getString(R.string.error_parent_coll)) {}
             }
             else {
@@ -97,7 +104,7 @@ class FragmentPriceGoodsDetail : Fragment() {
                     findNavController().popBackStack()
                 }
                 else
-                    showInfo(requireContext(), resources.getString(R.string.need_fill_fields)+": $missFields") {}
+                    showInfo(weakContext.get()!!, resources.getString(R.string.need_fill_fields)+": $missFields") {}
             }
         }
     }
@@ -110,6 +117,7 @@ class FragmentPriceGoodsDetail : Fragment() {
     override fun onPause() {
         super.onPause()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
+        hideKeyboard(weakContext.get()!!, weakView.get())
     }
 
     override fun onDestroyView() {
@@ -130,12 +138,12 @@ class FragmentPriceGoodsDetail : Fragment() {
                         }
                     }
                     is EventsSync.Error -> {
-                        showError(requireContext(), scan.message) {}
+                        showError(weakContext.get()!!, scan.message) {}
                     }
                 }
             }catch (e: Exception) {
                 e.printStackTrace()
-                showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoodsDetail.resultScanImpl: "+e.message) {}
+                showError(weakContext.get()!!, resources.getString(R.string.error_in)+" FragmentPriceGoodsDetail.resultScanImpl: "+e.message) {}
             }
         }
     }
@@ -209,7 +217,7 @@ class FragmentPriceGoodsDetail : Fragment() {
                 id = 0L,
                 id_coll = priceColl.id_coll,
                 scancode = editScan.text.toString(),
-                scancode_type = layoutScan.helperText.toString(),
+                scancode_type = getAppContext().resources.getString(R.string.type_not_defined),
                 cena = if (editCena.text.toString().isEmpty()) 0F else editCena.text.toString().toFloat(),
                 note = editNote.text.toString(),
                 name = editName.text.toString(),

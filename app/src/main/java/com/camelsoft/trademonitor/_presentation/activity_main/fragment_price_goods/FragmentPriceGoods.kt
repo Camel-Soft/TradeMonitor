@@ -1,6 +1,7 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_price_goods
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -39,11 +40,13 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class FragmentPriceGoods : Fragment() {
 
     private lateinit var binding: FragmentPriceGoodsBinding
+    private lateinit var weakContext: WeakReference<Context>
     private val viewModel: FragmentPriceGoodsViewModel by viewModels()
     private lateinit var parentPriceColl: MPriceColl
     private val settings = Settings()
@@ -60,14 +63,16 @@ class FragmentPriceGoods : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        weakContext = WeakReference<Context>(requireContext())
+
         if (settings.getScanner() == "honeywell_eda50k")
-            honeywellEDA50K = HoneywellEDA50K(requireContext(), resultScanImpl, honeyScanPropShort())
+            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanPropShort())
 
         // Забираем данные о родительской сборке в переменную и проверяем на null
         // Если null, то показываем сообщение об ошибке и выходим
         val argPriceColl: MPriceColl? = arguments?.getParcelable("priceColl")
         if (argPriceColl == null) {
-            showError(requireContext(), resources.getString(R.string.error_in)+
+            showError(weakContext.get()!!, resources.getString(R.string.error_in)+
                     " FragmentPriceGoods.onViewCreated: "+resources.getString(R.string.error_parent_coll))
             { findNavController().popBackStack() }
         }
@@ -81,7 +86,7 @@ class FragmentPriceGoods : Fragment() {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.eventUiGoods.collect { eventUiGoods ->
                     when(eventUiGoods) {
-                        is EventUiGoods.ShowError -> { showError(requireContext(), eventUiGoods.message) {} }
+                        is EventUiGoods.ShowError -> { showError(weakContext.get()!!, eventUiGoods.message) {} }
                         is EventUiGoods.ScrollToPos -> { binding.rvGoods.scrollToPosition(eventUiGoods.position) }
                     }
                 }
@@ -98,13 +103,13 @@ class FragmentPriceGoods : Fragment() {
             // Нажатие - Удаление товара
             adapterGoods.setOnItemLongClickListener = { pos ->
                 showConfirm(
-                    context = requireContext(),
+                    context = weakContext.get()!!,
                     title = resources.getString(R.string.goods_del_title),
                     message = resources.getString(R.string.goods_del_message)+": ${adapterGoods.getList()[pos].scancode}"
                 )
                 { viewModel.onEventGoods(EventVmGoods.OnDeleteGoods(parentPriceColl, pos)) }
             }
-            binding.rvGoods.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+            binding.rvGoods.layoutManager = LinearLayoutManager(weakContext.get()!!, RecyclerView.VERTICAL,false)
             binding.rvGoods.adapter = adapterGoods
             viewModel.listPriceGoods.observe(this, { adapterGoods.submitList(it) })
             viewModel.onEventGoods(EventVmGoods.OnGetGoodes(parentPriceColl))
@@ -125,8 +130,10 @@ class FragmentPriceGoods : Fragment() {
             // Ловим Insert от detail-фрагмента (добавление вручную)
             setFragmentResultListener("DetailPriceGoods_Insert") { key, bundle ->
                 val insPriceGoods: MPriceGoods? = bundle.getParcelable("priceGoods")
+                insPriceGoods?.let {
+                    viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoodsHandmade(parentColl = parentPriceColl, priceGoods = it))
 
-
+                }
             }
 
             // Ловим Update от detail-фрагмента (обновление выбранной позиции)
@@ -153,7 +160,7 @@ class FragmentPriceGoods : Fragment() {
     private fun camStart() {
         try {
             if (!getAppContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-                showInfo(requireContext(), resources.getString(R.string.attention_cameras)) {}
+                showInfo(weakContext.get()!!, resources.getString(R.string.attention_cameras)) {}
                 return
             }
 
@@ -170,7 +177,7 @@ class FragmentPriceGoods : Fragment() {
             camLauncher.launch(scanOptions)
         }catch (e: Exception) {
             e.printStackTrace()
-            showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoods.camStart: "+e.message) {}
+            showError(weakContext.get()!!, resources.getString(R.string.error_in)+" FragmentPriceGoods.camStart: "+e.message) {}
         }
     }
 
@@ -181,7 +188,7 @@ class FragmentPriceGoods : Fragment() {
                 resultScanImpl.actionScan(EventsSync.Success(MScan(scancode = it.contents, format = it.formatName)))
         }catch (e: Exception) {
             e.printStackTrace()
-            showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoods.camLauncher: "+e.message) {}
+            showError(weakContext.get()!!, resources.getString(R.string.error_in)+" FragmentPriceGoods.camLauncher: "+e.message) {}
         }
     }
 
@@ -194,12 +201,12 @@ class FragmentPriceGoods : Fragment() {
                         viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoods(parentPriceColl, scan.data))
                     }
                     is EventsSync.Error -> {
-                        showError(requireContext(), scan.message) {}
+                        showError(weakContext.get()!!, scan.message) {}
                     }
                 }
             }catch (e: Exception) {
                 e.printStackTrace()
-                showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoods.resultScanImpl: "+e.message) {}
+                showError(weakContext.get()!!, resources.getString(R.string.error_in)+" FragmentPriceGoods.resultScanImpl: "+e.message) {}
             }
         }
     }
@@ -207,7 +214,7 @@ class FragmentPriceGoods : Fragment() {
     // Фотосканер Список
     private fun camListStart() {
         try {
-            val intent = Intent(requireContext(), ActivityCameraList::class.java)
+            val intent = Intent(weakContext.get()!!, ActivityCameraList::class.java)
             val listFormats = ArrayList<MBarcodeFormat>()
             listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_13))
             listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_8))
@@ -217,7 +224,7 @@ class FragmentPriceGoods : Fragment() {
             camListLauncher.launch(intent)
         }catch (e: Exception) {
             e.printStackTrace()
-            showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoods.camListStart: "+e.message) {}
+            showError(weakContext.get()!!, resources.getString(R.string.error_in)+" FragmentPriceGoods.camListStart: "+e.message) {}
         }
     }
 
@@ -231,7 +238,7 @@ class FragmentPriceGoods : Fragment() {
             }
         }catch (e: Exception) {
             e.printStackTrace()
-            showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoods.camListLauncher: "+e.message) {}
+            showError(weakContext.get()!!, resources.getString(R.string.error_in)+" FragmentPriceGoods.camListLauncher: "+e.message) {}
         }
     }
 
@@ -244,12 +251,12 @@ class FragmentPriceGoods : Fragment() {
                         viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoodes(parentPriceColl, scanList.data))
                     }
                     is EventsSync.Error -> {
-                        showError(requireContext(), scanList.message) {}
+                        showError(weakContext.get()!!, scanList.message) {}
                     }
                 }
             }catch (e: Exception) {
                 e.printStackTrace()
-                showError(requireContext(), resources.getString(R.string.error_in)+" FragmentPriceGoods.resultScanListImpl: "+e.message) {}
+                showError(weakContext.get()!!, resources.getString(R.string.error_in)+" FragmentPriceGoods.resultScanListImpl: "+e.message) {}
             }
         }
     }

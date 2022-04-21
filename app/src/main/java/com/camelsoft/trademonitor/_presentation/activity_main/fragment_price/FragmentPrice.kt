@@ -1,5 +1,6 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_price
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,10 +17,12 @@ import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor.databinding.FragmentPriceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class FragmentPrice : Fragment() {
     private lateinit var binding: FragmentPriceBinding
+    private lateinit var weakContext: WeakReference<Context>
     private val viewModel: FragmentPriceViewModel by viewModels()
 
     override fun onCreateView(
@@ -34,9 +37,11 @@ class FragmentPrice : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        weakContext = WeakReference<Context>(requireContext())
+
         // Дабавить пустую сборку
         binding.btnAddColl.setOnClickListener {
-            showConfirm(requireContext(),
+            showConfirm(weakContext.get()!!,
                 resources.getString(R.string.coll_add_title),
                 resources.getString(R.string.coll_add_message)) {
                 viewModel.onEventPrice(EventVmPrice.OnAddCollClick)
@@ -47,7 +52,7 @@ class FragmentPrice : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventUiPrice.collect { eventUiPrice ->
                 when(eventUiPrice) {
-                    is EventUiPrice.ShowError -> { showError(requireContext(), eventUiPrice.message) {} }
+                    is EventUiPrice.ShowError -> { showError(weakContext.get()!!, eventUiPrice.message) {} }
                     is EventUiPrice.ScrollToPos -> { binding.rvColl.scrollToPosition(eventUiPrice.position)}
                 }
             }
@@ -64,7 +69,7 @@ class FragmentPrice : Fragment() {
 
         }
         adapterColl.clickBtnDelete = { pos ->
-            showConfirm(requireContext(),
+            showConfirm(weakContext.get()!!,
                 resources.getString(R.string.coll_del_title),
                 resources.getString(R.string.coll_del_message)+": ${adapterColl.getList()[pos].note}") {
                 viewModel.onEventPrice(EventVmPrice.OnDeleteCollClick(pos))
@@ -73,7 +78,7 @@ class FragmentPrice : Fragment() {
         adapterColl.clickBtnUpdate = {
             viewModel.onEventPrice(EventVmPrice.OnUpdateCollClick(it.int, it.string))
         }
-        binding.rvColl.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+        binding.rvColl.layoutManager = LinearLayoutManager(weakContext.get()!!, RecyclerView.VERTICAL,false)
         binding.rvColl.adapter = adapterColl
         viewModel.listPriceColl.observe(this, { adapterColl.submitList(it) })
         viewModel.onEventPrice(EventVmPrice.OnGetColl)

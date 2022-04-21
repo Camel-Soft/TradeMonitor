@@ -19,6 +19,7 @@
     <string name="updated">Обновлено</string>
     <string name="change">Изменить</string>
     <string name="insert_hand">Добавить вручную</string>
+    <string name="type_not_defined">Тип не определен</string>
 
     <string name="scancode">Сканкод</string>
     <string name="cena">Цена</string>

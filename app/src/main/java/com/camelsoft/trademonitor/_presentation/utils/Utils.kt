@@ -1,5 +1,8 @@
 package com.camelsoft.trademonitor._presentation.utils
 
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor.common.App
 
@@ -64,5 +67,12 @@ fun getHolderColor(codeColor: String): Int {
         "8" -> R.color.rv_goods_8
         "9" -> R.color.rv_goods_9
         else -> R.color.white
+    }
+}
+
+fun hideKeyboard(context: Context, view: View?) {
+    view?.let {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(it.windowToken, 0)
     }
 }

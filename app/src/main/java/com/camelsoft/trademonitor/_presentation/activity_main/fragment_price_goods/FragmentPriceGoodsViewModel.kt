@@ -46,8 +46,9 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         val returnPriceGoods = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
+                            val scrollPos = it.indexOf(returnPriceGoods)
                             if (it.isNotEmpty()) {
-                                if (returnPriceGoods.id != 0L) sendEventUiGoods(EventUiGoods.ScrollToPos(it.indexOf(returnPriceGoods)))
+                                if (returnPriceGoods.id != 0L && scrollPos >= 0) sendEventUiGoods(EventUiGoods.ScrollToPos(scrollPos))
                                 else sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
                             }
                             countGoodes = it.count()
@@ -69,8 +70,30 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         }
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
+                            val scrollPos = it.indexOf(returnPriceGoods)
                             if (it.isNotEmpty()) {
-                                if (returnPriceGoods?.id != 0L) sendEventUiGoods(EventUiGoods.ScrollToPos(it.indexOf(returnPriceGoods)))
+                                if (returnPriceGoods?.id != 0L && scrollPos >= 0) sendEventUiGoods(EventUiGoods.ScrollToPos(scrollPos))
+                                else sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
+                            }
+                            countGoodes = it.count()
+                            useCaseStorageCollUpdate.execute(priceColl = MPriceColl(
+                                id_coll = eventVmGoods.parentColl.id_coll,
+                                created = eventVmGoods.parentColl.created,
+                                changed = System.currentTimeMillis(),
+                                total = countGoodes,
+                                note = eventVmGoods.parentColl.note
+                            ))
+                        }
+                    }
+                }
+                is EventVmGoods.OnInsertOrUpdateGoodsHandmade -> {
+                    viewModelScope.launch {
+                        val returnPriceGoods = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = eventVmGoods.priceGoods)
+                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
+                        _listPriceGoods.value?.let {
+                            val scrollPos = it.indexOf(returnPriceGoods)
+                            if (it.isNotEmpty()) {
+                                if (returnPriceGoods.id != 0L && scrollPos >= 0) sendEventUiGoods(EventUiGoods.ScrollToPos(scrollPos))
                                 else sendEventUiGoods(EventUiGoods.ScrollToPos(it.size-1))
                             }
                             countGoodes = it.count()
