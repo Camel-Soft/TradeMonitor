@@ -54,7 +54,7 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
         fun bind (priceGoods: MPriceGoods) {
             binding.apply {
                 textScancode.text = priceGoods.scancode
-                textScancodeType.text = priceGoods.scancode_type
+                textScancodeType.text = getScanType(priceGoods.scancode_type)
                 textName.text = priceGoods.name
                 textNote.text = priceGoods.note
                 textCena.text = toMoney(priceGoods.cena)+" "+getAppContext().resources.getString(R.string.money)

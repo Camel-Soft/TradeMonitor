@@ -173,7 +173,7 @@ class FragmentPriceGoodsViewModel @Inject constructor(
             note = "",
             name = "",
             quantity = 1F,
-            ed_izm = App.getAppContext().resources.getString(R.string.ed_sht),
+            ed_izm = "",
             status_code = if (checkBarcode(prefix = settings.getPrefix(), barcode = scan.scancode)) 0 else 1,
             holder_color = colorIdFromList
         )

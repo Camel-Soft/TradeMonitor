@@ -192,7 +192,7 @@ class FragmentPriceGoodsDetail : Fragment() {
                 textError.text = getErrMess(it.status_code).first
                 textError.setTextColor(getAppContext().getColor(getErrMess(it.status_code).second))
                 editScan.setText(it.scancode)
-                layoutScan.helperText = it.scancode_type
+                layoutScan.helperText = getScanType(it.scancode_type)
                 editQuantity.setText(toQuantity(it.quantity))
                 editEdIzm.setText(it.ed_izm)
                 editCena.setText(toMoney(it.cena))
@@ -217,7 +217,7 @@ class FragmentPriceGoodsDetail : Fragment() {
                 id = 0L,
                 id_coll = priceColl.id_coll,
                 scancode = editScan.text.toString(),
-                scancode_type = getAppContext().resources.getString(R.string.type_not_defined),
+                scancode_type = "SCANCODE_TYPE_NOT_DEFINED",
                 cena = if (editCena.text.toString().isEmpty()) 0F else editCena.text.toString().toFloat(),
                 note = editNote.text.toString(),
                 name = editName.text.toString(),
