@@ -5,7 +5,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor.common.App
-import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 
 fun getWrkCode(code: Int): Int {
     return code / 100
@@ -68,20 +67,6 @@ fun getHolderColor(codeColor: String): Int {
         "8" -> R.color.rv_goods_8
         "9" -> R.color.rv_goods_9
         else -> R.color.white
-    }
-}
-
-fun getScanType(sysString: String): String {
-    return when(sysString) {
-        "EAN_13" -> getAppContext().resources.getString(R.string.ean_13)
-        "EAN_8" -> getAppContext().resources.getString(R.string.ean_8)
-        "UPC_A" -> getAppContext().resources.getString(R.string.upc_a)
-        "UPC_E" -> getAppContext().resources.getString(R.string.upc_e)
-        "QR_CODE" -> getAppContext().resources.getString(R.string.qr_code)
-        "PDF_417" -> getAppContext().resources.getString(R.string.pdf_417)
-        "EAN_13_WEIGHT" -> getAppContext().resources.getString(R.string.ean_13_weight)
-        "SCANCODE_TYPE_NOT_DEFINED" -> getAppContext().resources.getString(R.string.scancode_type_not_defined)
-        else -> sysString
     }
 }
 

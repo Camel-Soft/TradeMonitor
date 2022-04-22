@@ -20,6 +20,8 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
+import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -213,11 +215,12 @@ class FragmentPriceGoodsDetail : Fragment() {
 
     private fun collectForInsert(priceColl: MPriceColl): MPriceGoods {
         binding.apply {
+            val barcode = editScan.text.toString()
             return MPriceGoods(
                 id = 0L,
                 id_coll = priceColl.id_coll,
-                scancode = editScan.text.toString(),
-                scancode_type = "SCANCODE_TYPE_NOT_DEFINED",
+                scancode = barcode,
+                scancode_type = pickBarcodeType(barcode),
                 cena = if (editCena.text.toString().isEmpty()) 0F else editCena.text.toString().toFloat(),
                 note = editNote.text.toString(),
                 name = editName.text.toString(),
