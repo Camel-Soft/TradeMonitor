@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor._presentation.utils.shareFile
 import com.camelsoft.trademonitor.databinding.FragmentPriceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -52,22 +53,26 @@ class FragmentPrice : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.eventUiPrice.collect { eventUiPrice ->
                 when(eventUiPrice) {
-                    is EventUiPrice.ShowError -> { showError(weakContext.get()!!, eventUiPrice.message) {} }
-                    is EventUiPrice.ScrollToPos -> { binding.rvColl.scrollToPosition(eventUiPrice.position)}
+                    is EventUiPrice.ShowErrorUi -> showError(weakContext.get()!!, eventUiPrice.message) {}
+                    is EventUiPrice.ScrollToPos -> binding.rvColl.scrollToPosition(eventUiPrice.position)
+                    is EventUiPrice.ShareFile -> shareFile(weakContext.get()!!, eventUiPrice.file, eventUiPrice.sign)
                 }
             }
         }
 
         // Список сборок
         val adapterColl = FragmentPriceAdapter()
+        // Выбрать сборку
         adapterColl.clickHolder = { pos ->
             val bundle = Bundle()
             bundle.putParcelable("priceColl", adapterColl.getList()[pos])
             findNavController().navigate(R.id.action_fragGraphPrice_to_fragGraphPriceGoods, bundle)
         }
+        // Отправить (Share) сборку
         adapterColl.clickBtnShare = { pos ->
-
+            viewModel.onEventPrice(EventVmPrice.OnShareCollClick(pos))
         }
+        // Удалить сборку
         adapterColl.clickBtnDelete = { pos ->
             showConfirm(weakContext.get()!!,
                 resources.getString(R.string.coll_del_title),
@@ -75,6 +80,7 @@ class FragmentPrice : Fragment() {
                 viewModel.onEventPrice(EventVmPrice.OnDeleteCollClick(pos))
             }
         }
+        // Обновить сборку (примечание)
         adapterColl.clickBtnUpdate = {
             viewModel.onEventPrice(EventVmPrice.OnUpdateCollClick(it.int, it.string))
         }

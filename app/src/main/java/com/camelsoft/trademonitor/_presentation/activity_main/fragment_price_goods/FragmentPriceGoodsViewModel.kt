@@ -152,7 +152,7 @@ class FragmentPriceGoodsViewModel @Inject constructor(
         }catch (e: Exception) {
             e.printStackTrace()
             sendEventUiGoods(
-                EventUiGoods.ShowError(
+                EventUiGoods.ShowErrorUi(
                     App.getAppContext().resources.getString(R.string.error_in)+
                     " FragmentPriceGoodsViewModel.onEventGoods: "+e.message))
         }

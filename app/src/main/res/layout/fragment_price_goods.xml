@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:soundEffectsEnabled="true"
-            app:srcCompat="@drawable/img_plus_32"
+            app:srcCompat="@drawable/img_hand_32"
             app:tint="@color/black"
             app:backgroundTint="@color/yellow_300"
             app:borderWidth="2dp"

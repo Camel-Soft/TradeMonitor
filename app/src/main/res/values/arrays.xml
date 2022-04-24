@@ -1,4 +1,5 @@
 <resources>
+
     <!-- Settings Scanner -->
     <string-array name="scanner_entries">
         <item>@string/entry_scanner_empty</item>
@@ -9,4 +10,18 @@
         <item>empty</item>
         <item>honeywell_eda50k</item>
     </string-array>
+
+    <!-- Settings Export File Format -->
+    <string-array name="export_file_format_entries">
+        <item>@string/export_file_format_excel</item>
+        <item>@string/export_file_format_south</item>
+        <item>@string/export_file_format_json</item>
+    </string-array>
+
+    <string-array name="export_file_format_values">
+        <item>excel</item>
+        <item>south</item>
+        <item>json</item>
+    </string-array>
+
 </resources>

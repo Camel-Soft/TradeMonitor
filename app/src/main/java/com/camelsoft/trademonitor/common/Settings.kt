@@ -13,6 +13,12 @@ class Settings {
 
     }
 
+    fun getExportFileFormat(): String {
+        var format = "excel"
+        prefManager.getString("export_file_format", "excel")?.let { format = it }
+        return format
+    }
+
     fun getScanner(): String {
         var scanner = "empty"
         prefManager.getString("scanner", "empty")?.let { scanner = it }

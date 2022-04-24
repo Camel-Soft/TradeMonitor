@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MPriceColl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelSheet
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollDelete
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollUpdate
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.events.EventsSync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,7 +25,9 @@ class FragmentPriceViewModel @Inject constructor(
     private val useCaseStorageCollDelete: UseCaseStorageCollDelete,
     private val useCaseStorageCollInsert: UseCaseStorageCollInsert,
     private val useCaseStorageCollUpdate: UseCaseStorageCollUpdate,
-    private val useCaseStorageCollGetAll: UseCaseStorageCollGetAll
+    private val useCaseStorageCollGetAll: UseCaseStorageCollGetAll,
+    private val settings: Settings,
+    private val useCaseExportExcelSheet: UseCaseExportExcelSheet
 ) : ViewModel() {
 
     private val _eventUiPrice =  Channel<EventUiPrice>()
@@ -60,6 +65,29 @@ class FragmentPriceViewModel @Inject constructor(
                         }
                     }
                 }
+
+                is EventVmPrice.OnShareCollClick -> {
+                    viewModelScope.launch {
+                        _listPriceColl.value?.let {
+                            when (settings.getExportFileFormat()) {
+                                "excel" -> {
+                                    when (val answerExcel = useCaseExportExcelSheet.execute(priceColl = it[eventVmPrice.pos])) {
+                                        is EventsSync.Success -> sendEventUiPrice(EventUiPrice.ShareFile(file = answerExcel.data, sign = it[eventVmPrice.pos].note))
+                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerExcel.message))
+                                    }
+                                }
+                                "south" -> {}
+                                "json" -> {}
+                                else -> {
+                                    sendEventUiPrice(EventUiPrice.ShowErrorUi(getAppContext().resources.getString(R.string.error_in)+
+                                            " FragmentPriceViewModel.onEventPrice.EventVmPrice.OnShareCollClick: "+
+                                            getAppContext().resources.getString(R.string.error_export_file_format)))
+                                }
+                            }
+                        }
+                    }
+                }
+
                 is EventVmPrice.OnGetColl -> {
                     viewModelScope.launch {
                         _listPriceColl.value = useCaseStorageCollGetAll.execute()
@@ -68,7 +96,7 @@ class FragmentPriceViewModel @Inject constructor(
             }
         }catch (e: Exception) {
             e.printStackTrace()
-            sendEventUiPrice(EventUiPrice.ShowError(getAppContext().resources.getString(R.string.error_in)+
+            sendEventUiPrice(EventUiPrice.ShowErrorUi(getAppContext().resources.getString(R.string.error_in)+
                     " FragmentPriceViewModel.onEventPrice: "+e.message))
         }
     }

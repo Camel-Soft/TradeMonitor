@@ -86,7 +86,7 @@ class FragmentPriceGoods : Fragment() {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.eventUiGoods.collect { eventUiGoods ->
                     when(eventUiGoods) {
-                        is EventUiGoods.ShowError -> { showError(weakContext.get()!!, eventUiGoods.message) {} }
+                        is EventUiGoods.ShowErrorUi -> { showError(weakContext.get()!!, eventUiGoods.message) {} }
                         is EventUiGoods.ScrollToPos -> { binding.rvGoods.scrollToPosition(eventUiGoods.position) }
                     }
                 }

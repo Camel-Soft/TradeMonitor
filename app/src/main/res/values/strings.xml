@@ -11,7 +11,6 @@
     <string name="menu">Меню</string>
     <string name="generals">Основные</string>
     <string name="systems">Системные</string>
-    <string name="optional">Дополнительно</string>
     <string name="torch">Фонарик</string>
     <string name="collection">Сборка</string>
     <string name="money">руб</string>
@@ -19,13 +18,17 @@
     <string name="updated">Обновлено</string>
     <string name="change">Изменить</string>
     <string name="insert_hand">Добавить вручную</string>
+    <string name="sheet_1">Лист 1</string>
+    <string name="rec_total">Записей всего</string>
 
     <string name="scancode">Сканкод</string>
+    <string name="scancode_type">Тип сканкода</string>
     <string name="cena">Цена</string>
     <string name="note">Примечание</string>
     <string name="name">Наименование</string>
     <string name="quantity">Количество</string>
     <string name="ed_izm">Единицы измерения</string>
+    <string name="status">Статус</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -36,6 +39,8 @@
     <string name="error_root_fragment_id">Id корневого фрагмента не определен</string>
     <string name="error_parent_coll">Сборка не определена</string>
     <string name="error_scancode">! Сканкод</string>
+    <string name="error_clear_file">Невозможно очистить файл, вероятно, он занят другим приложением</string>
+    <string name="error_export_file_format">Формат файла для экспорта не определен</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
@@ -67,10 +72,18 @@
     <string name="ed_kg">кг</string>
 
     <!-- Entry Weight-Goods -->
-    <string name="entry_weight_goods">Весовой товар</string>
+    <string name="weight_goods">Весовой товар</string>
     <string name="entry_weight_prefix">Префикс весового товара</string>
 
-    <!-- Entry Scanner -->
+    <!-- Entry Export -->
+    <string name="export">Экспорт</string>
+    <string name="export_file_format_title">Формат файла для экспорта</string>
+    <string name="export_file_format_excel">Excel</string>
+    <string name="export_file_format_south">South</string>
+    <string name="export_file_format_json">JSON</string>
+
+    <!-- Entry Devices -->
+    <string name="devices">Устройства</string>
     <string name="entry_scanner_title">Встроенный сканер</string>
     <string name="entry_scanner_empty">Отсутствует</string>
     <string name="entry_scanner_HoneywellEDA50K">Honeywell EDA50K</string>

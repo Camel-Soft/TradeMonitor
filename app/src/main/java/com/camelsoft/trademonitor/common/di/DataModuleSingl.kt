@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
 import com.camelsoft.trademonitor._data.storage.room.RoomImpl
+import com.camelsoft.trademonitor._domain.utils.ExcelWriteSheet
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -36,5 +37,11 @@ object DataModuleSingl {
     @Singleton
     fun provideSettings(): Settings {
         return Settings()
+    }
+
+    @Provides
+    @Singleton
+    fun provideExcelWriteSheet(): ExcelWriteSheet {
+        return ExcelWriteSheet()
     }
 }
