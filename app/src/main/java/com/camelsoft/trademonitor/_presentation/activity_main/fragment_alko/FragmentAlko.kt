@@ -13,8 +13,8 @@ import java.lang.ref.WeakReference
 class FragmentAlko : Fragment() {
 
     private lateinit var binding: FragmentAlkoBinding
-    private val settings = Settings()
     private lateinit var weakContext: WeakReference<Context>
+    private val settings = Settings()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

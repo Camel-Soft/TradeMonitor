@@ -6,6 +6,7 @@ import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
 import com.camelsoft.trademonitor._data.storage.room.RoomImpl
 import com.camelsoft.trademonitor._domain.utils.ExcelWriteSheet
+import com.camelsoft.trademonitor._domain.utils.SouthRevision
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -43,5 +44,11 @@ object DataModuleSingl {
     @Singleton
     fun provideExcelWriteSheet(): ExcelWriteSheet {
         return ExcelWriteSheet()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSouthRevision(): SouthRevision {
+        return SouthRevision()
     }
 }

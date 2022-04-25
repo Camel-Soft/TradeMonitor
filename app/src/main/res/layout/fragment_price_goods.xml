@@ -51,7 +51,7 @@
             android:id="@+id/btnScan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="42dp"
+            android:layout_marginEnd="48dp"
             android:soundEffectsEnabled="true"
             app:srcCompat="@drawable/img_camera_30"
             app:tint="@color/black"

@@ -1,14 +1,18 @@
 <resources>
     <string name="app_name">Trade Monitor</string>
     <string name="developer_email">development.camelsoft@gmail.com</string>
+    <string name="developer_write">Написать разработчику</string>
+    <string name="developer_request">Вопрос по мобильному приложению Trade Monitor</string>
     <string name="back_pressed">Нажмите еще раз, чтобы выйти</string>
     <string name="add_collection">Добавить сборку</string>
+    <string name="about">Написать разработчику</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
     <string name="exit">Выход</string>
     <string name="save">Сохранить</string>
     <string name="menu">Меню</string>
+    <string name="version">Версия</string>
     <string name="generals">Основные</string>
     <string name="systems">Системные</string>
     <string name="torch">Фонарик</string>
@@ -40,6 +44,7 @@
     <string name="error_parent_coll">Сборка не определена</string>
     <string name="error_scancode">! Сканкод</string>
     <string name="error_clear_file">Невозможно очистить файл, вероятно, он занят другим приложением</string>
+    <string name="error_create_file">Невозможно создать файл</string>
     <string name="error_export_file_format">Формат файла для экспорта не определен</string>
 
     <string name="attention">Внимание</string>
@@ -79,7 +84,7 @@
     <string name="export">Экспорт</string>
     <string name="export_file_format_title">Формат файла для экспорта</string>
     <string name="export_file_format_excel">Excel</string>
-    <string name="export_file_format_south">South</string>
+    <string name="export_file_format_south_revision">South Ревизия</string>
     <string name="export_file_format_json">JSON</string>
 
     <!-- Entry Devices -->

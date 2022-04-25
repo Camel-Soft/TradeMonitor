@@ -14,13 +14,13 @@
     <!-- Settings Export File Format -->
     <string-array name="export_file_format_entries">
         <item>@string/export_file_format_excel</item>
-        <item>@string/export_file_format_south</item>
+        <item>@string/export_file_format_south_revision</item>
         <item>@string/export_file_format_json</item>
     </string-array>
 
     <string-array name="export_file_format_values">
         <item>excel</item>
-        <item>south</item>
+        <item>south_rev</item>
         <item>json</item>
     </string-array>
 

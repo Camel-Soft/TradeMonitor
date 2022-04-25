@@ -31,6 +31,11 @@
                 android:title="@string/settings"
                 android:contentDescription="@string/settings"/>
             <item
+                android:id="@+id/navMenuAbout"
+                android:icon="@drawable/img_about_24"
+                android:title="@string/about"
+                android:contentDescription="@string/about"/>
+            <item
                 android:id="@+id/navMenuExit"
                 android:icon="@drawable/img_door_24"
                 android:title="@string/exit"

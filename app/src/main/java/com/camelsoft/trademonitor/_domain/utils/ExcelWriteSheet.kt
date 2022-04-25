@@ -68,7 +68,6 @@ class ExcelWriteSheet {
             e.printStackTrace()
             throw Exception(getAppContext().resources.getString(R.string.error_in)+" ExcelWriteSheet.open: "+e.message)
         }
-
     }
 
     fun writeTitle(column: Int, row: Int, cont: String) {
