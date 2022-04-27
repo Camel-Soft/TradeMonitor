@@ -5,8 +5,9 @@ import androidx.room.Room
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
 import com.camelsoft.trademonitor._data.storage.room.RoomImpl
-import com.camelsoft.trademonitor._domain.utils.ExcelWriteSheet
-import com.camelsoft.trademonitor._domain.utils.SouthRevision
+import com.camelsoft.trademonitor._domain.utils.ExportExcelSheet
+import com.camelsoft.trademonitor._domain.utils.ExportJsonGoodes
+import com.camelsoft.trademonitor._domain.utils.ExportSouthRevision
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -42,13 +43,19 @@ object DataModuleSingl {
 
     @Provides
     @Singleton
-    fun provideExcelWriteSheet(): ExcelWriteSheet {
-        return ExcelWriteSheet()
+    fun provideExportExcelSheet(): ExportExcelSheet {
+        return ExportExcelSheet()
     }
 
     @Provides
     @Singleton
-    fun provideSouthRevision(): SouthRevision {
-        return SouthRevision()
+    fun provideExportSouthRevision(): ExportSouthRevision {
+        return ExportSouthRevision()
+    }
+
+    @Provides
+    @Singleton
+    fun provideExportJsonGoodes(): ExportJsonGoodes {
+        return ExportJsonGoodes()
     }
 }

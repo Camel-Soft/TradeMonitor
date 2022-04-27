@@ -20,5 +20,8 @@ class FragmentSettings : PreferenceFragmentCompat() {
             it.filters = arrayOf<InputFilter>(LengthFilter(2))
             it.setSelection(it.text.length)
         }
+        editWeight?.setOnPreferenceChangeListener { preference, newValue ->
+            newValue.toString().length == 2
+        }
     }
 }

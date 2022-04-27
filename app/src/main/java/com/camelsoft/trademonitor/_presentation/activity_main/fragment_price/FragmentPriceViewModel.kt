@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MPriceColl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelSheet
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonGoodes
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportSouthRevision
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollDelete
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollGetAll
@@ -29,7 +30,8 @@ class FragmentPriceViewModel @Inject constructor(
     private val useCaseStorageCollGetAll: UseCaseStorageCollGetAll,
     private val settings: Settings,
     private val useCaseExportExcelSheet: UseCaseExportExcelSheet,
-    private val useCaseExportSouthRevision: UseCaseExportSouthRevision
+    private val useCaseExportSouthRevision: UseCaseExportSouthRevision,
+    private val useCaseExportJsonGoodes: UseCaseExportJsonGoodes
 ) : ViewModel() {
 
     private val _eventUiPrice =  Channel<EventUiPrice>()
@@ -83,7 +85,12 @@ class FragmentPriceViewModel @Inject constructor(
                                         is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
                                     }
                                 }
-                                "json" -> {}
+                                "json" -> {
+                                    when (val answerJsonGoodes = useCaseExportJsonGoodes.execute(priceColl = it[eventVmPrice.pos])) {
+                                        is EventsSync.Success -> sendEventUiPrice(EventUiPrice.ShareFile(file = answerJsonGoodes.data, sign = it[eventVmPrice.pos].note))
+                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerJsonGoodes.message))
+                                    }
+                                }
                                 else -> {
                                     sendEventUiPrice(EventUiPrice.ShowErrorUi(getAppContext().resources.getString(R.string.error_in)+
                                             " FragmentPriceViewModel.onEventPrice.EventVmPrice.OnShareCollClick: "+

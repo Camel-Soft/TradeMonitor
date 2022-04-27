@@ -3,34 +3,32 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_export
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._domain.models.MPriceColl
-import com.camelsoft.trademonitor._domain.utils.ExportSouthRevision
+import com.camelsoft.trademonitor._domain.utils.ExportJsonGoodes
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.events.EventsSync
 import java.io.File
 import javax.inject.Inject
 
-class UseCaseExportSouthRevision @Inject constructor(
+class UseCaseExportJsonGoodes @Inject constructor(
     private val iRoom: IRoom,
-    private val exportSouthRevision: ExportSouthRevision
+    private val exportJsonGoodes: ExportJsonGoodes
 ) {
     suspend fun execute(priceColl: MPriceColl): EventsSync<File> {
         try {
-            exportSouthRevision.open()
-
-            // Заполение данными
+            exportJsonGoodes.open()
             val list = iRoom.getRoomGoodes(id_coll = priceColl.id_coll)
-            list.forEach { priceGoods ->
-                exportSouthRevision.add(scancode = priceGoods.scancode, quantity = priceGoods.quantity)
+            list.forEach {
+                exportJsonGoodes.addToArrayGoodes(exportJsonGoodes.createGoods(it))
             }
-
-            exportSouthRevision.close()
-            return EventsSync.Success(exportSouthRevision.getFile())
+            exportJsonGoodes.createFinalJson(priceColl = priceColl)
+            exportJsonGoodes.close()
+            return EventsSync.Success(exportJsonGoodes.getFile())
         }
         catch (e: Exception) {
             e.printStackTrace()
             return EventsSync.Error(
                 App.getAppContext().resources.getString(R.string.error_in)+
-                        " UseCaseExportSouthRevision.execute: "+e.message
+                        " UseCaseExportJsonGoodes.execute: "+e.message
             )
         }
     }

@@ -6,7 +6,7 @@ import com.camelsoft.trademonitor.common.App
 import java.io.File
 import java.io.FileWriter
 
-class SouthRevision {
+class ExportSouthRevision {
     private var fileName = "OUT720L.TXT"
     private lateinit var file: File
     private lateinit var fileWriter: FileWriter
@@ -19,18 +19,18 @@ class SouthRevision {
             file.delete()
             if (file.exists()) throw Exception(
                 App.getAppContext().resources.getString(R.string.error_in)+
-                        " SouthRevision.open: "+ App.getAppContext().resources.getString(R.string.error_clear_file)
+                        " ExportSouthRevision.open: "+ App.getAppContext().resources.getString(R.string.error_clear_file)
             )
             if (!file.createNewFile()) throw Exception(
                 App.getAppContext().resources.getString(R.string.error_in)+
-                        " SouthRevision.open: "+ App.getAppContext().resources.getString(R.string.error_create_file)
+                        " ExportSouthRevision.open: "+ App.getAppContext().resources.getString(R.string.error_create_file)
             )
 
             fileWriter = FileWriter(file)
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" SouthRevision.open: "+e.message)
+            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" ExportSouthRevision.open: "+e.message)
         }
     }
 
@@ -43,7 +43,7 @@ class SouthRevision {
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" SouthRevision.add: "+e.message)
+            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" ExportSouthRevision.add: "+e.message)
         }
     }
 
@@ -54,7 +54,7 @@ class SouthRevision {
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" SouthRevision.close: "+e.message)
+            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" ExportSouthRevision.close: "+e.message)
         }
     }
 

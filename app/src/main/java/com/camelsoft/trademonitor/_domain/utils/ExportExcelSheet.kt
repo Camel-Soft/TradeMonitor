@@ -9,7 +9,7 @@ import jxl.write.*
 import jxl.write.Number
 import java.io.File
 
-class ExcelWriteSheet {
+class ExportExcelSheet {
     private var fileName = "ExportExcel.xls"
     private lateinit var file: File
     private lateinit var workbook: WritableWorkbook
@@ -27,7 +27,7 @@ class ExcelWriteSheet {
             file.delete()
             if (file.exists()) throw Exception(
                 getAppContext().resources.getString(R.string.error_in)+
-                        " ExcelWriteSheet.open: "+getAppContext().resources.getString(R.string.error_clear_file)
+                        " ExportExcelSheet.open: "+getAppContext().resources.getString(R.string.error_clear_file)
             )
             workbook = Workbook.createWorkbook(file)
             sheet1 = workbook.createSheet(getAppContext().resources.getString(R.string.sheet_1), 0)
@@ -66,7 +66,7 @@ class ExcelWriteSheet {
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception(getAppContext().resources.getString(R.string.error_in)+" ExcelWriteSheet.open: "+e.message)
+            throw Exception(getAppContext().resources.getString(R.string.error_in)+" ExportExcelSheet.open: "+e.message)
         }
     }
 
@@ -101,7 +101,7 @@ class ExcelWriteSheet {
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception(getAppContext().resources.getString(R.string.error_in)+" ExcelWriteSheet.close: "+e.message)
+            throw Exception(getAppContext().resources.getString(R.string.error_in)+" ExportExcelSheet.close: "+e.message)
         }
     }
 

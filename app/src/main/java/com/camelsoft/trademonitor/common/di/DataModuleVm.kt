@@ -2,10 +2,12 @@ package com.camelsoft.trademonitor.common.di
 
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelSheet
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonGoodes
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportSouthRevision
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
-import com.camelsoft.trademonitor._domain.utils.ExcelWriteSheet
-import com.camelsoft.trademonitor._domain.utils.SouthRevision
+import com.camelsoft.trademonitor._domain.utils.ExportExcelSheet
+import com.camelsoft.trademonitor._domain.utils.ExportJsonGoodes
+import com.camelsoft.trademonitor._domain.utils.ExportSouthRevision
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -73,13 +75,19 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
-    fun provideUseCaseExportExcelSheet(iRoom: IRoom, excel: ExcelWriteSheet): UseCaseExportExcelSheet {
-        return UseCaseExportExcelSheet(iRoom = iRoom, excel = excel)
+    fun provideUseCaseExportExcelSheet(iRoom: IRoom, exportExcelSheet: ExportExcelSheet): UseCaseExportExcelSheet {
+        return UseCaseExportExcelSheet(iRoom = iRoom, exportExcelSheet = exportExcelSheet)
     }
 
     @Provides
     @ViewModelScoped
-    fun provideUseCaseExportSouthRevision(iRoom: IRoom, southRevision: SouthRevision): UseCaseExportSouthRevision {
-        return UseCaseExportSouthRevision(iRoom = iRoom, southRevision = southRevision)
+    fun provideUseCaseExportSouthRevision(iRoom: IRoom, exportSouthRevision: ExportSouthRevision): UseCaseExportSouthRevision {
+        return UseCaseExportSouthRevision(iRoom = iRoom, exportSouthRevision = exportSouthRevision)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseExportJsonGoodes(iRoom: IRoom, exportJsonGoodes: ExportJsonGoodes): UseCaseExportJsonGoodes {
+        return UseCaseExportJsonGoodes(iRoom = iRoom, exportJsonGoodes = exportJsonGoodes)
     }
 }
