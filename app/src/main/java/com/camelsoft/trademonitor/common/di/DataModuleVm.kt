@@ -90,4 +90,52 @@ object DataModuleVm {
     fun provideUseCaseExportJsonGoodes(iRoom: IRoom, exportJsonGoodes: ExportJsonGoodes): UseCaseExportJsonGoodes {
         return UseCaseExportJsonGoodes(iRoom = iRoom, exportJsonGoodes = exportJsonGoodes)
     }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoCollDelete(iRoom: IRoom): UseCaseStorageAlkoCollDelete {
+        return UseCaseStorageAlkoCollDelete(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoCollGetAll(iRoom: IRoom): UseCaseStorageAlkoCollGetAll {
+        return UseCaseStorageAlkoCollGetAll(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoCollInsert(iRoom: IRoom): UseCaseStorageAlkoCollInsert {
+        return UseCaseStorageAlkoCollInsert(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoCollUpdate(iRoom: IRoom): UseCaseStorageAlkoCollUpdate {
+        return UseCaseStorageAlkoCollUpdate(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoMarkDelete(iRoom: IRoom): UseCaseStorageAlkoMarkDelete {
+        return UseCaseStorageAlkoMarkDelete(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoMarkGetAll(iRoom: IRoom): UseCaseStorageAlkoMarkGetAll {
+        return UseCaseStorageAlkoMarkGetAll(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoMarkInsertOrUpdate(iRoom: IRoom): UseCaseStorageAlkoMarkInsertOrUpdate {
+        return UseCaseStorageAlkoMarkInsertOrUpdate(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseStorageAlkoMarkUpdate(iRoom: IRoom): UseCaseStorageAlkoMarkUpdate {
+        return UseCaseStorageAlkoMarkUpdate(iRoom = iRoom)
+    }
 }
