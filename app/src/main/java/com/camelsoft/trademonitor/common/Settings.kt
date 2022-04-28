@@ -13,6 +13,12 @@ class Settings {
 
     }
 
+    fun getAutoCorrBarcode(): Boolean {
+        var autoCorrBar = true
+        prefManager.getBoolean("barcode_autocorrection", true).let { autoCorrBar = it }
+        return autoCorrBar
+    }
+
     fun getExportFileFormat(): String {
         var format = "excel"
         prefManager.getString("export_file_format", "excel")?.let { format = it }

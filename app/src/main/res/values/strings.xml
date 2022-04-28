@@ -80,6 +80,9 @@
     <string name="weight_goods">Весовой товар</string>
     <string name="entry_weight_prefix">Префикс весового товара</string>
 
+    <!-- Entry Scancode -->
+    <string name="barcode_autocorrection">Автокоррекция баркода</string>
+
     <!-- Entry Export -->
     <string name="export">Экспорт</string>
     <string name="export_file_format_title">Формат файла для экспорта</string>

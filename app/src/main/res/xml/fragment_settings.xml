@@ -15,6 +15,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:title="@string/scancode"
+        app:icon="@drawable/img_scanner_qr_24">
+
+        <SwitchPreference
+            android:title="@string/barcode_autocorrection"
+            android:defaultValue="true"
+            android:key="barcode_autocorrection" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:title="@string/export"
         app:icon="@drawable/img_share_24">
 

@@ -20,6 +20,7 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.utils.scan.barcodeAutoCorrection
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
@@ -215,7 +216,8 @@ class FragmentPriceGoodsDetail : Fragment() {
 
     private fun collectForInsert(priceColl: MPriceColl): MPriceGoods {
         binding.apply {
-            val barcode = editScan.text.toString()
+            val barcode = if (settings.getAutoCorrBarcode()) barcodeAutoCorrection(editScan.text.toString())
+            else editScan.text.toString()
             return MPriceGoods(
                 id = 0L,
                 id_coll = priceColl.id_coll,
