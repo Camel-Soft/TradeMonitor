@@ -18,7 +18,7 @@
         android:clickable="true"
         android:focusable="true"
         app:cardCornerRadius="15dp"
-        app:cardBackgroundColor="@color/coll_price"
+        app:cardBackgroundColor="@color/coll_alko"
         app:layout_constraintEnd_toStartOf="@+id/layoutLongClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

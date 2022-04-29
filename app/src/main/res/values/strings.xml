@@ -37,6 +37,8 @@
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
 
+    <string name="info_empty_export_format">Выбранный формат для экспорта не предусмотрен в данном архиве</string>
+
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>
     <string name="error_text_unknown">Текст ошибки не определен</string>
@@ -102,6 +104,8 @@
     <string name="upc_e">UPC_E</string>
     <string name="qr_code">QR_CODE</string>
     <string name="pdf_417">PDF_417</string>
+    <string name="data_matrix">DATA_MATRIX</string>
     <string name="ean_13_weight">EAN_13 весовой</string>
     <string name="scancode_type_not_defined">Тип сканкода не определен</string>
+
 </resources>

@@ -17,7 +17,6 @@ import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
 import com.camelsoft.trademonitor._presentation.utils.shareFile
 import com.camelsoft.trademonitor.databinding.FragmentPriceBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
@@ -86,7 +85,7 @@ class FragmentPrice : Fragment() {
         }
         binding.rvColl.layoutManager = LinearLayoutManager(weakContext.get()!!, RecyclerView.VERTICAL,false)
         binding.rvColl.adapter = adapterColl
-        viewModel.listPriceColl.observe(this, { adapterColl.submitList(it) })
+        viewModel.listPriceColl.observe(viewLifecycleOwner) { adapterColl.submitList(it) }
         viewModel.onEventPrice(EventVmPrice.OnGetColl)
     }
 }

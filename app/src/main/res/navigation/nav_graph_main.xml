@@ -44,16 +44,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragGraphAlko"
-        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_alko.FragmentAlko"
-        android:label="@string/monitor_alko_call"
-        tools:layout="@layout/fragment_alko" >
-        <action
-            android:id="@+id/action_fragGraphAlko_to_fragGraphMain"
-            app:destination="@id/fragGraphMain" />
-    </fragment>
-
-    <fragment
         android:id="@+id/fragGraphPriceGoods"
         android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_price_goods.FragmentPriceGoods"
         android:label=""
@@ -74,6 +64,42 @@
         <action
             android:id="@+id/action_fragGraphPriceGoodsDetail_to_fragGraphPriceGoods"
             app:destination="@id/fragGraphPriceGoods" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphAlko"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_alko.FragmentAlko"
+        android:label="@string/monitor_alko_call"
+        tools:layout="@layout/fragment_alko" >
+        <action
+            android:id="@+id/action_fragGraphAlko_to_fragGraphMain"
+            app:destination="@id/fragGraphMain" />
+        <action
+            android:id="@+id/action_fragGraphAlko_to_fragGraphAlkoMark"
+            app:destination="@id/fragGraphAlkoMark" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphAlkoMark"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_alko_mark.FragmentAlkoMark"
+        android:label=""
+        tools:layout="@layout/fragment_alko_mark" >
+        <action
+            android:id="@+id/action_fragGraphAlkoMark_to_fragGraphAlko"
+            app:destination="@id/fragGraphAlko" />
+        <action
+            android:id="@+id/action_fragGraphAlkoMark_to_fragGraphAlkoMarkDetail"
+            app:destination="@id/fragGraphAlkoMarkDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphAlkoMarkDetail"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_alko_mark_detail.FragmentAlkoMarkDetail"
+        android:label=""
+        tools:layout="@layout/fragment_alko_mark_detail" >
+        <action
+            android:id="@+id/action_fragGraphAlkoMarkDetail_to_fragGraphAlkoMark"
+            app:destination="@id/fragGraphAlkoMark" />
     </fragment>
 
 </navigation>

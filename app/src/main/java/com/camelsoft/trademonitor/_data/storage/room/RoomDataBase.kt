@@ -8,14 +8,13 @@ import com.camelsoft.trademonitor._data.storage.room.entities.ERoomColl
 import com.camelsoft.trademonitor._data.storage.room.entities.ERoomGoods
 
 @Database(
+    version = 1,
     entities = [
         ERoomColl::class,
         ERoomGoods::class,
         ERoomAlkoColl::class,
         ERoomAlkoMark::class
-    ],
-    version = 1,
-    exportSchema = true
+    ]
 )
 abstract class RoomDataBase : RoomDatabase() {
     abstract fun getDaoRoom(): IDaoRoom

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp">
+
+    <TextView
+        android:id="@+id/textStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="end"
+        android:maxLines="1"
+        tools:text="Добавлено"
+        android:textSize="11sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        android:maxLines="1"
+        tools:text="! Сканкод"
+        android:textSize="11sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toStartOf="@+id/textStatus"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textMark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="start"
+        tools:text="4623569874256hfb4c6gvf8y8tr8hf8gg8d8hry8hh84u5h6j74u4j4n5b3k4n5j6n5j4n5b1b5"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textStatus" />
+
+    <TextView
+        android:id="@+id/textMarkType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="start"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        tools:text="DataMatrix"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMark" />
+
+    <TextView
+        android:id="@+id/textScancode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="start"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMarkType"
+        tools:text="4623569874256" />
+
+    <TextView
+        android:id="@+id/textScancodeType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="start"
+        android:maxLines="1"
+        tools:text="EAN13"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textScancode" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="start"
+        android:maxLines="1"
+        tools:text="Наименование:"
+        android:textColor="@color/gray_300"
+        android:textSize="11sp"
+        android:textStyle="italic|bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textScancodeType" />
+
+    <TextView
+        android:id="@+id/textNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="start"
+        android:maxLines="2"
+        tools:text="Примечание:"
+        android:textColor="@color/gray_300"
+        android:textSize="11sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textName" />
+
+    <TextView
+        android:id="@+id/textCena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:gravity="end"
+        android:maxLines="1"
+        tools:text="99896.99 руб"
+        android:textColor="@color/yellow_600"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textScancode" />
+
+    <TextView
+        android:id="@+id/textQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="2dp"
+        android:gravity="end"
+        android:maxLines="1"
+        tools:text="896 шт"
+        android:textColor="@color/yellow_600"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/textCena"
+        app:layout_constraintTop_toBottomOf="@+id/textScancode" />
+
+    <View
+        android:id="@+id/viewHorUp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_100"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewHorDown"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_100"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/viewVerLeft"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/gray_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewVerRight"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/gray_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

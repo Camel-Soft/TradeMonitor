@@ -15,7 +15,7 @@ data class MAlkoMark(
     val note: String,               // Примечания
     val name: String,               // Наименование
     val quantity: Float,            // Количество
-    val type: String,               // Тип чего-нибудь
+    val type: String,               // Тип чего-нибудь (резерв)
     val status_code: Int,           // Состояния, ошибки для вывода на rv holder
     val holder_color: String        // Цвет holder`ов
 ): Parcelable

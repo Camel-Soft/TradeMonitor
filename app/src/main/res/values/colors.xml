@@ -56,4 +56,7 @@
     <color name="rv_goods_8">#FF8CBB</color>
     <color name="rv_goods_9">#D5889A</color>
 
+    <color name="coll_price">#FFF9E6</color>
+    <color name="coll_alko">#E5F4FF</color>
+
 </resources>

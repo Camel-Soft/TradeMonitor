@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="._presentation.activity_main.fragment_alko.FragmentAlko">
+    tools:context="._presentation.activity_main.fragment_alko_mark.FragmentAlkoMark">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvColl"
+        android:id="@+id/rvMarks"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="vertical"
@@ -31,18 +31,32 @@
             android:background="@color/gray_100"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/btnAddColl"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnScanList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="@string/add_collection"
-            android:text="@string/add_collection"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            app:icon="@drawable/img_plus_24"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="5dp"
+            android:soundEffectsEnabled="true"
+            app:borderWidth="2dp"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/img_cameras_30"
+            app:tint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:soundEffectsEnabled="true"
+            app:srcCompat="@drawable/img_camera_30"
+            app:tint="@color/black"
+            app:borderWidth="2dp"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -39,7 +39,6 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
@@ -111,7 +110,7 @@ class FragmentPriceGoods : Fragment() {
             }
             binding.rvGoods.layoutManager = LinearLayoutManager(weakContext.get()!!, RecyclerView.VERTICAL,false)
             binding.rvGoods.adapter = adapterGoods
-            viewModel.listPriceGoods.observe(this, { adapterGoods.submitList(it) })
+            viewModel.listPriceGoods.observe(viewLifecycleOwner) { adapterGoods.submitList(it) }
             viewModel.onEventGoods(EventVmGoods.OnGetGoodes(parentPriceColl))
 
             // Фотосканер одиночный
