@@ -43,7 +43,7 @@ class FragmentAlko : Fragment() {
         binding.btnAddColl.setOnClickListener {
             showConfirm(weakContext.get()!!,
                 resources.getString(R.string.coll_add_title),
-                resources.getString(R.string.coll_add_message)) {
+                "${resources.getString(R.string.coll_add_message)}?") {
                 viewModel.onEventAlkoColl(EventVmAlkoColl.OnAddCollClick)
             }
         }
@@ -76,7 +76,7 @@ class FragmentAlko : Fragment() {
         adapterAlkoColl.clickBtnDelete = { pos ->
             showConfirm(weakContext.get()!!,
                 resources.getString(R.string.coll_del_title),
-                resources.getString(R.string.coll_del_message)+": ${adapterAlkoColl.getList()[pos].note}") {
+                resources.getString(R.string.coll_del_message)+": ${adapterAlkoColl.getList()[pos].note} ?") {
                 viewModel.onEventAlkoColl(EventVmAlkoColl.OnDeleteCollClick(pos))
             }
         }

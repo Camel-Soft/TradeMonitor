@@ -14,6 +14,7 @@ import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MScanContinuous
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
 import com.camelsoft.trademonitor.databinding.ActivityCameraListBinding
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.client.android.BeepManager
@@ -232,6 +233,11 @@ class ActivityCameraList : AppCompatActivity() {
 //    // Фотосканер Список
 //    private fun camListStart() {
 //        try {
+//            if (!App.getAppContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+//                showInfo(weakContext.get()!!, resources.getString(R.string.attention_cameras)) {}
+//                return
+//            }
+//
 //            val intent = Intent(this, ActivityCameraList::class.java)
 //            val listFormats = ArrayList<MBarcodeFormat>()
 ////            listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_13))

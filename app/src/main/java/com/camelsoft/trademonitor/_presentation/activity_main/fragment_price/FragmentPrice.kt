@@ -43,7 +43,7 @@ class FragmentPrice : Fragment() {
         binding.btnAddColl.setOnClickListener {
             showConfirm(weakContext.get()!!,
                 resources.getString(R.string.coll_add_title),
-                resources.getString(R.string.coll_add_message)) {
+                "${resources.getString(R.string.coll_add_message)}?") {
                 viewModel.onEventPrice(EventVmPrice.OnAddCollClick)
             }
         }
@@ -75,7 +75,7 @@ class FragmentPrice : Fragment() {
         adapterColl.clickBtnDelete = { pos ->
             showConfirm(weakContext.get()!!,
                 resources.getString(R.string.coll_del_title),
-                resources.getString(R.string.coll_del_message)+": ${adapterColl.getList()[pos].note}") {
+                resources.getString(R.string.coll_del_message)+": ${adapterColl.getList()[pos].note} ?") {
                 viewModel.onEventPrice(EventVmPrice.OnDeleteCollClick(pos))
             }
         }

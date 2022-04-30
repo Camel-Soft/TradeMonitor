@@ -20,7 +20,7 @@ class UseCaseExportJsonGoodes @Inject constructor(
             list.forEach {
                 exportJsonGoodes.addToArrayGoodes(exportJsonGoodes.createGoods(it))
             }
-            exportJsonGoodes.createFinalJson(priceColl = priceColl)
+            exportJsonGoodes.createFinalJsonGoods(priceColl = priceColl)
             exportJsonGoodes.close()
             return EventsSync.Success(exportJsonGoodes.getFile())
         }

@@ -7,6 +7,7 @@ import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
 import com.camelsoft.trademonitor._data.storage.room.RoomImpl
 import com.camelsoft.trademonitor._domain.utils.ExportExcelSheet
 import com.camelsoft.trademonitor._domain.utils.ExportJsonGoodes
+import com.camelsoft.trademonitor._domain.utils.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.utils.ExportSouthRevision
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
@@ -57,5 +58,11 @@ object DataModuleSingl {
     @Singleton
     fun provideExportJsonGoodes(): ExportJsonGoodes {
         return ExportJsonGoodes()
+    }
+
+    @Provides
+    @Singleton
+    fun provideExportJsonMarks(): ExportJsonMarks {
+        return ExportJsonMarks()
     }
 }

@@ -72,7 +72,7 @@ class ExportJsonGoodes {
         }
     }
 
-    fun createFinalJson(priceColl: MPriceColl) {
+    fun createFinalJsonGoods(priceColl: MPriceColl) {
         try {
             val finalJson = JSONObject()
             finalJson.put("coll", priceColl.note)
@@ -84,7 +84,7 @@ class ExportJsonGoodes {
         }
         catch (e: JSONException) {
             e.printStackTrace()
-            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" ExportJsonGoodes.createFinalJson: "+e.message)
+            throw Exception(App.getAppContext().resources.getString(R.string.error_in)+" ExportJsonGoodes.createFinalJsonGoods: "+e.message)
         }
     }
 

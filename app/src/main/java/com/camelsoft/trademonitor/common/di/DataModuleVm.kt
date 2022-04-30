@@ -1,12 +1,11 @@
 package com.camelsoft.trademonitor.common.di
 
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelSheet
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonGoodes
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportSouthRevision
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.*
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._domain.utils.ExportExcelSheet
 import com.camelsoft.trademonitor._domain.utils.ExportJsonGoodes
+import com.camelsoft.trademonitor._domain.utils.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.utils.ExportSouthRevision
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
@@ -137,5 +136,17 @@ object DataModuleVm {
     @ViewModelScoped
     fun provideUseCaseStorageAlkoMarkUpdate(iRoom: IRoom): UseCaseStorageAlkoMarkUpdate {
         return UseCaseStorageAlkoMarkUpdate(iRoom = iRoom)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseExportExcelMarks(iRoom: IRoom, exportExcelSheet: ExportExcelSheet): UseCaseExportExcelMarks {
+        return UseCaseExportExcelMarks(iRoom = iRoom, exportExcelSheet = exportExcelSheet)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseExportJsonMarks(iRoom: IRoom, exportJsonMarks: ExportJsonMarks): UseCaseExportJsonMarks {
+        return UseCaseExportJsonMarks(iRoom = iRoom, exportJsonMarks = exportJsonMarks)
     }
 }

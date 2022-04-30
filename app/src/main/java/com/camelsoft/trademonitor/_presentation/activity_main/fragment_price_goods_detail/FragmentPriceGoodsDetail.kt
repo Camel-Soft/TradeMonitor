@@ -15,7 +15,7 @@ import com.camelsoft.trademonitor._domain.models.MPriceColl
 import com.camelsoft.trademonitor._domain.models.MPriceGoods
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanPropShort
+import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanProp1D
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
@@ -61,7 +61,7 @@ class FragmentPriceGoodsDetail : Fragment() {
 
         // Встроенный сканер
         if (settings.getScanner() == "honeywell_eda50k")
-            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanPropShort())
+            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanProp1D())
 
         argPriceColl = arguments?.getParcelable("parentPriceColl")
 

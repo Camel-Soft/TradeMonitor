@@ -49,7 +49,7 @@ class UseCaseStorageAlkoMarkInsertOrUpdate @Inject constructor(
                 quantity = (dbAlkoMark[0].quantity)+(newAlkoMark.quantity),
                 type = if (dbAlkoMark[0].type.isEmpty()) newAlkoMark.type else dbAlkoMark[0].type,
                 status_code = 200 + getErrCode(dbAlkoMark[0].status_code),
-                holder_color = dbAlkoMark[0].holder_color
+                holder_color = "7"  // Пометить красным, чтобы обратить внимание
             )
             iRoom.updateRoomAlkoMark(alkoMark)
             return alkoMark

@@ -6,12 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MAlkoColl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelMarks
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollDelete
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollUpdate
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.events.EventsSync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -24,7 +27,9 @@ class FragmentAlkoViewModel @Inject constructor(
     private val useCaseStorageAlkoCollGetAll: UseCaseStorageAlkoCollGetAll,
     private val useCaseStorageAlkoCollInsert: UseCaseStorageAlkoCollInsert,
     private val useCaseStorageAlkoCollUpdate: UseCaseStorageAlkoCollUpdate,
-    private val settings: Settings
+    private val settings: Settings,
+    private val useCaseExportExcelMarks: UseCaseExportExcelMarks,
+    private val useCaseExportJsonMarks: UseCaseExportJsonMarks
 ): ViewModel() {
 
     private val _eventUiAlkoColl =  Channel<EventUiAlkoColl>()
@@ -67,19 +72,19 @@ class FragmentAlkoViewModel @Inject constructor(
                         _listAlkoColl.value?.let {
                             when (settings.getExportFileFormat()) {
                                 "excel" -> {
-//                                    when (val answerExcel = useCaseExportExcelSheet.execute(priceColl = it[eventVmAlkoColl.pos])) {
-//                                        is EventsSync.Success -> sendEventUiPrice(EventUiPrice.ShareFile(file = answerExcel.data, sign = it[eventVmAlkoColl.pos].note))
-//                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerExcel.message))
-//                                    }
+                                    when (val answerExcel = useCaseExportExcelMarks.execute(alkoColl = it[eventVmAlkoColl.pos])) {
+                                        is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerExcel.data, sign = it[eventVmAlkoColl.pos].note))
+                                        is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerExcel.message))
+                                    }
                                 }
                                 "south_rev" -> {
                                     sendEventUiAlkoColl(EventUiAlkoColl.ShowInfoUi(App.getAppContext().resources.getString(R.string.info_empty_export_format)))
                                 }
                                 "json" -> {
-//                                    when (val answerJsonGoodes = useCaseExportJsonGoodes.execute(priceColl = it[eventVmAlkoColl.pos])) {
-//                                        is EventsSync.Success -> sendEventUiPrice(EventUiPrice.ShareFile(file = answerJsonGoodes.data, sign = it[eventVmAlkoColl.pos].note))
-//                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerJsonGoodes.message))
-//                                    }
+                                    when (val answerJsonMarks = useCaseExportJsonMarks.execute(alkoColl = it[eventVmAlkoColl.pos])) {
+                                        is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerJsonMarks.data, sign = it[eventVmAlkoColl.pos].note))
+                                        is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerJsonMarks.message))
+                                    }
                                 }
                                 else -> {
                                     sendEventUiAlkoColl(

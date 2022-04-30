@@ -2,7 +2,7 @@ package com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda5
 
 import com.honeywell.aidc.BarcodeReader
 
-fun honeyScanPropShort(): Map<String, Any> {
+fun honeyScanProp1D(): Map<String, Any> {
     val scanProperties = HashMap<String, Any>()
     scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = true
     scanProperties[BarcodeReader.PROPERTY_EAN_8_ENABLED] = true
@@ -14,7 +14,19 @@ fun honeyScanPropShort(): Map<String, Any> {
     return scanProperties
 }
 
-fun honeyScanPropLong(): Map<String, Any> {
+fun honeyScanProp2D(): Map<String, Any> {
+    val scanProperties = HashMap<String, Any>()
+    scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = false
+    scanProperties[BarcodeReader.PROPERTY_EAN_8_ENABLED] = false
+    scanProperties[BarcodeReader.PROPERTY_UPC_A_ENABLE] = false
+    scanProperties[BarcodeReader.PROPERTY_UPC_E_ENABLED] = false
+    scanProperties[BarcodeReader.PROPERTY_DATAMATRIX_ENABLED] = true
+    scanProperties[BarcodeReader.PROPERTY_QR_CODE_ENABLED] = true
+    scanProperties[BarcodeReader.PROPERTY_PDF_417_ENABLED] = true
+    return scanProperties
+}
+
+fun honeyScanProp1D2D(): Map<String, Any> {
     val scanProperties = HashMap<String, Any>()
     scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = true
     scanProperties[BarcodeReader.PROPERTY_EAN_8_ENABLED] = true

@@ -26,7 +26,7 @@ import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanPropShort
+import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanProp1D
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
@@ -65,7 +65,7 @@ class FragmentPriceGoods : Fragment() {
         weakContext = WeakReference<Context>(requireContext())
 
         if (settings.getScanner() == "honeywell_eda50k")
-            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanPropShort())
+            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanProp1D())
 
         // Забираем данные о родительской сборке в переменную и проверяем на null
         // Если null, то показываем сообщение об ошибке и выходим
@@ -104,7 +104,7 @@ class FragmentPriceGoods : Fragment() {
                 showConfirm(
                     context = weakContext.get()!!,
                     title = resources.getString(R.string.goods_del_title),
-                    message = resources.getString(R.string.goods_del_message)+": ${adapterGoods.getList()[pos].scancode}"
+                    message = resources.getString(R.string.goods_del_message)+": ${adapterGoods.getList()[pos].scancode} ?"
                 )
                 { viewModel.onEventGoods(EventVmGoods.OnDeleteGoods(parentPriceColl, pos)) }
             }
@@ -213,6 +213,11 @@ class FragmentPriceGoods : Fragment() {
     // Фотосканер Список
     private fun camListStart() {
         try {
+            if (!getAppContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+                showInfo(weakContext.get()!!, resources.getString(R.string.attention_cameras)) {}
+                return
+            }
+
             val intent = Intent(weakContext.get()!!, ActivityCameraList::class.java)
             val listFormats = ArrayList<MBarcodeFormat>()
             listFormats.add(MBarcodeFormat(BarcodeFormat.EAN_13))
