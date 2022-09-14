@@ -16,12 +16,14 @@
         <item>@string/export_file_format_excel</item>
         <item>@string/export_file_format_south_revision</item>
         <item>@string/export_file_format_json</item>
+        <item>@string/export_file_format_ch_zn</item>
     </string-array>
 
     <string-array name="export_file_format_values">
         <item>excel</item>
         <item>south_rev</item>
         <item>json</item>
+        <item>ch_zn</item>
     </string-array>
 
 </resources>

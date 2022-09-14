@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.utils.shareFile
 import com.camelsoft.trademonitor.databinding.FragmentPriceBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,6 +54,7 @@ class FragmentPrice : Fragment() {
             viewModel.eventUiPrice.collect { eventUiPrice ->
                 when(eventUiPrice) {
                     is EventUiPrice.ShowErrorUi -> showError(weakContext.get()!!, eventUiPrice.message) {}
+                    is EventUiPrice.ShowInfoUi -> showInfo(weakContext.get()!!, eventUiPrice.message) {}
                     is EventUiPrice.ScrollToPos -> binding.rvColl.scrollToPosition(eventUiPrice.position)
                     is EventUiPrice.ShareFile -> shareFile(weakContext.get()!!, eventUiPrice.file, eventUiPrice.sign)
                 }

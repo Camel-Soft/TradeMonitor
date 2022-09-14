@@ -35,6 +35,11 @@
     <string name="quantity">Количество</string>
     <string name="ed_izm">Единицы измерения</string>
     <string name="status">Статус</string>
+    <string name="inn">ИНН</string>
+    <string name="date">Дата</string>
+    <string name="withdrawal">Вывод</string>
+    <string name="withdrawal_full">Вывод из оборота</string>
+    <string name="packing">Фасовка</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -51,6 +56,7 @@
     <string name="error_create_file">Невозможно создать файл</string>
     <string name="error_export_file_format">Формат файла для экспорта не определен</string>
     <string name="error_alko_mark">Информация о марке не определена</string>
+    <string name="error_withdrawal_type">Не определен тип вывода из оборота</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
@@ -64,8 +70,8 @@
 
     <string name="monitor_price_label">Товары и Цены</string>
     <string name="monitor_price_call">Сборки товаров и цен</string>
-    <string name="monitor_alko_label">Акцизные марки</string>
-    <string name="monitor_alko_call">Сборки акцизных марок</string>
+    <string name="monitor_alko_label">Маркировка</string>
+    <string name="monitor_alko_call">Сборки марок</string>
 
     <string name="coll_created">Сборка создана</string>
     <string name="coll_changed">Сборка изменена</string>
@@ -96,6 +102,7 @@
     <string name="export_file_format_excel">Excel</string>
     <string name="export_file_format_south_revision">South Ревизия</string>
     <string name="export_file_format_json">JSON</string>
+    <string name="export_file_format_ch_zn">Честный Знак</string>
 
     <!-- Entry Devices -->
     <string name="devices">Устройства</string>

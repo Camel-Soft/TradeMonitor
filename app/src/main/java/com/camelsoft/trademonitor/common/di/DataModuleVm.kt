@@ -149,4 +149,9 @@ object DataModuleVm {
     fun provideUseCaseExportJsonMarks(iRoom: IRoom, exportJsonMarks: ExportJsonMarks): UseCaseExportJsonMarks {
         return UseCaseExportJsonMarks(iRoom = iRoom, exportJsonMarks = exportJsonMarks)
     }
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseExpChZnWithdrawal(iRoom: IRoom): UseCaseExpChZnWithdrawal {
+        return UseCaseExpChZnWithdrawal(iRoom = iRoom)
+    }
 }

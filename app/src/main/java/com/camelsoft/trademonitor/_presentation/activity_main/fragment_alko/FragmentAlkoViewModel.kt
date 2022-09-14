@@ -6,12 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MAlkoColl
+import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExpChZnWithdrawal
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollDelete
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollUpdate
+import com.camelsoft.trademonitor._presentation.utils.makeNoteChZn
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -29,7 +32,8 @@ class FragmentAlkoViewModel @Inject constructor(
     private val useCaseStorageAlkoCollUpdate: UseCaseStorageAlkoCollUpdate,
     private val settings: Settings,
     private val useCaseExportExcelMarks: UseCaseExportExcelMarks,
-    private val useCaseExportJsonMarks: UseCaseExportJsonMarks
+    private val useCaseExportJsonMarks: UseCaseExportJsonMarks,
+    private val useCaseExpChZnWithdrawal: UseCaseExpChZnWithdrawal
 ): ViewModel() {
 
     private val _eventUiAlkoColl =  Channel<EventUiAlkoColl>()
@@ -84,6 +88,15 @@ class FragmentAlkoViewModel @Inject constructor(
                                     when (val answerJsonMarks = useCaseExportJsonMarks.execute(alkoColl = it[eventVmAlkoColl.pos])) {
                                         is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerJsonMarks.data, sign = it[eventVmAlkoColl.pos].note))
                                         is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerJsonMarks.message))
+                                    }
+                                }
+                                "ch_zn" -> {
+
+                                    val mChZnXmlHead = MChZnXmlHead(innMy = "6345029001", dateDoc = 1663076369849)
+
+                                    when (val answerChZnWithdrawal = useCaseExpChZnWithdrawal.execute(alkoColl = it[eventVmAlkoColl.pos], mChZnXmlHead = mChZnXmlHead)) {
+                                        is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnWithdrawal.data, sign = makeNoteChZn(mChZnXmlHead)))
+                                        is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerChZnWithdrawal.message))
                                     }
                                 }
                                 else -> {

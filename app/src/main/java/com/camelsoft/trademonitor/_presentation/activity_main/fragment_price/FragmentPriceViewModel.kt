@@ -91,6 +91,9 @@ class FragmentPriceViewModel @Inject constructor(
                                         is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerJsonGoodes.message))
                                     }
                                 }
+                                "ch_zn" -> {
+                                    sendEventUiPrice(EventUiPrice.ShowInfoUi(getAppContext().resources.getString(R.string.info_empty_export_format)))
+                                }
                                 else -> {
                                     sendEventUiPrice(EventUiPrice.ShowErrorUi(getAppContext().resources.getString(R.string.error_in)+
                                             " FragmentPriceViewModel.onEventPrice.EventVmPrice.OnShareCollClick: "+

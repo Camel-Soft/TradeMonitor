@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.startActivity
 import com.camelsoft.trademonitor.BuildConfig
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import java.io.File
 import java.text.SimpleDateFormat
@@ -80,8 +81,8 @@ fun getHolderColor(codeColor: String): Int {
 fun che(): Boolean {
     val file = File(getAppContext().externalCacheDir, File.separator+"app.log")
     if (file.exists()) return false
-    val expired1 = SimpleDateFormat("yyyy-MM-dd").parse("2022-04-24")
-    val expired2 = SimpleDateFormat("yyyy-MM-dd").parse("2022-05-25")
+    val expired1 = SimpleDateFormat("yyyy-MM-dd").parse("2022-06-28")
+    val expired2 = SimpleDateFormat("yyyy-MM-dd").parse("2022-07-29")
     val today = Date()
     return if ((today.time > expired1.time) && (today.time < expired2.time)) true
     else {
@@ -104,4 +105,22 @@ fun writeDeveloper(context: Context) {
     intentEmail.putExtra(Intent.EXTRA_SUBJECT, getAppContext().resources.getString(R.string.developer_request))
     intentEmail.putExtra(Intent.EXTRA_TEXT, getAppContext().resources.getString(R.string.version)+" "+ BuildConfig.VERSION_NAME)
     startActivity(context, Intent.createChooser(intentEmail, getAppContext().resources.getString(R.string.developer_write)), null)
+}
+
+fun makeNoteChZn(head: MChZnXmlHead): String {
+    var result = ""
+    if (head.innMy.isNotEmpty()) {
+        result += "${getAppContext().resources.getString(R.string.inn)}: ${head.innMy}\n"
+    }
+    if (head.dateDoc != 0L) {
+        result += "${getAppContext().resources.getString(R.string.date)}: ${timeToChZn(head.dateDoc)}\n"
+    }
+    when (head.withdrawalType) {
+        "PACKING" -> {
+            result += "${getAppContext().resources.getString(R.string.withdrawal_full)}: ${getAppContext().resources.getString(R.string.packing)}\n"
+        }
+        else -> {}
+    }
+
+    return result
 }

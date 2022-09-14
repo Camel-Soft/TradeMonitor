@@ -2,7 +2,6 @@ package com.camelsoft.trademonitor._presentation.activity_main
 
 import android.content.Context
 import android.os.Bundle
-import android.provider.Settings
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -46,10 +45,10 @@ class ActivityMain : AppCompatActivity() {
 
         weakContext = WeakReference<Context>(this)
 
-        if (!che()) {
-            Toast.makeText(this, "Тестовое время истекло", Toast.LENGTH_LONG).show();
-            finish()
-        }
+//        if (!che()) {
+//            Toast.makeText(this, "Тестовое время истекло", Toast.LENGTH_LONG).show();
+//            finish()
+//        }
 
         // Показать версию в NavHeader`е
         bindingNavHead.navVer.text =  StringBuilder(resources.getString(R.string.version)+" "+BuildConfig.VERSION_NAME)

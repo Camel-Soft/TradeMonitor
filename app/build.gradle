@@ -76,6 +76,8 @@ dependencies {
     implementation "androidx.room:room-runtime:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
+    // Xml document creation
+    implementation "org.redundent:kotlin-xml-builder:1.8.0"
     // LIBs
     // honeywell.aar    - Honeywell EDA50K
     // jxl-2.6.jar      - *.xls files
