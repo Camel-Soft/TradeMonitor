@@ -92,7 +92,7 @@ class FragmentAlkoViewModel @Inject constructor(
                                 }
                                 "ch_zn" -> {
 
-                                    val mChZnXmlHead = MChZnXmlHead(innMy = "6345029001", dateDoc = 1663076369849)
+                                    val mChZnXmlHead = MChZnXmlHead(innMy = "632111302359", dateDoc = 1663076369849)
 
                                     when (val answerChZnWithdrawal = useCaseExpChZnWithdrawal.execute(alkoColl = it[eventVmAlkoColl.pos], mChZnXmlHead = mChZnXmlHead)) {
                                         is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnWithdrawal.data, sign = makeNoteChZn(mChZnXmlHead)))

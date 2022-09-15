@@ -9,6 +9,7 @@ import com.camelsoft.trademonitor._domain.models.MAlkoColl
 import com.camelsoft.trademonitor._domain.models.MAlkoMark
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._presentation.models.MScan
+import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -135,7 +136,7 @@ class FragmentAlkoMarkViewModel @Inject constructor(
         return MAlkoMark(
             id = 0L,
             id_coll = id_coll,
-            marka = scan.scancode,
+            marka = scan.scancode.trim001d(),
             marka_type = scan.format,
             scancode = "",
             scancode_type = "",

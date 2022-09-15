@@ -68,8 +68,3 @@ fun pickBarcodeType(barcode: String): String {
         }
     }
 }
-
-fun removeHideFromMark(cod: String): String {
-    return cod.replace(oldChar = '\u001d', newChar = ' ', ignoreCase = true)
-
-}

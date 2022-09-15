@@ -5,10 +5,12 @@ import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._domain.models.MAlkoColl
 import com.camelsoft.trademonitor._domain.models.MAlkoMark
 import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
+import com.camelsoft.trademonitor._presentation.utils.rm001d
 import com.camelsoft.trademonitor._presentation.utils.timeToChZn
 import com.camelsoft.trademonitor._presentation.utils.toMoneyKop
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.events.EventsSync
+import org.redundent.kotlin.xml.PrintOptions
 import org.redundent.kotlin.xml.xml
 import java.io.File
 import java.io.FileWriter
@@ -64,7 +66,7 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
                     listAlkoMark.forEach {
                         "product" {
                             "cis" {
-                                -it.marka.substring(0, 24)
+                                -it.marka.rm001d().substring(0, 24)
                             }
                             "cost" {
                                 -toMoneyKop(it.cena)
@@ -74,7 +76,7 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
                 }
             }
 
-            return xml.toString(prettyFormat = true)
+            return xml.toString(PrintOptions(singleLineTextElements = true))+"\n"
         }
         catch (e: Exception) {
             e.printStackTrace()
