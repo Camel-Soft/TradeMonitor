@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MAlkoColl
 import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExpChZnWithdrawal
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExpChZnMilkWithdrawal
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollDelete
@@ -33,7 +33,7 @@ class FragmentAlkoViewModel @Inject constructor(
     private val settings: Settings,
     private val useCaseExportExcelMarks: UseCaseExportExcelMarks,
     private val useCaseExportJsonMarks: UseCaseExportJsonMarks,
-    private val useCaseExpChZnWithdrawal: UseCaseExpChZnWithdrawal
+    private val useCaseExpChZnMilkWithdrawal: UseCaseExpChZnMilkWithdrawal
 ): ViewModel() {
 
     private val _eventUiAlkoColl =  Channel<EventUiAlkoColl>()
@@ -94,9 +94,9 @@ class FragmentAlkoViewModel @Inject constructor(
 
                                     val mChZnXmlHead = MChZnXmlHead(innMy = "632111302359", dateDoc = 1663076369849)
 
-                                    when (val answerChZnWithdrawal = useCaseExpChZnWithdrawal.execute(alkoColl = it[eventVmAlkoColl.pos], mChZnXmlHead = mChZnXmlHead)) {
-                                        is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnWithdrawal.data, sign = makeNoteChZn(mChZnXmlHead)))
-                                        is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerChZnWithdrawal.message))
+                                    when (val answerChZnMilkWithdrawal = useCaseExpChZnMilkWithdrawal.execute(alkoColl = it[eventVmAlkoColl.pos], mChZnXmlHead = mChZnXmlHead)) {
+                                        is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnMilkWithdrawal.data, sign = makeNoteChZn(mChZnXmlHead)))
+                                        is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerChZnMilkWithdrawal.message))
                                     }
                                 }
                                 else -> {

@@ -24,6 +24,7 @@
     <string name="insert_hand">Добавить вручную</string>
     <string name="sheet_1">Лист 1</string>
     <string name="rec_total">Записей всего</string>
+    <string name="export_ch_zn">Экспорт в Честный Знак</string>
 
     <string name="marka">Марка</string>
     <string name="marka_type">Тип марки</string>

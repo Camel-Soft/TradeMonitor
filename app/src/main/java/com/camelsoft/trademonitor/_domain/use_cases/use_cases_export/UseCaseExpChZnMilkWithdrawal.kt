@@ -16,7 +16,7 @@ import java.io.File
 import java.io.FileWriter
 import javax.inject.Inject
 
-class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
+class UseCaseExpChZnMilkWithdrawal @Inject constructor(private val iRoom: IRoom) {
     private lateinit var file: File
     private lateinit var fileWriter: FileWriter
 
@@ -33,7 +33,7 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
                 else -> {
                     return EventsSync.Error(
                         getAppContext().resources.getString(R.string.error_in)+
-                                " UseCaseExpChZnWithdrawal.execute: "+
+                                " UseCaseExpChZnMilkWithdrawal.execute: "+
                                 getAppContext().resources.getString(R.string.error_withdrawal_type)
                     )
                 }
@@ -43,7 +43,7 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
             e.printStackTrace()
             return EventsSync.Error(
                 getAppContext().resources.getString(R.string.error_in)+
-                    " UseCaseExpChZnWithdrawal.execute: "+e.message
+                    " UseCaseExpChZnMilkWithdrawal.execute: "+e.message
             )
         }
     }
@@ -81,7 +81,7 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
         catch (e: Exception) {
             e.printStackTrace()
             throw Exception (getAppContext().resources.getString(R.string.error_in)+
-                    " UseCaseExpChZnWithdrawal.makePacking: "+e.message)
+                    " UseCaseExpChZnMilkWithdrawal.makePacking: "+e.message)
         }
     }
 
@@ -91,11 +91,11 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
             file.delete()
             if (file.exists()) throw Exception(
                 getAppContext().resources.getString(R.string.error_in)+
-                        " UseCaseExpChZnWithdrawal.openFile: "+ getAppContext().resources.getString(R.string.error_clear_file)+" - $fileName"
+                        " UseCaseExpChZnMilkWithdrawal.openFile: "+ getAppContext().resources.getString(R.string.error_clear_file)+" - $fileName"
             )
             if (!file.createNewFile()) throw Exception(
                 getAppContext().resources.getString(R.string.error_in)+
-                        " UseCaseExpChZnWithdrawal.openFile: "+getAppContext().resources.getString(R.string.error_create_file)+" - $fileName"
+                        " UseCaseExpChZnMilkWithdrawal.openFile: "+getAppContext().resources.getString(R.string.error_create_file)+" - $fileName"
             )
 
             fileWriter = FileWriter(file)
@@ -103,7 +103,7 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
         catch (e: Exception) {
             e.printStackTrace()
             throw Exception(getAppContext().resources.getString(R.string.error_in)+
-                    " UseCaseExpChZnWithdrawal.openFile: "+e.message)
+                    " UseCaseExpChZnMilkWithdrawal.openFile: "+e.message)
         }
     }
 
@@ -117,7 +117,7 @@ class UseCaseExpChZnWithdrawal @Inject constructor(private val iRoom: IRoom) {
         catch (e: Exception) {
             e.printStackTrace()
             throw Exception(getAppContext().resources.getString(R.string.error_in)+
-                    " UseCaseExpChZnWithdrawal.closeFile: "+e.message)
+                    " UseCaseExpChZnMilkWithdrawal.closeFile: "+e.message)
         }
     }
 }

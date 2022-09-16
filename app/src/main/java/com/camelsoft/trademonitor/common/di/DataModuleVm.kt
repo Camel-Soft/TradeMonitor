@@ -151,7 +151,7 @@ object DataModuleVm {
     }
     @Provides
     @ViewModelScoped
-    fun provideUseCaseExpChZnWithdrawal(iRoom: IRoom): UseCaseExpChZnWithdrawal {
-        return UseCaseExpChZnWithdrawal(iRoom = iRoom)
+    fun provideUseCaseExpChZnMilkWithdrawal(iRoom: IRoom): UseCaseExpChZnMilkWithdrawal {
+        return UseCaseExpChZnMilkWithdrawal(iRoom = iRoom)
     }
 }
