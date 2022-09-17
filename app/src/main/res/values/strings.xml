@@ -6,7 +6,6 @@
     <string name="back_pressed">Нажмите еще раз, чтобы выйти</string>
     <string name="add_collection">Добавить сборку</string>
     <string name="about">Написать разработчику</string>
-
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
     <string name="exit">Выход</string>
@@ -25,7 +24,6 @@
     <string name="sheet_1">Лист 1</string>
     <string name="rec_total">Записей всего</string>
     <string name="export_ch_zn">Экспорт в Честный Знак</string>
-
     <string name="marka">Марка</string>
     <string name="marka_type">Тип марки</string>
     <string name="scancode">Сканкод</string>
@@ -37,7 +35,9 @@
     <string name="ed_izm">Единицы измерения</string>
     <string name="status">Статус</string>
     <string name="inn">ИНН</string>
+    <string name="inn_enter">Введите ИНН</string>
     <string name="date">Дата</string>
+    <string name="date_enter">Введите дату</string>
     <string name="withdrawal">Вывод</string>
     <string name="withdrawal_full">Вывод из оборота</string>
     <string name="packing">Фасовка</string>
