@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MAlkoColl
-import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExpChZnMilkWithdrawal
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonMarks
@@ -14,7 +13,7 @@ import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseSto
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollUpdate
-import com.camelsoft.trademonitor._presentation.utils.makeNoteChZn
+import com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn.makeNoteChZn
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -91,13 +90,13 @@ class FragmentAlkoViewModel @Inject constructor(
                                     }
                                 }
                                 "ch_zn" -> {
+                                    val itemsInn = ArrayList<Pair<String, String>>()
+                                    itemsInn.add("210987654321" to "ИП Груздев А.Л.")
+                                    itemsInn.add("987654321125" to "ИП Ахмедхаджиева А.Л.")
+                                    itemsInn.add("123568999878" to "ИП Муля А.Л.")
+                                    itemsInn.add("2109835445" to "ООО \"Пеликан\"")
 
-                                    val mChZnXmlHead = MChZnXmlHead(innMy = "632111302359", dateDoc = 1663076369849)
-
-                                    when (val answerChZnMilkWithdrawal = useCaseExpChZnMilkWithdrawal.execute(alkoColl = it[eventVmAlkoColl.pos], mChZnXmlHead = mChZnXmlHead)) {
-                                        is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnMilkWithdrawal.data, sign = makeNoteChZn(mChZnXmlHead)))
-                                        is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerChZnMilkWithdrawal.message))
-                                    }
+                                    sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = itemsInn))
                                 }
                                 else -> {
                                     sendEventUiAlkoColl(
@@ -113,6 +112,16 @@ class FragmentAlkoViewModel @Inject constructor(
                 is EventVmAlkoColl.OnGetColl -> {
                     viewModelScope.launch {
                         _listAlkoColl.value = useCaseStorageAlkoCollGetAll.execute()
+                    }
+                }
+                is EventVmAlkoColl.OnShareChZn -> {
+                    viewModelScope.launch {
+                        _listAlkoColl.value?.let {
+                            when (val answerChZnMilkWithdrawal = useCaseExpChZnMilkWithdrawal.execute(alkoColl = it[eventVmAlkoColl.pos], mChZnXmlHead = eventVmAlkoColl.mChZnXmlHead)) {
+                                is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnMilkWithdrawal.data, sign = makeNoteChZn(eventVmAlkoColl.mChZnXmlHead)))
+                                is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerChZnMilkWithdrawal.message))
+                            }
+                        }
                     }
                 }
             }

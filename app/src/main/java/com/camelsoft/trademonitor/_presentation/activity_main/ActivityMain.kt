@@ -15,9 +15,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.camelsoft.trademonitor.BuildConfig
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.che
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showPermShouldGive
+import com.camelsoft.trademonitor._presentation.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showPermShouldGive
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.writeDeveloper
 import com.camelsoft.trademonitor.common.events.EventsSync

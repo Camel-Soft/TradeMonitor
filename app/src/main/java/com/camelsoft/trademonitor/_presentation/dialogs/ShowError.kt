@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._presentation.utils.dialogs
+package com.camelsoft.trademonitor._presentation.dialogs
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog

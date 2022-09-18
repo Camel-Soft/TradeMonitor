@@ -7,4 +7,5 @@ sealed class EventUiAlkoColl {
     data class ShowInfoUi(val message: String): EventUiAlkoColl()
     data class ScrollToPos(val position: Int): EventUiAlkoColl()
     data class ShareFile(val file: File, val sign: String): EventUiAlkoColl()
+    data class SpecifyChZnUi(val position: Int, val itemsInn: ArrayList<Pair<String, String>>): EventUiAlkoColl()
 }

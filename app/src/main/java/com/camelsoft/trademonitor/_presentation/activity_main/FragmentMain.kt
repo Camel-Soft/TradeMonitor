@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.dialogs.SpecifyChZn
 import com.camelsoft.trademonitor.databinding.FragmentMainBinding
 
 class FragmentMain : Fragment() {
@@ -26,12 +25,7 @@ class FragmentMain : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mainCardPrice.setOnClickListener {
-
-            SpecifyChZn(this.requireContext()) {
-
-            }
-
-            //findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphPrice)
+            findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphPrice)
         }
 
         binding.mainCardAlko.setOnClickListener {

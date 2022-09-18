@@ -2,7 +2,7 @@ package com.camelsoft.trademonitor._presentation.utils
 
 import android.content.Context
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import java.io.File
 import java.io.IOException

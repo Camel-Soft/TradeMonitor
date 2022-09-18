@@ -12,9 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
+import com.camelsoft.trademonitor._presentation.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn.SpecifyChZn
 import com.camelsoft.trademonitor._presentation.utils.shareFile
 import com.camelsoft.trademonitor.databinding.FragmentAlkoBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,6 +57,9 @@ class FragmentAlko : Fragment() {
                     is EventUiAlkoColl.ShowInfoUi -> showInfo(weakContext.get()!!, eventUiAlkoColl.message) {}
                     is EventUiAlkoColl.ScrollToPos -> binding.rvColl.scrollToPosition(eventUiAlkoColl.position)
                     is EventUiAlkoColl.ShareFile -> shareFile(weakContext.get()!!, eventUiAlkoColl.file, eventUiAlkoColl.sign)
+                    is EventUiAlkoColl.SpecifyChZnUi -> SpecifyChZn(weakContext.get()!!, eventUiAlkoColl.itemsInn) { mChZnXmlHead ->
+                        viewModel.onEventAlkoColl(EventVmAlkoColl.OnShareChZn(pos = eventUiAlkoColl.position, mChZnXmlHead = mChZnXmlHead))
+                    }
                 }
             }
         }

@@ -7,7 +7,7 @@ import android.os.PersistableBundle
 import android.view.KeyEvent
 import android.view.View
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor.databinding.ActivityCameraBinding
 import com.journeyapps.barcodescanner.CaptureManager
 import com.journeyapps.barcodescanner.DecoratedBarcodeView

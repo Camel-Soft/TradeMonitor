@@ -8,6 +8,11 @@ fun timeToString(timeStamp: Long): String {
     return dateFormat.format(timeStamp)
 }
 
+fun timeToStringShort(timeStamp: Long): String {
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    return dateFormat.format(timeStamp)
+}
+
 fun timeToChZn(timeStamp: Long): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return dateFormat.format(timeStamp)

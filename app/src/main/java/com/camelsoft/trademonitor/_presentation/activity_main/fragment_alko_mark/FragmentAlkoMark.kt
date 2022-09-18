@@ -28,9 +28,9 @@ import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanProp2D
 import com.camelsoft.trademonitor._presentation.models.MScan
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
+import com.camelsoft.trademonitor._presentation.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync

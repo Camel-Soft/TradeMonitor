@@ -12,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showConfirm
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
+import com.camelsoft.trademonitor._presentation.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.utils.shareFile
 import com.camelsoft.trademonitor.databinding.FragmentPriceBinding
 import dagger.hilt.android.AndroidEntryPoint

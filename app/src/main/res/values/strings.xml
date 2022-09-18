@@ -121,4 +121,30 @@
     <string name="ean_13_weight">EAN_13 весовой</string>
     <string name="scancode_type_not_defined">Тип сканкода не определен</string>
 
+    <!-- Material-Calendar-View -->
+    <string name="material_calendar_monday">Пн</string>
+    <string name="material_calendar_tuesday">Вт</string>
+    <string name="material_calendar_wednesday">Ср</string>
+    <string name="material_calendar_thursday">Чт</string>
+    <string name="material_calendar_friday">Пт</string>
+    <string name="material_calendar_saturday">Сб</string>
+    <string name="material_calendar_sunday">Вск</string>
+    <array name="material_calendar_months_array">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </array>
+    <string name="material_calendar_today_button">Сегодня</string>
+    <string name="material_calendar_positive_button">Ok</string>
+    <string name="material_calendar_negative_button">Отмена</string>
+
 </resources>

@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.startActivity
 import com.camelsoft.trademonitor.BuildConfig
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import java.io.File
 import java.text.SimpleDateFormat
@@ -105,24 +104,6 @@ fun writeDeveloper(context: Context) {
     intentEmail.putExtra(Intent.EXTRA_SUBJECT, getAppContext().resources.getString(R.string.developer_request))
     intentEmail.putExtra(Intent.EXTRA_TEXT, getAppContext().resources.getString(R.string.version)+" "+ BuildConfig.VERSION_NAME)
     startActivity(context, Intent.createChooser(intentEmail, getAppContext().resources.getString(R.string.developer_write)), null)
-}
-
-fun makeNoteChZn(head: MChZnXmlHead): String {
-    var result = ""
-    if (head.innMy.isNotEmpty()) {
-        result += "${getAppContext().resources.getString(R.string.inn)}: ${head.innMy}\n"
-    }
-    if (head.dateDoc != 0L) {
-        result += "${getAppContext().resources.getString(R.string.date)}: ${timeToChZn(head.dateDoc)}\n"
-    }
-    when (head.withdrawalType) {
-        "PACKING" -> {
-            result += "${getAppContext().resources.getString(R.string.withdrawal_full)}: ${getAppContext().resources.getString(R.string.packing)}\n"
-        }
-        else -> {}
-    }
-
-    return result
 }
 
 fun String.rm001d() = this.replace(oldValue = "\u001d", newValue = "", ignoreCase = false)

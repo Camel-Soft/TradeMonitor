@@ -13,8 +13,7 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MScanContinuous
 import com.camelsoft.trademonitor._presentation.models.MScan
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor.databinding.ActivityCameraListBinding
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.client.android.BeepManager

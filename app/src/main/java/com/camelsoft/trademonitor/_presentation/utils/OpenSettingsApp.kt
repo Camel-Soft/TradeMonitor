@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.utils.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showError
 
 fun openSettingsApp(context: Context) {
     try {

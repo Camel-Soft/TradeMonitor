@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/maximus/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_dropdown_item_1line.xml" value="0.36666666666666664" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21203703703703702" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/activity_main_nav_header_back.xml" value="0.20185185185185187" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20208333333333334" />
@@ -56,6 +57,7 @@
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_price_item.xml" value="0.33" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/fragment_settings.xml" value="0.3375" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/item_capture_list_image.xml" value="0.36666666666666664" />
+        <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/layout/item_pair_string_string.xml" value="0.33" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/menu/activity_main_drawer.xml" value="0.3375" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/menu/menu_activity_camera_list.xml" value="0.36666666666666664" />
         <entry key="..\:/prAndroid/TradeMonitor/app/src/main/res/menu/menu_activity_main_drawer.xml" value="0.3375" />
