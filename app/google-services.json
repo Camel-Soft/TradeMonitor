@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1081237027181",
+    "project_id": "tradehelper-c1e3d",
+    "storage_bucket": "tradehelper-c1e3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081237027181:android:28594147ee51332b7e0264",
+        "android_client_info": {
+          "package_name": "com.camelsoft.trademonitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081237027181-b02rtcavru9548vmforkgmqgfoer8jte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAE5e2TItUS7R_ElPxMyKQ86AN7QZZ9tg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081237027181-b02rtcavru9548vmforkgmqgfoer8jte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

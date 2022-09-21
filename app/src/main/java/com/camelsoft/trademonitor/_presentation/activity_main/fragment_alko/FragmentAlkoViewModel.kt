@@ -13,6 +13,7 @@ import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseSto
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollUpdate
+import com.camelsoft.trademonitor._presentation.api.IRemoteConfigFirebase
 import com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn.makeNoteChZn
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
@@ -32,7 +33,8 @@ class FragmentAlkoViewModel @Inject constructor(
     private val settings: Settings,
     private val useCaseExportExcelMarks: UseCaseExportExcelMarks,
     private val useCaseExportJsonMarks: UseCaseExportJsonMarks,
-    private val useCaseExpChZnMilkWithdrawal: UseCaseExpChZnMilkWithdrawal
+    private val useCaseExpChZnMilkWithdrawal: UseCaseExpChZnMilkWithdrawal,
+    private val remoteConfigFirebase: IRemoteConfigFirebase
 ): ViewModel() {
 
     private val _eventUiAlkoColl =  Channel<EventUiAlkoColl>()
@@ -90,13 +92,7 @@ class FragmentAlkoViewModel @Inject constructor(
                                     }
                                 }
                                 "ch_zn" -> {
-                                    val itemsInn = ArrayList<Pair<String, String>>()
-                                    itemsInn.add("210987654321" to "ИП Груздев А.Л.")
-                                    itemsInn.add("987654321125" to "ИП Ахмедхаджиева А.Л.")
-                                    itemsInn.add("123568999878" to "ИП Муля А.Л.")
-                                    itemsInn.add("2109835445" to "ООО \"Пеликан\"")
-
-                                    sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = itemsInn))
+                                    sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = remoteConfigFirebase.getInnList()))
                                 }
                                 else -> {
                                     sendEventUiAlkoColl(

@@ -9,6 +9,8 @@ import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
+import com.camelsoft.trademonitor._presentation.adapters.AutocompliteSSAdapter
+import com.camelsoft.trademonitor._presentation.models.MStringString
 import com.camelsoft.trademonitor._presentation.utils.timeToStringShort
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.databinding.DialogChznSpecifyBinding
@@ -17,7 +19,7 @@ import kotlin.collections.ArrayList
 
 class SpecifyChZn(
     private val context: Context,
-    itemsInn: ArrayList<Pair<String, String>>,
+    itemsInn: ArrayList<MStringString>,
     click: (mChZnXmlHead: MChZnXmlHead) -> Unit
 ) {
     private val layoutInflater = LayoutInflater.from(context)
@@ -28,7 +30,7 @@ class SpecifyChZn(
     private var calDate = Calendar.getInstance()
 
     init {
-        binding.editInn.setAdapter(AutocomplitePairSSAdapter(context, itemsInn))
+        binding.editInn.setAdapter(AutocompliteSSAdapter(context, itemsInn))
 
         binding.editDate.text = timeToStringShort(calDate.timeInMillis)
         binding.editDate.setOnClickListener {

@@ -5,10 +5,12 @@ import androidx.room.Room
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
 import com.camelsoft.trademonitor._data.storage.room.RoomImpl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_firebase.RemoteConfigManagerImpl
 import com.camelsoft.trademonitor._domain.utils.ExportExcelSheet
 import com.camelsoft.trademonitor._domain.utils.ExportJsonGoodes
 import com.camelsoft.trademonitor._domain.utils.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.utils.ExportSouthRevision
+import com.camelsoft.trademonitor._presentation.api.IRemoteConfigFirebase
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -64,5 +66,11 @@ object DataModuleSingl {
     @Singleton
     fun provideExportJsonMarks(): ExportJsonMarks {
         return ExportJsonMarks()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteConfigFirebase(): IRemoteConfigFirebase {
+        return RemoteConfigManagerImpl()
     }
 }
