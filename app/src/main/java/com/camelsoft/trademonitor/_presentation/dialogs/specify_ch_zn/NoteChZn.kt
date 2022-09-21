@@ -5,8 +5,9 @@ import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
 import com.camelsoft.trademonitor._presentation.utils.timeToChZn
 import com.camelsoft.trademonitor.common.App
 
-fun makeNoteChZn(head: MChZnXmlHead): String {
+fun makeNoteChZn(head: MChZnXmlHead, note: String): String {
     var result = ""
+    result += "${App.getAppContext().resources.getString(R.string.collection)}: $note\n\n"
     if (head.innMy.isNotEmpty()) {
         result += "${App.getAppContext().resources.getString(R.string.inn)}: ${head.innMy}\n"
     }

@@ -9,6 +9,7 @@ import com.camelsoft.trademonitor._domain.models.MAlkoColl
 import com.camelsoft.trademonitor._domain.models.MAlkoMark
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._presentation.models.MScan
+import com.camelsoft.trademonitor._presentation.utils.scan.getScanFromDataMatrix
 import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -133,13 +134,15 @@ class FragmentAlkoMarkViewModel @Inject constructor(
     }
 
     private fun createNewAlkoMark(id_coll: Long, scan: MScan): MAlkoMark {
+        var ss = Pair("", "")
+        if (scan.format == "DATA_MATRIX") ss = getScanFromDataMatrix(scan.scancode.trim001d())
         return MAlkoMark(
             id = 0L,
             id_coll = id_coll,
             marka = scan.scancode.trim001d(),
             marka_type = scan.format,
-            scancode = "",
-            scancode_type = "",
+            scancode = ss.first,
+            scancode_type = ss.second,
             cena = 0F,
             note = "",
             name = "",

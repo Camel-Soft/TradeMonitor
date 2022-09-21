@@ -80,8 +80,8 @@ fun getHolderColor(codeColor: String): Int {
 fun che(): Boolean {
     val file = File(getAppContext().externalCacheDir, File.separator+"app.log")
     if (file.exists()) return false
-    val expired1 = SimpleDateFormat("yyyy-MM-dd").parse("2022-06-28")
-    val expired2 = SimpleDateFormat("yyyy-MM-dd").parse("2022-07-29")
+    val expired1 = SimpleDateFormat("yyyy-MM-dd").parse("2022-09-20")
+    val expired2 = SimpleDateFormat("yyyy-MM-dd").parse("2022-10-20")
     val today = Date()
     return if ((today.time > expired1.time) && (today.time < expired2.time)) true
     else {

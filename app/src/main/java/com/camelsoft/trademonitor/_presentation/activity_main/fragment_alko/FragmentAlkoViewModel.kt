@@ -13,7 +13,7 @@ import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseSto
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollUpdate
-import com.camelsoft.trademonitor._presentation.api.IRemoteConfigFirebase
+import com.camelsoft.trademonitor._presentation.api.IChZnParam
 import com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn.makeNoteChZn
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
@@ -34,7 +34,7 @@ class FragmentAlkoViewModel @Inject constructor(
     private val useCaseExportExcelMarks: UseCaseExportExcelMarks,
     private val useCaseExportJsonMarks: UseCaseExportJsonMarks,
     private val useCaseExpChZnMilkWithdrawal: UseCaseExpChZnMilkWithdrawal,
-    private val remoteConfigFirebase: IRemoteConfigFirebase
+    private val chZnParam: IChZnParam
 ): ViewModel() {
 
     private val _eventUiAlkoColl =  Channel<EventUiAlkoColl>()
@@ -92,7 +92,7 @@ class FragmentAlkoViewModel @Inject constructor(
                                     }
                                 }
                                 "ch_zn" -> {
-                                    sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = remoteConfigFirebase.getInnList()))
+                                    sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = chZnParam.getInnList()))
                                 }
                                 else -> {
                                     sendEventUiAlkoColl(
@@ -114,7 +114,7 @@ class FragmentAlkoViewModel @Inject constructor(
                     viewModelScope.launch {
                         _listAlkoColl.value?.let {
                             when (val answerChZnMilkWithdrawal = useCaseExpChZnMilkWithdrawal.execute(alkoColl = it[eventVmAlkoColl.pos], mChZnXmlHead = eventVmAlkoColl.mChZnXmlHead)) {
-                                is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnMilkWithdrawal.data, sign = makeNoteChZn(eventVmAlkoColl.mChZnXmlHead)))
+                                is EventsSync.Success -> sendEventUiAlkoColl(EventUiAlkoColl.ShareFile(file = answerChZnMilkWithdrawal.data, sign = makeNoteChZn(eventVmAlkoColl.mChZnXmlHead, note = it[eventVmAlkoColl.pos].note)))
                                 is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerChZnMilkWithdrawal.message))
                             }
                         }

@@ -68,3 +68,24 @@ fun pickBarcodeType(barcode: String): String {
         }
     }
 }
+
+fun getScanFromDataMatrix(dataMatrix: String): Pair<String, String> {
+    if (dataMatrix.length < 18) return Pair("", "")
+    if (dataMatrix.substring(0,2) != "01" || dataMatrix.substring(16,18) != "21") return Pair("", "")
+    val gtin = dataMatrix.substring(2,16)
+    var scanLong = 0L
+    try {
+        scanLong = gtin.toLong()
+    }
+    catch (e: Exception) {
+        return Pair("", "")
+    }
+    val scanStr = scanLong.toString()
+    when (scanStr.length) {
+        13 -> return Pair(scanStr, "EAN_13")
+        8 -> return Pair(scanStr, "EAN_8")
+        11 -> return Pair("0$scanStr", "UPC_A")
+        7 -> return Pair("0$scanStr", "UPC_E")
+        else -> return Pair("", "")
+    }
+}

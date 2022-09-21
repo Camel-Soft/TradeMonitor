@@ -17,6 +17,7 @@ import com.camelsoft.trademonitor.BuildConfig
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showPermShouldGive
+import com.camelsoft.trademonitor._presentation.utils.che
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.writeDeveloper
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -44,10 +45,10 @@ class ActivityMain : AppCompatActivity() {
 
         weakContext = WeakReference<Context>(this)
 
-//        if (!che()) {
-//            Toast.makeText(this, "Тестовое время истекло", Toast.LENGTH_LONG).show();
-//            finish()
-//        }
+        if (!che()) {
+            Toast.makeText(this, "Тестовое время истекло", Toast.LENGTH_LONG).show();
+            finish()
+        }
 
         // Показать версию в NavHeader`е
         bindingNavHead.navVer.text =  StringBuilder(resources.getString(R.string.version)+" "+BuildConfig.VERSION_NAME)
