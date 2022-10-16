@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_price_goods
 
-import com.camelsoft.trademonitor._domain.models.MPriceColl
-import com.camelsoft.trademonitor._domain.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.models.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.MPriceGoods
 import com.camelsoft.trademonitor._presentation.models.MScan
 
 sealed class EventVmGoods {

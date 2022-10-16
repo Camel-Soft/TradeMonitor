@@ -41,6 +41,10 @@
     <string name="withdrawal">Вывод</string>
     <string name="withdrawal_full">Вывод из оборота</string>
     <string name="packing">Фасовка</string>
+    <string name="database_update">Идет обновление баз</string>
+    <string name="goods_not_found">Товар не найден</string>
+    <string name="from_server">От сервера</string>
+    <string name="bad_scancod">Нестандартный сканкод</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -58,6 +62,7 @@
     <string name="error_export_file_format">Формат файла для экспорта не определен</string>
     <string name="error_alko_mark">Информация о марке не определена</string>
     <string name="error_withdrawal_type">Не определен тип вывода из оборота</string>
+    <string name="error_response_body">Тело ответа не определено</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>

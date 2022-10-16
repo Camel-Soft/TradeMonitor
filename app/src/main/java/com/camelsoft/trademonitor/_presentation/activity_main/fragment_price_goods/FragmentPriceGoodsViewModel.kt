@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MPriceColl
-import com.camelsoft.trademonitor._domain.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.models.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.MPriceGoods
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.genColorIdFromList
@@ -58,7 +58,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                                 changed = System.currentTimeMillis(),
                                 total = countGoodes,
                                 note = eventVmGoods.parentColl.note
-                            ))
+                            )
+                            )
                         }
                     }
                 }
@@ -82,7 +83,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                                 changed = System.currentTimeMillis(),
                                 total = countGoodes,
                                 note = eventVmGoods.parentColl.note
-                            ))
+                            )
+                            )
                         }
                     }
                 }
@@ -103,7 +105,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                                 changed = System.currentTimeMillis(),
                                 total = countGoodes,
                                 note = eventVmGoods.parentColl.note
-                            ))
+                            )
+                            )
                         }
                     }
                 }
@@ -120,7 +123,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                                     changed = System.currentTimeMillis(),
                                     total = countGoodes,
                                     note = eventVmGoods.parentColl.note
-                                ))
+                                )
+                                )
                             }
                         }
                     }
@@ -138,7 +142,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                                     changed = System.currentTimeMillis(),
                                     total = countGoodes,
                                     note = eventVmGoods.parentColl.note
-                                ))
+                                )
+                                )
                             }
                         }
                     }

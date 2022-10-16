@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MAlkoColl
-import com.camelsoft.trademonitor._domain.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.MAlkoMark
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanFromDataMatrix
@@ -56,7 +56,8 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                                 changed = System.currentTimeMillis(),
                                 total = countAlkoMarks,
                                 note = eventVmAlkoMark.parentAlkoColl.note
-                            ))
+                            )
+                            )
                         }
                     }
                 }
@@ -80,7 +81,8 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                                 changed = System.currentTimeMillis(),
                                 total = countAlkoMarks,
                                 note = eventVmAlkoMark.parentAlkoColl.note
-                            ))
+                            )
+                            )
                         }
                     }
                 }
@@ -97,7 +99,8 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                                     changed = System.currentTimeMillis(),
                                     total = countAlkoMarks,
                                     note = eventVmAlkoMark.parentAlkoColl.note
-                                ))
+                                )
+                                )
                             }
                         }
                     }
@@ -115,7 +118,8 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                                     changed = System.currentTimeMillis(),
                                     total = countAlkoMarks,
                                     note = eventVmAlkoMark.parentAlkoColl.note
-                                ))
+                                )
+                                )
                             }
                         }
                     }

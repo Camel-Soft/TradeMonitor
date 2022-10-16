@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MPriceColl
-import com.camelsoft.trademonitor._domain.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.models.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.MPriceGoods
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanProp1D

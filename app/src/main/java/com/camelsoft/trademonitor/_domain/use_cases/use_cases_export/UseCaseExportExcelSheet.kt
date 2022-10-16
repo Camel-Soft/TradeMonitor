@@ -2,8 +2,8 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_export
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._domain.models.MPriceColl
-import com.camelsoft.trademonitor._domain.utils.ExportExcelSheet
+import com.camelsoft.trademonitor._presentation.models.MPriceColl
+import com.camelsoft.trademonitor._domain.libs.ExportExcelSheet
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext

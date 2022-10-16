@@ -189,8 +189,8 @@ class HoneywellEDA50K(private val context: Context,
 //        }
 //    }
 
-//    private fun getScanProperties(): Map<String, Any> {
-//        val scanProperties = HashMap<String, Any>()
+//    private fun getScanProperties(): Map<MGoodsBig, Any> {
+//        val scanProperties = HashMap<MGoodsBig, Any>()
 //        scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = true
 //        scanProperties[BarcodeReader.PROPERTY_EAN_8_ENABLED] = true
 //        scanProperties[BarcodeReader.PROPERTY_UPC_A_ENABLE] = true

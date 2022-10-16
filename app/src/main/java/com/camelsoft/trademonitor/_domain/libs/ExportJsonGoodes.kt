@@ -1,8 +1,8 @@
-package com.camelsoft.trademonitor._domain.utils
+package com.camelsoft.trademonitor._domain.libs
 
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MPriceColl
-import com.camelsoft.trademonitor._domain.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.models.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.MPriceGoods
 import com.camelsoft.trademonitor._presentation.utils.timeToString
 import com.camelsoft.trademonitor._presentation.utils.toMoney
 import com.camelsoft.trademonitor._presentation.utils.toQuantity

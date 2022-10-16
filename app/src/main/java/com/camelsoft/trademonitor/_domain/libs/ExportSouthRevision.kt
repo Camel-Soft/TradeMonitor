@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._domain.utils
+package com.camelsoft.trademonitor._domain.libs
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.utils.toQuantity

@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._domain.use_cases.use_cases_storage
 
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._domain.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.MAlkoMark
 import com.camelsoft.trademonitor._presentation.utils.getErrCode
 import javax.inject.Inject
 

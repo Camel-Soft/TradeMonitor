@@ -1,7 +1,8 @@
-package com.camelsoft.trademonitor._domain.models
+package com.camelsoft.trademonitor._presentation.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlin.String
 
 @Parcelize
 data class MAlkoMark(

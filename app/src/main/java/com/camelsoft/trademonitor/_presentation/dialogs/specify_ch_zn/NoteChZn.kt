@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn
 
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
+import com.camelsoft.trademonitor._presentation.models.MChZnXmlHead
 import com.camelsoft.trademonitor._presentation.utils.timeToChZn
 import com.camelsoft.trademonitor.common.App
 

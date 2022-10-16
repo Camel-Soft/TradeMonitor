@@ -3,7 +3,7 @@ package com.camelsoft.trademonitor._data.storage.room.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.camelsoft.trademonitor._domain.models.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.MPriceColl
 
 @Entity(
     tableName = "room_collections"

@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.models.MAlkoMark
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
@@ -21,21 +24,24 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor._presentation.utils.scan.barcodeAutoCorrection
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
-import com.camelsoft.trademonitor.common.App
+import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.events.EventsGoods
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentAlkoMarkDetailBinding
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentAlkoMarkDetail : Fragment() {
-
+    @Inject lateinit var iGoods: IGoods
     private lateinit var binding: FragmentAlkoMarkDetailBinding
     private lateinit var weakContext: WeakReference<Context>
     private lateinit var weakView: WeakReference<View>
@@ -61,7 +67,7 @@ class FragmentAlkoMarkDetail : Fragment() {
 
         // Устанавливаем цвет верхней панели - белый
         val actionbar = (activity as AppCompatActivity).supportActionBar
-        actionbar?.setBackgroundDrawable(ColorDrawable(App.getAppContext().getColor(R.color.white)))
+        actionbar?.setBackgroundDrawable(ColorDrawable(getAppContext().getColor(R.color.white)))
 
         // Встроенный сканер
         if (settings.getScanner() == "honeywell_eda50k")
@@ -89,6 +95,29 @@ class FragmentAlkoMarkDetail : Fragment() {
             }
             // Вешаем листенер для кнопки "Сканировать сканкод"
             binding.btnScan.setOnClickListener { camStart() }
+            // Вешаем листенер для refresh-slide
+            binding.refreshLayout.setOnRefreshListener {
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    if (binding.editScan.text.toString().trim().count() in 6..13) {
+                        when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = binding.editScan.text.toString().trim()))) {
+                            is EventsGoods.Success -> { binding.editName.setText(result.data.name) }
+                            is EventsGoods.UnSuccess -> {
+                                Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show()
+                            }
+                            is EventsGoods.Update -> {
+                                Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show()
+                            }
+                            is EventsGoods.Error -> {
+                                showError(weakContext.get()!!, result.message){}
+                            }
+                        }
+                    }
+                    else
+                        Toast.makeText(weakContext.get()!!, getAppContext().resources.getString(R.string.bad_scancod), Toast.LENGTH_SHORT).show()
+
+                    binding.refreshLayout.isRefreshing = false
+                }
+            }
         }
     }
 
@@ -106,14 +135,14 @@ class FragmentAlkoMarkDetail : Fragment() {
     override fun onDestroyView() {
         // Устанавливаем цвет верхней панели - возвращаем назад
         val actionbar = (activity as AppCompatActivity).supportActionBar
-        actionbar?.setBackgroundDrawable(ColorDrawable(App.getAppContext().getColor(R.color.yellow_200)))
+        actionbar?.setBackgroundDrawable(ColorDrawable(getAppContext().getColor(R.color.yellow_200)))
         super.onDestroyView()
     }
 
     // Фотосканер одиночный
     private fun camStart() {
         try {
-            if (!App.getAppContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            if (!getAppContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
                 showInfo(weakContext.get()!!, resources.getString(R.string.attention_cameras)) {}
                 return
             }
@@ -167,11 +196,11 @@ class FragmentAlkoMarkDetail : Fragment() {
 
     private fun prepUpdate() {
         binding.apply {
-            textTitle.text = App.getAppContext().resources.getString(R.string.change)
+            textTitle.text = getAppContext().resources.getString(R.string.change)
             textStatus.text = ""
-            textStatus.setTextColor(App.getAppContext().getColor(R.color.black))
+            textStatus.setTextColor(getAppContext().getColor(R.color.black))
             textError.text = ""
-            textError.setTextColor(App.getAppContext().getColor(R.color.black))
+            textError.setTextColor(getAppContext().getColor(R.color.black))
             layoutMark.helperText = ""
             editMark.setText("")
             editMark.isEnabled = false
@@ -188,9 +217,9 @@ class FragmentAlkoMarkDetail : Fragment() {
         binding.apply {
             argAlkoMark?.let {
                 textStatus.text = getWrkMess(it.status_code).first
-                textStatus.setTextColor(App.getAppContext().getColor(getWrkMess(it.status_code).second))
+                textStatus.setTextColor(getAppContext().getColor(getWrkMess(it.status_code).second))
                 textError.text = getErrMess(it.status_code).first
-                textError.setTextColor(App.getAppContext().getColor(getErrMess(it.status_code).second))
+                textError.setTextColor(getAppContext().getColor(getErrMess(it.status_code).second))
                 editMark.setText(it.marka)
                 layoutMark.helperText = getScanType(it.marka_type)
                 editScan.setText(it.scancode)

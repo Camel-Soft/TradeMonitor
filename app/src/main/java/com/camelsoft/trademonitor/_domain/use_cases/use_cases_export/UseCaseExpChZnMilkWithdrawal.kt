@@ -2,9 +2,9 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_export
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._domain.models.MAlkoColl
-import com.camelsoft.trademonitor._domain.models.MAlkoMark
-import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
+import com.camelsoft.trademonitor._presentation.models.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.MChZnXmlHead
 import com.camelsoft.trademonitor._presentation.utils.rm001d
 import com.camelsoft.trademonitor._presentation.utils.timeToChZn
 import com.camelsoft.trademonitor._presentation.utils.toMoneyKop

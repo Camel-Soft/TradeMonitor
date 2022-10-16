@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.MPriceColl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelSheet
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonGoodes
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportSouthRevision

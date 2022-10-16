@@ -10,8 +10,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MAlkoColl
-import com.camelsoft.trademonitor._domain.models.MIntString
+import com.camelsoft.trademonitor._presentation.models.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.MIntString
 import com.camelsoft.trademonitor._presentation.utils.timeToString
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.databinding.FragmentAlkoCollItemBinding

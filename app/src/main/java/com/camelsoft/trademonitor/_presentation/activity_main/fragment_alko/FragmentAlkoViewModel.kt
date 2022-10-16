@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.MAlkoColl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExpChZnMilkWithdrawal
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonMarks

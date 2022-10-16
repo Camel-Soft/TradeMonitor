@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.applandeo.materialcalendarview.CalendarView
 import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._domain.models.MChZnXmlHead
+import com.camelsoft.trademonitor._presentation.models.MChZnXmlHead
 import com.camelsoft.trademonitor._presentation.adapters.AutocompliteSSAdapter
 import com.camelsoft.trademonitor._presentation.models.MStringString
 import com.camelsoft.trademonitor._presentation.utils.timeToStringShort
