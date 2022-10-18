@@ -10,7 +10,6 @@ import java.io.BufferedInputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
@@ -32,7 +31,7 @@ class RetroMy {
                 .followRedirects(true)
                 .followSslRedirects(true)
                 .sslSocketFactory(sslContext.socketFactory, trustManagerFactory.trustManagers[0] as X509TrustManager)
-                .hostnameVerifier (HostnameVerifier { s, sslSession ->  true})
+                .hostnameVerifier { hostName, sslSession -> hostName.equals(sslSession.peerHost) }
                 .addInterceptor(httpLoggingInterceptor)
                 .build()
 

@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.MPriceColl
 import com.camelsoft.trademonitor._presentation.models.MPriceGoods
 import com.camelsoft.trademonitor._presentation.api.IResultScan
@@ -20,16 +23,22 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor._presentation.utils.scan.barcodeAutoCorrection
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.events.EventsGoods
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FragmentPriceGoodsDetail : Fragment() {
+    @Inject lateinit var iGoods: IGoods
     private lateinit var binding: FragmentPriceGoodsDetailBinding
     private lateinit var weakContext: WeakReference<Context>
     private lateinit var weakView: WeakReference<View>
@@ -108,6 +117,33 @@ class FragmentPriceGoodsDetail : Fragment() {
                 }
                 else
                     showInfo(weakContext.get()!!, resources.getString(R.string.need_fill_fields)+": $missFields") {}
+            }
+        }
+
+        // Вешаем листенер для refresh-slide
+        binding.refreshLayout.setOnRefreshListener {
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                if (binding.editScan.text.toString().trim().count() in 6..13) {
+                    when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = binding.editScan.text.toString().trim()))) {
+                        is EventsGoods.Success -> {
+                            binding.editName.setText(result.data.name)
+                            binding.editEdIzm.setText(result.data.ed_izm)
+                        }
+                        is EventsGoods.UnSuccess -> {
+                            Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show()
+                        }
+                        is EventsGoods.Update -> {
+                            Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show()
+                        }
+                        is EventsGoods.Error -> {
+                            showError(weakContext.get()!!, result.message){}
+                        }
+                    }
+                }
+                else
+                    Toast.makeText(weakContext.get()!!, getAppContext().resources.getString(R.string.bad_scancod), Toast.LENGTH_SHORT).show()
+
+                binding.refreshLayout.isRefreshing = false
             }
         }
     }

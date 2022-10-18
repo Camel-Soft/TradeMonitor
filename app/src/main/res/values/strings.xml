@@ -19,6 +19,7 @@
     <string name="money">руб</string>
     <string name="inserted">Добавлено</string>
     <string name="updated">Обновлено</string>
+    <string name="updated_repository">Обновлено из репозитория</string>
     <string name="change">Изменить</string>
     <string name="insert_hand">Добавить вручную</string>
     <string name="sheet_1">Лист 1</string>
@@ -63,6 +64,8 @@
     <string name="error_alko_mark">Информация о марке не определена</string>
     <string name="error_withdrawal_type">Не определен тип вывода из оборота</string>
     <string name="error_response_body">Тело ответа не определено</string>
+    <string name="error_сonnect">Нет связи. Проверьте соединение с интернетом</string>
+    <string name="error_ssl_unverified">SSL верификация не выполнена</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>

@@ -38,6 +38,11 @@ fun getWrkMess(code: Int): Pair<String, Int> {
             val wrkMesColor = R.color.blue_300
             return Pair(wrkMesText, wrkMesColor)
         }
+        3 -> {
+            val wrkMesText = getAppContext().resources.getString(R.string.updated_repository)
+            val wrkMesColor = R.color.purple_300
+            return Pair(wrkMesText, wrkMesColor)
+        }
         else -> {
             val wrkMesText = ""
             val wrkMesColor = R.color.black

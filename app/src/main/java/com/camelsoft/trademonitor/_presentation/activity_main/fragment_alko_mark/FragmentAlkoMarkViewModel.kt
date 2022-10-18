@@ -5,17 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
-import com.camelsoft.trademonitor._presentation.models.MScan
+import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.models.*
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanFromDataMatrix
 import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
+import com.camelsoft.trademonitor.common.events.EventsGoods
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +25,8 @@ class FragmentAlkoMarkViewModel @Inject constructor(
     private val useCaseStorageAlkoMarkGetAll: UseCaseStorageAlkoMarkGetAll,
     private val useCaseStorageAlkoMarkInsertOrUpdate: UseCaseStorageAlkoMarkInsertOrUpdate,
     private val useCaseStorageAlkoMarkUpdate: UseCaseStorageAlkoMarkUpdate,
-    private val useCaseStorageAlkoCollUpdate: UseCaseStorageAlkoCollUpdate
+    private val useCaseStorageAlkoCollUpdate: UseCaseStorageAlkoCollUpdate,
+    private val iGoods: IGoods
 ): ViewModel() {
 
     private val _eventUiAlkoMark =  Channel<EventUiAlkoMark>()
@@ -42,6 +44,10 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                 is EventVmAlkoMark.OnInsertOrUpdateAlkoMark -> {
                     viewModelScope.launch {
                         val returnAlkoMark = useCaseStorageAlkoMarkInsertOrUpdate.execute(newAlkoMark = createNewAlkoMark(id_coll = eventVmAlkoMark.parentAlkoColl.id_coll, scan = eventVmAlkoMark.scan))
+                        // Запрос к репозиторию
+                        launch {
+                            getFromRepo(returnAlkoMark = returnAlkoMark, id_coll = eventVmAlkoMark.parentAlkoColl.id_coll)
+                        }
                         _listAlkoMark.value = useCaseStorageAlkoMarkGetAll.execute(id_coll = eventVmAlkoMark.parentAlkoColl.id_coll)
                         _listAlkoMark.value?.let {
                             val scrollPos = it.indexOf(returnAlkoMark)
@@ -64,8 +70,14 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                 is EventVmAlkoMark.OnInsertOrUpdateAlkoMarks -> {
                     viewModelScope.launch {
                         var returnAlkoMark: MAlkoMark? = null
-                        eventVmAlkoMark.scanList.forEach {
-                            returnAlkoMark = useCaseStorageAlkoMarkInsertOrUpdate.execute(newAlkoMark = createNewAlkoMark(id_coll = eventVmAlkoMark.parentAlkoColl.id_coll, scan = it))
+                        eventVmAlkoMark.scanList.forEach { mScan ->
+                            returnAlkoMark = useCaseStorageAlkoMarkInsertOrUpdate.execute(newAlkoMark = createNewAlkoMark(id_coll = eventVmAlkoMark.parentAlkoColl.id_coll, scan = mScan))
+                            // Запрос к репозиторию
+                            launch {
+                                returnAlkoMark?.let { mAlkoMark ->
+                                    getFromRepo(returnAlkoMark = mAlkoMark, id_coll = eventVmAlkoMark.parentAlkoColl.id_coll)
+                                }
+                            }
                         }
                         _listAlkoMark.value = useCaseStorageAlkoMarkGetAll.execute(id_coll = eventVmAlkoMark.parentAlkoColl.id_coll)
                         _listAlkoMark.value?.let {
@@ -141,7 +153,7 @@ class FragmentAlkoMarkViewModel @Inject constructor(
         var ss = Pair("", "")
         if (scan.format == "DATA_MATRIX") ss = getScanFromDataMatrix(scan.scancode.trim001d())
         return MAlkoMark(
-            id = 0L,
+            id = Date().time,
             id_coll = id_coll,
             marka = scan.scancode.trim001d(),
             marka_type = scan.format,
@@ -155,6 +167,26 @@ class FragmentAlkoMarkViewModel @Inject constructor(
             status_code = 0,
             holder_color = "white"
         )
+    }
+
+    private suspend fun getFromRepo(returnAlkoMark: MAlkoMark, id_coll: Long) {
+        try {
+            if ((returnAlkoMark.name.isEmpty() || returnAlkoMark.cena == 0F) && returnAlkoMark.scancode.isNotEmpty()) {
+                when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = returnAlkoMark.scancode))) {
+                    is EventsGoods.Success -> {
+                        useCaseStorageAlkoMarkUpdate.execute(alkoMark = mapAlkoMark(mAlkoMark = returnAlkoMark, mGoodsBig = result.data))
+                        _listAlkoMark.value = useCaseStorageAlkoMarkGetAll.execute(id_coll = id_coll)
+                    }
+                    is EventsGoods.UnSuccess -> {}
+                    is EventsGoods.Update -> {}
+                    is EventsGoods.Error -> {}
+                }
+            }
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            throw Exception("[FragmentAlkoMarkViewModel.getFromRepo] ${e.localizedMessage}")
+        }
     }
 
     private fun sendEventUiAlkoMark(eventUiAlkoMark: EventUiAlkoMark) {

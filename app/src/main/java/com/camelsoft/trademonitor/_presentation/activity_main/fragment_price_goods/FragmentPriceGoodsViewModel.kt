@@ -5,18 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.models.MPriceColl
-import com.camelsoft.trademonitor._presentation.models.MPriceGoods
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
-import com.camelsoft.trademonitor._presentation.models.MScan
+import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.models.*
 import com.camelsoft.trademonitor._presentation.utils.genColorIdFromList
 import com.camelsoft.trademonitor._presentation.utils.scan.checkBarcode
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.events.EventsGoods
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
     private val useCaseStorageGoodsUpdate: UseCaseStorageGoodsUpdate,
     private val useCaseStorageGoodsGetAll: UseCaseStorageGoodsGetAll,
     private val useCaseStorageCollUpdate: UseCaseStorageCollUpdate,
-    private val settings: Settings
+    private val settings: Settings,
+    private val iGoods: IGoods
 ): ViewModel() {
 
     private val _eventUiGoods =  Channel<EventUiGoods>()
@@ -44,6 +46,10 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                 is EventVmGoods.OnInsertOrUpdateGoods -> {
                     viewModelScope.launch {
                         val returnPriceGoods = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = eventVmGoods.scan))
+                        // Запрос к репозиторию
+                        launch {
+                            getFromRepo(returnPriceGoods = returnPriceGoods, id_coll = eventVmGoods.parentColl.id_coll)
+                        }
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
                             val scrollPos = it.indexOf(returnPriceGoods)
@@ -66,8 +72,14 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                 is EventVmGoods.OnInsertOrUpdateGoodes -> {
                     viewModelScope.launch {
                         var returnPriceGoods: MPriceGoods? = null
-                        eventVmGoods.scanList.forEach {
-                            returnPriceGoods = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = it))
+                        eventVmGoods.scanList.forEach { mScan ->
+                            returnPriceGoods = useCaseStorageGoodsInsertOrUpdate.execute(newPriceGoods = createNewGoods(id_coll = eventVmGoods.parentColl.id_coll, scan = mScan))
+                            // Запрос к репозиторию
+                            launch {
+                                returnPriceGoods?.let { mPriceGoods ->
+                                    getFromRepo(returnPriceGoods = mPriceGoods, id_coll = eventVmGoods.parentColl.id_coll)
+                                }
+                            }
                         }
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                         _listPriceGoods.value?.let {
@@ -168,9 +180,8 @@ class FragmentPriceGoodsViewModel @Inject constructor(
         _listPriceGoods.value?.let {
             colorIdFromList = genColorIdFromList(it)
         }
-
         return MPriceGoods(
-            id = 0L,
+            id = Date().time,
             id_coll = id_coll,
             scancode = scan.scancode,
             scancode_type = scan.format,
@@ -182,6 +193,26 @@ class FragmentPriceGoodsViewModel @Inject constructor(
             status_code = if (checkBarcode(prefix = settings.getPrefix(), barcode = scan.scancode)) 0 else 1,
             holder_color = colorIdFromList
         )
+    }
+
+    private suspend fun getFromRepo(returnPriceGoods: MPriceGoods, id_coll: Long) {
+        try {
+            if ((returnPriceGoods.name.isEmpty() || returnPriceGoods.cena == 0F) && returnPriceGoods.scancode.isNotEmpty()) {
+                when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = returnPriceGoods.scancode))) {
+                    is EventsGoods.Success -> {
+                        useCaseStorageGoodsUpdate.execute(priceGoods = mapPriceGoods(mPriceGoods = returnPriceGoods, mGoodsBig = result.data))
+                        _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = id_coll)
+                    }
+                    is EventsGoods.UnSuccess -> {}
+                    is EventsGoods.Update -> {}
+                    is EventsGoods.Error -> {}
+                }
+            }
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            throw Exception("[FragmentPriceGoodsViewModel.getFromRepo] ${e.localizedMessage}")
+        }
     }
 
     private fun sendEventUiGoods(eventUiGoods: EventUiGoods) {

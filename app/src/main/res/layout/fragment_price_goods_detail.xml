@@ -1,329 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="._presentation.activity_main.fragment_price_goods_detail.FragmentPriceGoodsDetail">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:checkable="false"
-        android:clickable="false"
-        android:focusable="false"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/black"
-        app:strokeWidth="2dp"
-        tools:ignore="TouchTargetSizeCheck">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textTitle"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            tools:text="@string/insert_hand"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-    </com.google.android.material.card.MaterialCardView>
+            android:layout_marginStart="30dp"
+            android:checkable="false"
+            android:clickable="false"
+            android:focusable="false"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp"
+            tools:ignore="TouchTargetSizeCheck">
 
-    <TextView
-        android:id="@+id/textStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        tools:text="@string/inserted"
-        android:gravity="end"
-        android:textStyle="bold|italic"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="10dp"
-        android:gravity="end"
-        android:textSize="12sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textStatus"
-        tools:text="@string/error_scancode" />
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/lineHor1"
-        app:layout_constraintTop_toBottomOf="@+id/cardTitle">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutScan"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="@string/scancode"
-                app:hintTextColor="@color/orange_100"
-                android:textColorHint="@color/orange_100"
-                app:counterEnabled="true"
-                app:counterMaxLength="13"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:helperText=""
-                app:helperTextEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editScan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:maxLines="1"
-                    android:maxLength="13"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutQuantity"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="@string/quantity"
-                app:hintTextColor="@color/orange_100"
-                android:textColorHint="@color/orange_100"
-                app:counterEnabled="true"
-                app:counterMaxLength="7"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:helperText=""
-                app:helperTextEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutScan">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editQuantity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:maxLength="7"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutEdIzm"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="@string/ed_izm"
-                app:hintTextColor="@color/orange_100"
-                android:textColorHint="@color/orange_100"
-                app:counterEnabled="true"
-                app:counterMaxLength="3"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:helperText=""
-                app:helperTextEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutQuantity">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editEdIzm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:maxLength="3"
-                    android:maxLines="1"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutCena"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="@string/cena"
-                app:hintTextColor="@color/orange_100"
-                android:textColorHint="@color/orange_100"
-                app:counterEnabled="true"
-                app:counterMaxLength="9"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:helperText=""
-                app:helperTextEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutEdIzm">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editCena"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
-                    android:maxLength="9"
-                    android:maxLines="1"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="@string/name"
-                app:hintTextColor="@color/orange_100"
-                android:textColorHint="@color/orange_100"
-                app:counterEnabled="true"
-                app:counterMaxLength="40"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:helperText=""
-                app:helperTextEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutCena">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:maxLength="40"
-                    android:minLines="1"
-                    android:maxLines="2"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutNote"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="@string/note"
-                app:hintTextColor="@color/orange_100"
-                android:textColorHint="@color/orange_100"
-                app:counterEnabled="true"
-                app:counterMaxLength="70"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:helperText=""
-                app:helperTextEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutName">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editNote"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:maxLength="70"
-                    android:minLines="1"
-                    android:maxLines="4"
-                    android:lines="4"
-                    android:scrollbars="vertical"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-
-    <View
-        android:id="@+id/lineHor1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardSave" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:checkable="true"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardCornerRadius="15dp"
-        android:backgroundTint="@color/yellow_200"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/black"
-        app:strokeWidth="0dp"
-        tools:ignore="TouchTargetSizeCheck">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                tools:text="@string/insert_hand"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/textSave"
+            android:id="@+id/textStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            tools:text="@string/inserted"
+            android:gravity="end"
+            android:textStyle="bold|italic"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="end"
+            android:textSize="12sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textStatus"
+            tools:text="@string/error_scancode" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/lineHor1"
+            app:layout_constraintTop_toBottomOf="@+id/cardTitle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutScan"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="@string/scancode"
+                    app:hintTextColor="@color/orange_100"
+                    android:textColorHint="@color/orange_100"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="13"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:helperText=""
+                    app:helperTextEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editScan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:maxLength="13"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutQuantity"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="@string/quantity"
+                    app:hintTextColor="@color/orange_100"
+                    android:textColorHint="@color/orange_100"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="7"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:helperText=""
+                    app:helperTextEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutScan">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editQuantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="start"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:maxLength="7"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutEdIzm"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="@string/ed_izm"
+                    app:hintTextColor="@color/orange_100"
+                    android:textColorHint="@color/orange_100"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="3"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:helperText=""
+                    app:helperTextEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutQuantity">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editEdIzm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="start"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutCena"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="@string/cena"
+                    app:hintTextColor="@color/orange_100"
+                    android:textColorHint="@color/orange_100"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="9"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:helperText=""
+                    app:helperTextEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutEdIzm">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editCena"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="start"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLength="9"
+                        android:maxLines="1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="@string/name"
+                    app:hintTextColor="@color/orange_100"
+                    android:textColorHint="@color/orange_100"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="40"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:helperText=""
+                    app:helperTextEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutCena">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="start"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:maxLength="40"
+                        android:minLines="1"
+                        android:maxLines="2"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutNote"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="@string/note"
+                    app:hintTextColor="@color/orange_100"
+                    android:textColorHint="@color/orange_100"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="70"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:helperText=""
+                    app:helperTextEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutName">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:gravity="start"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:maxLength="70"
+                        android:minLines="1"
+                        android:maxLines="4"
+                        android:lines="4"
+                        android:scrollbars="vertical"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/lineHor1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardSave" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/save"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </com.google.android.material.card.MaterialCardView>
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="15dp"
+            android:backgroundTint="@color/yellow_200"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/black"
+            app:strokeWidth="0dp"
+            tools:ignore="TouchTargetSizeCheck">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/save"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

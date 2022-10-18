@@ -6,6 +6,8 @@ import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.events.EventsGoods
+import java.net.ConnectException
+import javax.net.ssl.SSLPeerUnverifiedException
 
 class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
 
@@ -32,6 +34,14 @@ class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
                     return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${getAppContext().resources.getString(R.string.from_server)} - ${response.code()} ${response.message()}")
                 }
             }
+        }
+        catch (e: ConnectException) {
+            e.printStackTrace()
+            return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${getAppContext().resources.getString(R.string.error_сonnect)}")
+        }
+        catch (e: SSLPeerUnverifiedException) {
+            e.printStackTrace()
+            return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${getAppContext().resources.getString(R.string.error_ssl_unverified)}")
         }
         catch (e: Exception) {
             e.printStackTrace()

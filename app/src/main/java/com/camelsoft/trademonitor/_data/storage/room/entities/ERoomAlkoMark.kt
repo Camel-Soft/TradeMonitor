@@ -20,7 +20,7 @@ import com.camelsoft.trademonitor._presentation.models.MAlkoMark
 )
 
 data class ERoomAlkoMark(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id") val id: Long,
     @ColumnInfo(name = "id_coll") val id_coll: Long,
     @ColumnInfo(name = "marka") val marka: String,
