@@ -17,7 +17,8 @@ fun reqPermissions(context: Context, report: (EventsSync<Boolean>) -> Unit) {
             .withPermissions(
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE
             )
             .withListener(object: MultiplePermissionsListener {
                 override fun onPermissionsChecked(permReport: MultiplePermissionsReport?) {

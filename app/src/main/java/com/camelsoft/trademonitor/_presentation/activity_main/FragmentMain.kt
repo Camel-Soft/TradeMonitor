@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.utils.getTelephonyItems
+import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.databinding.FragmentMainBinding
 
 class FragmentMain : Fragment() {
@@ -25,7 +28,10 @@ class FragmentMain : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mainCardPrice.setOnClickListener {
-            findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphPrice)
+
+            Toast.makeText(requireContext(),"${getTelephonyItems(getAppContext())}", Toast.LENGTH_LONG).show()
+
+            //findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphPrice)
         }
 
         binding.mainCardAlko.setOnClickListener {
