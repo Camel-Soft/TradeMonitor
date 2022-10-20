@@ -7,4 +7,6 @@ data class MId(
     var sdk: Int,
     @SerializedName("id")
     var id: String,
+    @SerializedName("aid")
+    var aid: String
 )

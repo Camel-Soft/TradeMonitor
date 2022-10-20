@@ -16,15 +16,26 @@ fun getTelephonyItems(appContext: Context): MId {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return MId(
                 sdk = Build.VERSION.SDK_INT,
-                id = Settings.System.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
+                id = "",
+                aid = Settings.System.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
             )
         }
         else {
-            val telephonyManager = appContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-            return MId(
-                sdk = Build.VERSION.SDK_INT,
-                id = telephonyManager.getDeviceId(0)+"_"+Settings.System.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
-            )
+            try {
+                val telephonyManager = appContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                return MId(
+                    sdk = Build.VERSION.SDK_INT,
+                    id = telephonyManager.getDeviceId(0),
+                    aid = Settings.System.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
+                )
+            }
+            catch (_: Exception) {
+                return MId(
+                    sdk = Build.VERSION.SDK_INT,
+                    id = "",
+                    aid = Settings.System.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
+                )
+            }
         }
     }
     catch (e: Exception) {
