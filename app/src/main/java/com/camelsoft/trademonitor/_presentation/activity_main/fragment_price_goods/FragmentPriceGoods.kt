@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.models.MPriceColl
-import com.camelsoft.trademonitor._presentation.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.models.price.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.price.MPriceGoods
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.api.IResultScanList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K

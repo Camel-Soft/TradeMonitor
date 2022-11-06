@@ -1,9 +1,9 @@
 package com.camelsoft.trademonitor._data.storage.room
 
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
-import com.camelsoft.trademonitor._presentation.models.MPriceColl
-import com.camelsoft.trademonitor._presentation.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.price.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.price.MPriceGoods
 
 interface IRoom {
 

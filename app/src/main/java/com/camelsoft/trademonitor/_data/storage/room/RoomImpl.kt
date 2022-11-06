@@ -4,10 +4,10 @@ import com.camelsoft.trademonitor._data.storage.room.entities.ERoomAlkoColl
 import com.camelsoft.trademonitor._data.storage.room.entities.ERoomAlkoMark
 import com.camelsoft.trademonitor._data.storage.room.entities.ERoomColl
 import com.camelsoft.trademonitor._data.storage.room.entities.ERoomGoods
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
-import com.camelsoft.trademonitor._presentation.models.MPriceColl
-import com.camelsoft.trademonitor._presentation.models.MPriceGoods
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.price.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.price.MPriceGoods
 
 class RoomImpl(private val daoRoom: IDaoRoom): IRoom {
 

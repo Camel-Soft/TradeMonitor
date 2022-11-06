@@ -8,6 +8,8 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.*
+import com.camelsoft.trademonitor._presentation.models.price.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.price.MPriceGoods
 import com.camelsoft.trademonitor._presentation.utils.genColorIdFromList
 import com.camelsoft.trademonitor._presentation.utils.scan.checkBarcode
 import com.camelsoft.trademonitor.common.App

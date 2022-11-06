@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._presentation.models
+package com.camelsoft.trademonitor._presentation.models.secondary
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

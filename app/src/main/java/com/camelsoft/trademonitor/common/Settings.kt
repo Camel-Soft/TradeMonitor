@@ -1,16 +1,17 @@
 package com.camelsoft.trademonitor.common
 
+import android.content.Context
 import androidx.preference.PreferenceManager
+import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 
 class Settings {
 
-    private val prefManager = PreferenceManager.getDefaultSharedPreferences(App.getAppContext())
+    private val prefManager = PreferenceManager.getDefaultSharedPreferences(getAppContext())
 
     fun getPrefix(): String {
         var prefix = "99"
         prefManager.getString("weight_prefix", "99")?.let { prefix = it }
         return prefix
-
     }
 
     fun getAutoCorrBarcode(): Boolean {
@@ -29,5 +30,42 @@ class Settings {
         var scanner = "empty"
         prefManager.getString("scanner", "empty")?.let { scanner = it }
         return scanner
+    }
+
+    // ****************************************************************************************
+
+    private val privateManager = getAppContext().getSharedPreferences("pm", Context.MODE_PRIVATE)
+
+    fun putToken(token: String?) {
+        val editor = privateManager.edit()
+        editor.putString("token", token)
+        editor.apply()
+    }
+
+    fun getToken(): String? {
+        if (!privateManager.contains("token")) return null
+        else return privateManager.getString("token", null)
+    }
+
+    fun putEmail(email: String) {
+        val editor = privateManager.edit()
+        editor.putString("email", email)
+        editor.apply()
+    }
+
+    fun getEmail(): String? {
+        if (!privateManager.contains("email")) return null
+        else return privateManager.getString("email", null)
+    }
+
+    fun putPassword(password: String) {
+        val editor = privateManager.edit()
+        editor.putString("password", password)
+        editor.apply()
+    }
+
+    fun getPassword(): String? {
+        if (!privateManager.contains("password")) return null
+        else return privateManager.getString("password", null)
     }
 }

@@ -2,7 +2,7 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_export
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._presentation.models.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.price.MPriceColl
 import com.camelsoft.trademonitor._domain.libs.ExportJsonGoodes
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.events.EventsSync

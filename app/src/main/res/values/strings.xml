@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Trade Monitor</string>
-    <string name="developer_email">development.camelsoft@gmail.com</string>
     <string name="developer_write">Написать разработчику</string>
     <string name="developer_request">Вопрос по мобильному приложению Trade Monitor</string>
     <string name="back_pressed">Нажмите еще раз, чтобы выйти</string>
@@ -8,6 +7,7 @@
     <string name="about">Написать разработчику</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
+    <string name="sign">Войти</string>
     <string name="exit">Выход</string>
     <string name="save">Сохранить</string>
     <string name="menu">Меню</string>

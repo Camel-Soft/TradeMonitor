@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,8 +18,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.camelsoft.trademonitor.BuildConfig
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.dialogs.showPermShouldGive
-import com.camelsoft.trademonitor._presentation.utils.che
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.writeDeveloper
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -35,6 +37,7 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var rootFragmentId: Int? = null
+    private val viewModel: ActivityMainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +47,6 @@ class ActivityMain : AppCompatActivity() {
         setContentView(binding.root)
 
         weakContext = WeakReference<Context>(this)
-
-        if (!che()) {
-            Toast.makeText(this, "Тестовое время истекло", Toast.LENGTH_LONG).show();
-            finish()
-        }
 
         // Показать версию в NavHeader`е
         bindingNavHead.navVer.text =  StringBuilder(resources.getString(R.string.version)+" "+BuildConfig.VERSION_NAME)
@@ -78,7 +76,21 @@ class ActivityMain : AppCompatActivity() {
             binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+
+        eventsUi()
         getPermissions()
+    }
+
+    // Обработка событий от View Model
+    private fun eventsUi() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.onEventsUi.collect { eventUiMain ->
+                when(eventUiMain) {
+                    is EventsUiMain.ShowError -> showError(weakContext.get()!!, eventUiMain.message) {}
+                    is EventsUiMain.ShowInfo -> showInfo(weakContext.get()!!, eventUiMain.message) {}
+                }
+            }
+        }
     }
 
     // Нажатия кнопок верхнего меню

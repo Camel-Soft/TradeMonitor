@@ -1,6 +1,6 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_alko
 
-import com.camelsoft.trademonitor._presentation.models.MStringString
+import com.camelsoft.trademonitor._presentation.models.secondary.MStringString
 import java.io.File
 
 sealed class EventUiAlkoColl {

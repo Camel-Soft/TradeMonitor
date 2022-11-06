@@ -1,5 +1,7 @@
 package com.camelsoft.trademonitor._presentation.models
 
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.price.MPriceGoods
 import com.camelsoft.trademonitor._presentation.utils.getErrCode
 
 fun mapPriceGoods(mPriceGoods: MPriceGoods, mGoodsBig: MGoodsBig): MPriceGoods {

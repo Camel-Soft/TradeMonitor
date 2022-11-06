@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor.common.App

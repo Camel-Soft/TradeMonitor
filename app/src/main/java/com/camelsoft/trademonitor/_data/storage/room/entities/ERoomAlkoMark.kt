@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._data.storage.room.entities
 
 import androidx.room.*
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 
 @Entity(
     tableName = "room_mark_alko",

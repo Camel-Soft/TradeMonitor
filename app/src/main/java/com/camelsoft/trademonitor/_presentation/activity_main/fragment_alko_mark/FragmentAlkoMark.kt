@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.api.IResultScanList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera

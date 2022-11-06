@@ -10,7 +10,7 @@ import com.applandeo.materialcalendarview.builders.DatePickerBuilder
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.models.MChZnXmlHead
 import com.camelsoft.trademonitor._presentation.adapters.AutocompliteSSAdapter
-import com.camelsoft.trademonitor._presentation.models.MStringString
+import com.camelsoft.trademonitor._presentation.models.secondary.MStringString
 import com.camelsoft.trademonitor._presentation.utils.timeToStringShort
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.databinding.DialogChznSpecifyBinding

@@ -2,7 +2,7 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_export
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
 import com.camelsoft.trademonitor._domain.libs.ExportExcelSheet
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
