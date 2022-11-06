@@ -3,7 +3,7 @@ package com.camelsoft.trademonitor._data.storage.room.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
 
 @Entity(
     tableName = "room_collections_alko"

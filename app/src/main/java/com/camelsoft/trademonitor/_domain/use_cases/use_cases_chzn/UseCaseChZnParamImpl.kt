@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._domain.use_cases.use_cases_chzn
 
 import com.camelsoft.trademonitor._presentation.api.IChZnParam
-import com.camelsoft.trademonitor._presentation.models.MStringString
+import com.camelsoft.trademonitor._presentation.models.secondary.MStringString
 
 class UseCaseChZnParamImpl: IChZnParam {
     override suspend fun getInnList(): ArrayList<MStringString> {

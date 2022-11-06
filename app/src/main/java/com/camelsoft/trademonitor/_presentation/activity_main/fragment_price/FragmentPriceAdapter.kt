@@ -10,8 +10,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.models.MPriceColl
-import com.camelsoft.trademonitor._presentation.models.MIntString
+import com.camelsoft.trademonitor._presentation.models.price.MPriceColl
+import com.camelsoft.trademonitor._presentation.models.secondary.MIntString
 import com.camelsoft.trademonitor._presentation.utils.timeToString
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.databinding.FragmentPriceItemBinding

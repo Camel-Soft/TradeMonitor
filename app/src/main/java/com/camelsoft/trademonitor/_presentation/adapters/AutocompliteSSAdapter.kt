@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
-import com.camelsoft.trademonitor._presentation.models.MStringString
+import com.camelsoft.trademonitor._presentation.models.secondary.MStringString
 import com.camelsoft.trademonitor.databinding.ItemStringBinding
 import java.util.ArrayList
 

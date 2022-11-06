@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_alko_mark
 
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.models.MScan
 
 sealed class EventVmAlkoMark {

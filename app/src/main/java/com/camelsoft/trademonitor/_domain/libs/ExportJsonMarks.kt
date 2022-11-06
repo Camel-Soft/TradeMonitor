@@ -1,8 +1,8 @@
 package com.camelsoft.trademonitor._domain.libs
 
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.models.MAlkoColl
-import com.camelsoft.trademonitor._presentation.models.MAlkoMark
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
+import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.utils.timeToString
 import com.camelsoft.trademonitor._presentation.utils.toMoney
 import com.camelsoft.trademonitor._presentation.utils.toQuantity

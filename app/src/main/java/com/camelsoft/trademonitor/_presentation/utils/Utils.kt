@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat.startActivity
 import com.camelsoft.trademonitor.BuildConfig
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.Constants.Companion.DEVELOPER_EMAIL
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -105,7 +106,7 @@ fun hideKeyboard(context: Context, view: View?) {
 fun writeDeveloper(context: Context) {
     val intentEmail = Intent(Intent.ACTION_SENDTO)
     intentEmail.data = Uri.parse("mailto:")
-    intentEmail.putExtra(Intent.EXTRA_EMAIL, arrayOf(getAppContext().resources.getString(R.string.developer_email)))
+    intentEmail.putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPER_EMAIL))
     intentEmail.putExtra(Intent.EXTRA_SUBJECT, getAppContext().resources.getString(R.string.developer_request))
     intentEmail.putExtra(Intent.EXTRA_TEXT, getAppContext().resources.getString(R.string.version)+" "+ BuildConfig.VERSION_NAME)
     startActivity(context, Intent.createChooser(intentEmail, getAppContext().resources.getString(R.string.developer_write)), null)
