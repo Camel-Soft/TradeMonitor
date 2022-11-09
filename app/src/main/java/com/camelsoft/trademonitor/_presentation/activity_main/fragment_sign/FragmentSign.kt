@@ -32,7 +32,15 @@ class FragmentSign : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         weakContext = WeakReference<Context>(requireContext())
+        handlePd()
         tabLayoutListener()
+    }
+
+    // Галочка Согласие на обработку персональных данных
+    private fun handlePd() {
+        binding.checkHandlePd.setOnClickListener {
+            if (binding.checkHandlePd.isChecked) binding.btnOk.isEnabled = true else binding.btnOk.isEnabled = false
+        }
     }
 
     // Вешаем tab-листенер и жмем на 0-кнопку
@@ -62,7 +70,7 @@ class FragmentSign : Fragment() {
         when (position) {
             // Вход
             0 -> {
-                binding.checkIsInforming.visibility = View.INVISIBLE
+                binding.checkIsInforming.visibility = View.GONE
                 binding.btnOk.setOnClickListener(signIn)
             }
             // Регистрация

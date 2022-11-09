@@ -1,6 +1,7 @@
 package com.camelsoft.trademonitor._data.net.servers
 
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,6 +19,7 @@ class RetroMy {
     private val keyStore = getKeyStore()
     private val trustManagerFactory = getTrustManagerFactory()
     private val sslContext = getSSLContext()
+    private val tokenInterceptor = TokenInterceptor()
     val retrofit = makeRetroMy()
 
     private fun makeRetroMy(): Retrofit {
@@ -33,6 +35,7 @@ class RetroMy {
                 .sslSocketFactory(sslContext.socketFactory, trustManagerFactory.trustManagers[0] as X509TrustManager)
                 .hostnameVerifier { hostName, sslSession -> hostName.equals(sslSession.peerHost) }
                 .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(tokenInterceptor)
                 .build()
 
             return Retrofit.Builder()

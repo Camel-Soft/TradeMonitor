@@ -1,7 +1,7 @@
 package com.camelsoft.trademonitor._domain.use_cases.use_cases_security
 
 import com.camelsoft.trademonitor._domain.api.ITelephony
-import com.camelsoft.trademonitor._presentation.api.ITokenUser
+import com.camelsoft.trademonitor._domain.api.ITokenUser
 import com.camelsoft.trademonitor._presentation.models.user.MDev
 import com.camelsoft.trademonitor._presentation.models.user.MUser
 import com.camelsoft.trademonitor.common.Constants.Companion.JWT_ISSUER
@@ -18,7 +18,7 @@ class TokenUserImpl(private val telephony: ITelephony): ITokenUser {
     private val verifier: JWSVerifier = RSASSAVerifier(jwkPublic)
     private lateinit var signedJWT: SignedJWT
 
-    override suspend fun authUserBase(token: String?): Boolean {
+    override fun authUserBase(token: String?): Boolean {
         try {
             if (token == null) return false
             signedJWT = SignedJWT.parse(token)
@@ -33,7 +33,7 @@ class TokenUserImpl(private val telephony: ITelephony): ITokenUser {
         }
     }
 
-    override suspend fun tokenToMUser(token: String?): MUser? {
+    override fun tokenToMUser(token: String?): MUser? {
         try {
             if (!authUserBase(token)) return null
             val devs = Gson().fromJson<List<MDev>>(signedJWT.jwtClaimsSet.getStringClaim("devs"), MDev::class.java)
@@ -59,7 +59,7 @@ class TokenUserImpl(private val telephony: ITelephony): ITokenUser {
         }
     }
 
-    override suspend fun authUserDev(token: String?): Boolean {
+    override fun authUserDev(token: String?): Boolean {
         try {
             val mUser = tokenToMUser(token) ?: return false
             if (!mUser.isActiveDev) return false
@@ -77,7 +77,7 @@ class TokenUserImpl(private val telephony: ITelephony): ITokenUser {
         }
     }
 
-    override suspend fun authUserSrv(token: String?): Boolean {
+    override fun authUserSrv(token: String?): Boolean {
         try {
             val mUser = tokenToMUser(token) ?: return false
             return mUser.isActiveSrv

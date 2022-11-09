@@ -11,7 +11,7 @@ import com.camelsoft.trademonitor.common.App
 
 class TelephonyImpl: ITelephony {
     @SuppressLint("MissingPermission", "HardwareIds")
-    override suspend fun getTelephonyItems(): MId {
+    override fun getTelephonyItems(): MId {
         try {
             // Q = 29, Android 10 in September 2019
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

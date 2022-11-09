@@ -1,7 +1,9 @@
 package com.camelsoft.trademonitor.common.di
 
+import com.camelsoft.trademonitor._data.net.managers.TokenManager
 import com.camelsoft.trademonitor._data.storage.room.IRoom
-import com.camelsoft.trademonitor._domain.api.ITelephony
+import com.camelsoft.trademonitor._domain.api.ITokenUser
+import com.camelsoft.trademonitor._domain.api.ITokenVerifier
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_chzn.UseCaseChZnParamImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.*
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
@@ -9,9 +11,8 @@ import com.camelsoft.trademonitor._domain.libs.ExportExcelSheet
 import com.camelsoft.trademonitor._domain.libs.ExportJsonGoodes
 import com.camelsoft.trademonitor._domain.libs.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.libs.ExportSouthRevision
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserImpl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenVerifierImpl
 import com.camelsoft.trademonitor._presentation.api.IChZnParam
-import com.camelsoft.trademonitor._presentation.api.ITokenUser
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -169,7 +170,7 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
-    fun provideTokenUser(telephony: ITelephony): ITokenUser {
-        return TokenUserImpl(telephony = telephony)
+    fun provideTokenVerifier(tokenUser: ITokenUser, tokenManager: TokenManager): ITokenVerifier {
+        return TokenVerifierImpl(tokenUser = tokenUser, tokenManager = tokenManager)
     }
 }
