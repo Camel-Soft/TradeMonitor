@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_fragGraphMain_to_fragGraphAlko"
             app:destination="@id/fragGraphAlko" />
+        <action
+            android:id="@+id/action_fragGraphMain_to_fragGraphSign"
+            app:destination="@id/fragGraphSign" />
     </fragment>
 
     <fragment
@@ -100,6 +103,16 @@
         <action
             android:id="@+id/action_fragGraphAlkoMarkDetail_to_fragGraphAlkoMark"
             app:destination="@id/fragGraphAlkoMark" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphSign"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_sign.FragmentSign"
+        android:label="@string/signin_signup"
+        tools:layout="@layout/fragment_sign" >
+        <action
+            android:id="@+id/action_fragGraphSign_to_fragGraphMain"
+            app:destination="@id/fragGraphMain" />
     </fragment>
 
 </navigation>

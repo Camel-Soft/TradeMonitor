@@ -7,7 +7,9 @@
     <string name="about">Написать разработчику</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
-    <string name="sign">Войти</string>
+    <string name="signin_signup">Вход / Регистрация</string>
+    <string name="signup">Регистрация</string>
+    <string name="signin">Вход</string>
     <string name="exit">Выход</string>
     <string name="save">Сохранить</string>
     <string name="menu">Меню</string>
@@ -46,11 +48,16 @@
     <string name="goods_not_found">Товар не найден</string>
     <string name="from_server">От сервера</string>
     <string name="bad_scancod">Нестандартный сканкод</string>
+    <string name="email">E-mail</string>
+    <string name="password">Пароль</string>
+    <string name="save_accound">Сохранить E-mail и пароль</string>
+    <string name="is_informing">Информировать о новостях и изменениях</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
 
     <string name="info_empty_export_format">Выбранный формат для экспорта не предусмотрен в данном архиве</string>
+    <string name="info_password">Не менее 8 символов</string>
 
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>
@@ -66,6 +73,7 @@
     <string name="error_response_body">Тело ответа не определено</string>
     <string name="error_сonnect">Нет связи. Проверьте соединение с интернетом</string>
     <string name="error_ssl_unverified">SSL верификация не выполнена</string>
+    <string name="error_tab_handler">Не найден обработчик для вкладки</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
@@ -154,5 +162,4 @@
     <string name="material_calendar_today_button">Сегодня</string>
     <string name="material_calendar_positive_button">Ok</string>
     <string name="material_calendar_negative_button">Отмена</string>
-
 </resources>

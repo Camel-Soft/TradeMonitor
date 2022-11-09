@@ -48,6 +48,9 @@ class ActivityMain : AppCompatActivity() {
 
         weakContext = WeakReference<Context>(this)
 
+        // Шторка (левая) открывается только с кнопки
+        binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
         // Показать версию в NavHeader`е
         bindingNavHead.navVer.text =  StringBuilder(resources.getString(R.string.version)+" "+BuildConfig.VERSION_NAME)
 
@@ -77,6 +80,7 @@ class ActivityMain : AppCompatActivity() {
             true
         }
 
+        btnSign()
         eventsUi()
         getPermissions()
     }
@@ -88,6 +92,8 @@ class ActivityMain : AppCompatActivity() {
                 when(eventUiMain) {
                     is EventsUiMain.ShowError -> showError(weakContext.get()!!, eventUiMain.message) {}
                     is EventsUiMain.ShowInfo -> showInfo(weakContext.get()!!, eventUiMain.message) {}
+                    is EventsUiMain.LogIn -> {}
+                    is EventsUiMain.LogOut -> {}
                 }
             }
         }
@@ -143,5 +149,14 @@ class ActivityMain : AppCompatActivity() {
             showError(weakContext.get()!!, resources.getString(R.string.error_in)+
                     " ActivityMain.onBackPressed: "+
                     resources.getString(R.string.error_root_fragment_id)) { finish() }
+    }
+
+    // Кнопка Вход/Регистрация
+    private fun btnSign() {
+        bindingNavHead.cardSign.setOnClickListener {
+            navController.navigate(R.id.fragGraphSign)
+            if (binding.mainDrawerLayout.isDrawerOpen(GravityCompat.START))
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+        }
     }
 }

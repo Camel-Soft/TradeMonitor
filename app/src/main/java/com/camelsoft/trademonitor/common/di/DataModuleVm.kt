@@ -169,7 +169,7 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
-    fun provideTokenUser(telephony: ITelephony, settings: Settings): ITokenUser {
-        return TokenUserImpl(telephony = telephony, settings = settings)
+    fun provideTokenUser(telephony: ITelephony): ITokenUser {
+        return TokenUserImpl(telephony = telephony)
     }
 }

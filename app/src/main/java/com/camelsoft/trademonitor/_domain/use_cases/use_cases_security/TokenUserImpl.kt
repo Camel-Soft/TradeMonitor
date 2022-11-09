@@ -6,17 +6,13 @@ import com.camelsoft.trademonitor._presentation.models.user.MDev
 import com.camelsoft.trademonitor._presentation.models.user.MUser
 import com.camelsoft.trademonitor.common.Constants.Companion.JWT_ISSUER
 import com.camelsoft.trademonitor.common.Constants.Companion.JWT_JWK_USERS_PUBLIC
-import com.camelsoft.trademonitor.common.Settings
 import com.google.gson.Gson
 import com.nimbusds.jose.JWSVerifier
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.SignedJWT
 
-class TokenUserImpl(
-    private val telephony: ITelephony,
-    private val settings: Settings
-    ): ITokenUser {
+class TokenUserImpl(private val telephony: ITelephony): ITokenUser {
 
     private val jwkPublic: RSAKey = RSAKey.parse(JWT_JWK_USERS_PUBLIC)
     private val verifier: JWSVerifier = RSASSAVerifier(jwkPublic)
@@ -29,10 +25,6 @@ class TokenUserImpl(
             if (!signedJWT.verify(verifier)) return false
             if (System.currentTimeMillis() > signedJWT.jwtClaimsSet.getLongClaim("expTime")) return false
             if (signedJWT.jwtClaimsSet.issuer != JWT_ISSUER || signedJWT.jwtClaimsSet.subject != "user") return false
-            settings.getEmail()?.let {
-                if (signedJWT.jwtClaimsSet.getStringClaim("email") != it) return false
-            } ?: return false
-
             return true
         }
         catch (e: Exception) {
@@ -74,11 +66,8 @@ class TokenUserImpl(
             val mId = telephony.getTelephonyItems()
             mUser.devs.forEach { mDev->
                 if (mDev.devSdk == mId.sdk && mDev.devId == mId.id && mDev.devAid == mId.aid &&
-                    mDev.isActiveDev && System.currentTimeMillis() < mDev.expTimeDev && mDev.devDateUnreg == 0L) {
-                    settings.getEmail()?.let {
-                        if (mDev.email == it) return true
-                    }
-                }
+                    mDev.isActiveDev && System.currentTimeMillis() < mDev.expTimeDev && mDev.devDateUnreg == 0L)
+                    return true
             }
             return false
         }
