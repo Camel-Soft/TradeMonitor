@@ -40,6 +40,7 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentAlkoMark : Fragment() {
@@ -48,7 +49,7 @@ class FragmentAlkoMark : Fragment() {
     private lateinit var weakContext: WeakReference<Context>
     private val viewModel: FragmentAlkoMarkViewModel by viewModels()
     private lateinit var parentAlkoColl: MAlkoColl
-    private val settings = Settings()
+    @Inject lateinit var settings: Settings
     private lateinit var honeywellEDA50K: HoneywellEDA50K
 
     override fun onCreateView(

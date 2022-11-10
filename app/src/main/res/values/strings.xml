@@ -52,7 +52,7 @@
     <string name="password">Пароль</string>
     <string name="save_accound">Сохранить E-mail и пароль</string>
     <string name="is_informing">Информировать о новостях и изменениях</string>
-    <string name="handle_personal_data">Согласие на обработку\nперсональных данных</string>
+    <string name="handle_personal_data">Даю свое согласие на обработку\nперсональных данных</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -75,6 +75,9 @@
     <string name="error_сonnect">Нет связи. Проверьте соединение с интернетом</string>
     <string name="error_ssl_unverified">SSL верификация не выполнена</string>
     <string name="error_tab_handler">Не найден обработчик для вкладки</string>
+    <string name="error_unauthorized">Запрос не авторизован сервером</string>
+    <string name="error_email">Проверьте правильность указанного E-mail</string>
+    <string name="error_password">Проверьте правильность указанного пароля. Пароль должен содержать не менее 8 символов</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>

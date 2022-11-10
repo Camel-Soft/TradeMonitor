@@ -92,6 +92,7 @@ class ActivityMain : AppCompatActivity() {
                 when(eventUiMain) {
                     is EventsUiMain.ShowError -> showError(weakContext.get()!!, eventUiMain.message) {}
                     is EventsUiMain.ShowInfo -> showInfo(weakContext.get()!!, eventUiMain.message) {}
+                    is EventsUiMain.ShowToast -> Toast.makeText(weakContext.get()!!, eventUiMain.message, Toast.LENGTH_LONG).show()
                     is EventsUiMain.LogIn -> {}
                     is EventsUiMain.LogOut -> {}
                 }

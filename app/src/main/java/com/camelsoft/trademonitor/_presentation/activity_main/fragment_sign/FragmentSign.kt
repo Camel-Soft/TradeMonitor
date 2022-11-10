@@ -10,15 +10,20 @@ import androidx.fragment.app.viewModels
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.activity_main.ActivityMainViewModel
 import com.camelsoft.trademonitor._presentation.dialogs.showError
+import com.camelsoft.trademonitor._presentation.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.utils.validateEmail
+import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.databinding.FragmentSignBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentSign : Fragment() {
     private lateinit var binding: FragmentSignBinding
     private lateinit var weakContext: WeakReference<Context>
+    @Inject lateinit var settings: Settings
     private val viewModel: ActivityMainViewModel by viewModels()
 
     override fun onCreateView(
@@ -34,6 +39,7 @@ class FragmentSign : Fragment() {
         weakContext = WeakReference<Context>(requireContext())
         handlePd()
         tabLayoutListener()
+        loadAccount()
     }
 
     // Галочка Согласие на обработку персональных данных
@@ -70,12 +76,16 @@ class FragmentSign : Fragment() {
         when (position) {
             // Вход
             0 -> {
+                binding.checkHandlePd.visibility = View.GONE
                 binding.checkIsInforming.visibility = View.GONE
+                binding.btnOk.isEnabled = true
                 binding.btnOk.setOnClickListener(signIn)
             }
             // Регистрация
             1 -> {
+                binding.checkHandlePd.visibility = View.VISIBLE
                 binding.checkIsInforming.visibility = View.VISIBLE
+                if (binding.checkHandlePd.isChecked) binding.btnOk.isEnabled = true else binding.btnOk.isEnabled = false
                 binding.btnOk.setOnClickListener(signUp)
             }
             else -> showError(weakContext.get()!!, "[FragmentSign.tabTap] "+resources.getString(R.string.error_tab_handler)+": $position") {}
@@ -84,12 +94,47 @@ class FragmentSign : Fragment() {
 
     // Листенер для кнопки Вход
     private val signIn: View.OnClickListener = View.OnClickListener {
+        signStart()
+
 
     }
 
     // Листенер для кнопки Регистрация
     private val signUp: View.OnClickListener = View.OnClickListener {
+        signStart()
 
 
+    }
+
+    private fun signStart(): Boolean {
+        try {
+            if (!binding.textEmail.text.toString().trim().validateEmail()) {
+                showInfo(weakContext.get()!!, resources.getString(R.string.error_email)) {}
+                return false
+            }
+            if (binding.textPass.text.toString().trim().length < 8) {
+                showInfo(weakContext.get()!!, resources.getString(R.string.error_password)) {}
+                return false
+            }
+            if (binding.checkSaveAccound.isChecked) {
+                settings.putEmail(binding.textEmail.text.toString().trim())
+                settings.putPassword(binding.textPass.text.toString().trim())
+            }
+            else {
+                settings.putEmail(null)
+                settings.putPassword(null)
+            }
+            return true
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            showError(weakContext.get()!!, "[FragmentSign.signStart] ${e.localizedMessage}") {}
+            return false
+        }
+    }
+
+    private fun loadAccount() {
+        settings.getEmail()?.let { binding.textEmail.setText(it) }
+        settings.getPassword()?.let { binding.textPass.setText(it) }
     }
 }

@@ -5,7 +5,6 @@ import com.camelsoft.trademonitor._data.net.api.NetApiScan
 import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
-import com.camelsoft.trademonitor.common.events.EventsGoods
 import java.net.ConnectException
 import javax.net.ssl.SSLPeerUnverifiedException
 
@@ -20,7 +19,7 @@ class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
                     if (response.isSuccessful && response.body() != null)
                         return EventsGoods.Success(response.body()!!)
                     else
-                        return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${getAppContext().resources.getString(R.string.error_response_body)}")
+                        return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] 200 ${getAppContext().resources.getString(R.string.error_response_body)}")
                 }
                 // No Content - Товар НЕ найден
                 204 -> {
@@ -30,6 +29,10 @@ class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
                 205 -> {
                     return EventsGoods.Update(getAppContext().resources.getString(R.string.database_update))
                 }
+                // Unauthorized - Запрос не авторизован сервером
+                401 -> {
+                    return EventsGoods.Error(getAppContext().resources.getString(R.string.error_unauthorized))
+                }
                 else -> {
                     return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${getAppContext().resources.getString(R.string.from_server)} - ${response.code()} ${response.message()}")
                 }
@@ -37,15 +40,15 @@ class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
         }
         catch (e: ConnectException) {
             e.printStackTrace()
-            return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${getAppContext().resources.getString(R.string.error_сonnect)}")
+            return EventsGoods.Error(getAppContext().resources.getString(R.string.error_сonnect))
         }
         catch (e: SSLPeerUnverifiedException) {
             e.printStackTrace()
-            return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${getAppContext().resources.getString(R.string.error_ssl_unverified)}")
+            return EventsGoods.Error(getAppContext().resources.getString(R.string.error_ssl_unverified))
         }
         catch (e: Exception) {
             e.printStackTrace()
-            return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${e.message}")
+            return EventsGoods.Error("[UseCaseRepoGoodsBigImpl.getGoodsBig] ${e.localizedMessage}")
         }
     }
 }

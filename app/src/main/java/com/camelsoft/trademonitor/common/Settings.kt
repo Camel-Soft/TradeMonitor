@@ -36,7 +36,7 @@ class Settings {
 
     private val privateManager = getAppContext().getSharedPreferences("pm", Context.MODE_PRIVATE)
 
-    fun putEmail(email: String) {
+    fun putEmail(email: String?) {
         synchronized(this) {
             val editor = privateManager.edit()
             editor.putString("email", email)
@@ -49,7 +49,7 @@ class Settings {
         else return privateManager.getString("email", null)
     }
 
-    fun putPassword(password: String) {
+    fun putPassword(password: String?) {
         synchronized(this) {
             val editor = privateManager.edit()
             editor.putString("password", password)

@@ -13,7 +13,7 @@ import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanFromDataMatrix
 import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
-import com.camelsoft.trademonitor.common.events.EventsGoods
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

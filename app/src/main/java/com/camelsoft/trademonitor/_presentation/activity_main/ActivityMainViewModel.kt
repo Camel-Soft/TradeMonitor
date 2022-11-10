@@ -3,8 +3,9 @@ package com.camelsoft.trademonitor._presentation.activity_main
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.camelsoft.trademonitor._domain.api.ITokenVerifier
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserVerifier
+import com.camelsoft.trademonitor._presentation.api.ISign
+import com.camelsoft.trademonitor._presentation.models.user.MUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -13,24 +14,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ActivityMainViewModel @Inject constructor(
-    private val settings: Settings,
-    private val tokenVerifier: ITokenVerifier
+    private val tokenUserVerifier: TokenUserVerifier,
+    private val iSign: ISign
     ): ViewModel() {
 
     private val _onEventsUi = Channel<EventsUiMain>()
     val onEventsUi = _onEventsUi.receiveAsFlow()
 
-
-    private val observerToToken = Observer<String?> {
+    private val observerToMUser = Observer<MUser?> {
 
     }
 
     init {
-        //token.observeForever(observerToToken)
+        tokenUserVerifier.mUser.observeForever(observerToMUser)
     }
 
     override fun onCleared() {
-        //token.removeObserver(observerToToken)
+        tokenUserVerifier.mUser.removeObserver(observerToMUser)
         super.onCleared()
     }
 

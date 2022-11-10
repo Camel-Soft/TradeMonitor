@@ -5,13 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.camelsoft.trademonitor._data.net.managers.TokenManager
 import com.camelsoft.trademonitor._domain.api.ITokenUser
-import com.camelsoft.trademonitor._domain.api.ITokenVerifier
 import com.camelsoft.trademonitor._presentation.models.user.MUser
 
-class TokenVerifierImpl(
-    private val tokenUser: ITokenUser,
-    private val tokenManager: TokenManager
-    ) : ITokenVerifier {
+class TokenUserVerifier(private val tokenUser: ITokenUser, private val tokenManager: TokenManager) {
 
     private val _mUser = MutableLiveData<MUser?>()
     val mUser: LiveData<MUser?> = _mUser
@@ -25,7 +21,7 @@ class TokenVerifierImpl(
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception("[TokenVerifierImpl.observerToToken] ${e.localizedMessage}")
+            throw Exception("[TokenUserVerifier.observerToToken] ${e.localizedMessage}")
         }
     }
 
@@ -33,7 +29,7 @@ class TokenVerifierImpl(
         tokenManager.token.observeForever(observerToToken)
     }
 
-    override suspend fun setNewToken(token: String?): Boolean {
+    fun setNewToken(token: String?): Boolean {
         try {
             if (token == null) {
                 tokenManager.putToken(null)
@@ -51,11 +47,11 @@ class TokenVerifierImpl(
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception("[TokenVerifierImpl.setNewToken] ${e.localizedMessage}")
+            throw Exception("[TokenUserVerifier.setNewToken] ${e.localizedMessage}")
         }
     }
 
-    override suspend fun verifyExistToken(): Boolean {
+    fun verifyExistToken(): Boolean {
         try {
             val token = tokenManager.getToken() ?: return false
             if (!tokenUser.authUserDev(token)) {
@@ -66,7 +62,7 @@ class TokenVerifierImpl(
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception("[TokenVerifierImpl.verifyExistToken] ${e.localizedMessage}")
+            throw Exception("[TokenUserVerifier.verifyExistToken] ${e.localizedMessage}")
         }
     }
 }

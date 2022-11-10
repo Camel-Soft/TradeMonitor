@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor.common.events
+package com.camelsoft.trademonitor._domain.use_cases.use_cases_repository
 
 sealed class EventsGoods<T> {
     class Success<T>(val data: T) : EventsGoods<T>()

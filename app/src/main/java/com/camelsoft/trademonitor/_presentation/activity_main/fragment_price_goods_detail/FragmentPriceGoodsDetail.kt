@@ -29,7 +29,7 @@ import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
-import com.camelsoft.trademonitor.common.events.EventsGoods
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +44,7 @@ class FragmentPriceGoodsDetail : Fragment() {
     private lateinit var weakView: WeakReference<View>
     private var argPriceGoods: MPriceGoods? = null
     private var argPriceColl: MPriceColl? = null
-    private val settings = Settings()
+    @Inject lateinit var settings: Settings
     private lateinit var honeywellEDA50K: HoneywellEDA50K
 
     override fun onCreateView(
