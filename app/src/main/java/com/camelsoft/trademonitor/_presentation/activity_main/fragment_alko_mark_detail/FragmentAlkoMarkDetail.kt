@@ -101,15 +101,10 @@ class FragmentAlkoMarkDetail : Fragment() {
                     if (binding.editScan.text.toString().trim().count() in 6..13) {
                         when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = binding.editScan.text.toString().trim()))) {
                             is EventsGoods.Success -> { binding.editName.setText(result.data.name) }
-                            is EventsGoods.UnSuccess -> {
-                                Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show()
-                            }
-                            is EventsGoods.Update -> {
-                                Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show()
-                            }
-                            is EventsGoods.Error -> {
-                                showError(weakContext.get()!!, result.message){}
-                            }
+                            is EventsGoods.UnSuccess -> { Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show() }
+                            is EventsGoods.Update -> { Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show() }
+                            is EventsGoods.Info -> { showInfo(weakContext.get()!!, result.message){} }
+                            is EventsGoods.Error -> { showError(weakContext.get()!!, result.message){} }
                         }
                     }
                     else

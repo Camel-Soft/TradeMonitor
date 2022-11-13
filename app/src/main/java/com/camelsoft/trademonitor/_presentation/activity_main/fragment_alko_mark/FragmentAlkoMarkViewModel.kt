@@ -181,6 +181,7 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                     }
                     is EventsGoods.UnSuccess -> {}
                     is EventsGoods.Update -> {}
+                    is EventsGoods.Info -> {}
                     is EventsGoods.Error -> {}
                 }
             }

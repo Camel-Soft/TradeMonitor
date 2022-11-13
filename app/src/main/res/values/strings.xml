@@ -7,9 +7,13 @@
     <string name="about">Написать разработчику</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
+    <string name="signin">Вход</string>
+    <string name="signin_go">Вход выполнен</string>
+    <string name="signin_stop">Вход НЕ выполнен. Тухлый токен</string>
     <string name="signin_signup">Вход / Регистрация</string>
     <string name="signup">Регистрация</string>
-    <string name="signin">Вход</string>
+    <string name="signup_go_signin">Регистрация выполнена. Выполняю вход</string>
+    <string name="logout_go">Выход выполнен</string>
     <string name="exit">Выход</string>
     <string name="save">Сохранить</string>
     <string name="menu">Меню</string>
@@ -72,6 +76,7 @@
     <string name="error_alko_mark">Информация о марке не определена</string>
     <string name="error_withdrawal_type">Не определен тип вывода из оборота</string>
     <string name="error_response_body">Тело ответа не определено</string>
+    <string name="error_response_status">Статус ответа не определен</string>
     <string name="error_сonnect">Нет связи. Проверьте соединение с интернетом</string>
     <string name="error_ssl_unverified">SSL верификация не выполнена</string>
     <string name="error_tab_handler">Не найден обработчик для вкладки</string>

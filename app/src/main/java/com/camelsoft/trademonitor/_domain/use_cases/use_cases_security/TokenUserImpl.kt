@@ -7,6 +7,7 @@ import com.camelsoft.trademonitor._presentation.models.user.MUser
 import com.camelsoft.trademonitor.common.Constants.Companion.JWT_ISSUER
 import com.camelsoft.trademonitor.common.Constants.Companion.JWT_JWK_USERS_PUBLIC
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.nimbusds.jose.JWSVerifier
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.RSAKey
@@ -36,7 +37,8 @@ class TokenUserImpl(private val telephony: ITelephony): ITokenUser {
     override fun tokenToMUser(token: String?): MUser? {
         try {
             if (!authUserBase(token)) return null
-            val devs = Gson().fromJson<List<MDev>>(signedJWT.jwtClaimsSet.getStringClaim("devs"), MDev::class.java)
+            val typeList = object : TypeToken<List<MDev>>() {}.type
+            val devs: List<MDev> = Gson().fromJson(signedJWT.jwtClaimsSet.getStringClaim("devs"), typeList)
             return MUser(
                 issuer = signedJWT.jwtClaimsSet.issuer,
                 subject = signedJWT.jwtClaimsSet.subject,

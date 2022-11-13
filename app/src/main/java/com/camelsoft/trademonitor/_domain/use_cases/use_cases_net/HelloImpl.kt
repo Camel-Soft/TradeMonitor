@@ -11,12 +11,17 @@ class HelloImpl(private val netApiHello: NetApiHello): IHello {
     override suspend fun hello(): EventsNet<String> {
         try {
             val response = netApiHello.hello()
-            when (response.code()) {
-                200 -> response.body()?.let {
-                    return EventsNet.Success(it)
-                }?: return EventsNet.Success("code is 200, but message is null")
-                401 -> return EventsNet.Error(getAppContext().resources.getString(R.string.error_unauthorized))
-                else -> return EventsNet.Error("[HelloImpl.hello] ${getAppContext().resources.getString(R.string.from_server)} - ${response.code()} ${response.message()}")
+            if (response.code() != 200)
+                return EventsNet.Error("[HelloImpl.hello] [server] - ${response.code()} ${response.message()}")
+            else {
+                response.body()?.let { mMessage ->
+                    when (mMessage.status) {
+                        "ok" -> return EventsNet.Success(mMessage.message)
+                        "info" -> return EventsNet.Info(mMessage.message)
+                        "error" -> return EventsNet.Error("[HelloImpl.hello] [server] ${mMessage.message}")
+                        else -> return EventsNet.Error("[HelloImpl.hello] [server] ${getAppContext().resources.getString(R.string.error_response_status)} - ${mMessage.status}")
+                    }
+                }?: return EventsNet.Error("[HelloImpl.hello] ${getAppContext().resources.getString(R.string.error_response_body)}")
             }
         }
         catch (e: ConnectException) {
@@ -36,12 +41,17 @@ class HelloImpl(private val netApiHello: NetApiHello): IHello {
     override suspend fun helloAuth(): EventsNet<String> {
         try {
             val response = netApiHello.helloAuthBoth()
-            when (response.code()) {
-                200 -> response.body()?.let {
-                    return EventsNet.Success(it)
-                }?: return EventsNet.Success("code is 200, but message is null")
-                401 -> return EventsNet.Error(getAppContext().resources.getString(R.string.error_unauthorized))
-                else -> return EventsNet.Error("[HelloImpl.helloAuth] ${getAppContext().resources.getString(R.string.from_server)} - ${response.code()} ${response.message()}")
+            if (response.code() != 200)
+                return EventsNet.Error("[HelloImpl.helloAuth] [server] - ${response.code()} ${response.message()}")
+            else {
+                response.body()?.let { mMessage ->
+                    when (mMessage.status) {
+                        "ok" -> return EventsNet.Success(mMessage.message)
+                        "info" -> return EventsNet.Info(mMessage.message)
+                        "error" -> return EventsNet.Error("[HelloImpl.helloAuth] [server] ${mMessage.message}")
+                        else -> return EventsNet.Error("[HelloImpl.helloAuth] [server] ${getAppContext().resources.getString(R.string.error_response_status)} - ${mMessage.status}")
+                    }
+                }?: return EventsNet.Error("[HelloImpl.helloAuth] ${getAppContext().resources.getString(R.string.error_response_body)}")
             }
         }
         catch (e: ConnectException) {

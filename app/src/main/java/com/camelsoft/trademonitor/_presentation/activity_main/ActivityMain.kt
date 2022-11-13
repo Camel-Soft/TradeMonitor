@@ -3,6 +3,7 @@ package com.camelsoft.trademonitor._presentation.activity_main
 import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,9 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.dialogs.showPermShouldGive
+import com.camelsoft.trademonitor._presentation.models.user.MUser
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
+import com.camelsoft.trademonitor._presentation.utils.timeToStringShort
 import com.camelsoft.trademonitor._presentation.utils.writeDeveloper
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
@@ -80,7 +83,8 @@ class ActivityMain : AppCompatActivity() {
             true
         }
 
-        btnSign()
+        btnSignListener()
+        btnLogoutListener()
         eventsUi()
         getPermissions()
     }
@@ -88,13 +92,13 @@ class ActivityMain : AppCompatActivity() {
     // Обработка событий от View Model
     private fun eventsUi() {
         lifecycleScope.launchWhenStarted {
-            viewModel.onEventsUi.collect { eventUiMain ->
+            viewModel.eventsUi.collect { eventUiMain ->
                 when(eventUiMain) {
-                    is EventsUiMain.ShowError -> showError(weakContext.get()!!, eventUiMain.message) {}
-                    is EventsUiMain.ShowInfo -> showInfo(weakContext.get()!!, eventUiMain.message) {}
-                    is EventsUiMain.ShowToast -> Toast.makeText(weakContext.get()!!, eventUiMain.message, Toast.LENGTH_LONG).show()
-                    is EventsUiMain.LogIn -> {}
-                    is EventsUiMain.LogOut -> {}
+                    is EventsUiMainActivity.ShowError -> showError(weakContext.get()!!, eventUiMain.message) {}
+                    is EventsUiMainActivity.ShowInfo -> showInfo(weakContext.get()!!, eventUiMain.message) {}
+                    is EventsUiMainActivity.ShowToast -> Toast.makeText(weakContext.get()!!, eventUiMain.message, Toast.LENGTH_SHORT).show()
+                    is EventsUiMainActivity.LogIn -> logInView(eventUiMain.mUser)
+                    is EventsUiMainActivity.LogOut -> logOutView()
                 }
             }
         }
@@ -153,11 +157,44 @@ class ActivityMain : AppCompatActivity() {
     }
 
     // Кнопка Вход/Регистрация
-    private fun btnSign() {
+    private fun btnSignListener() {
         bindingNavHead.cardSign.setOnClickListener {
             navController.navigate(R.id.fragGraphSign)
             if (binding.mainDrawerLayout.isDrawerOpen(GravityCompat.START))
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         }
+    }
+
+    // Кнопка Выход(Logout)
+    private fun btnLogoutListener() {
+        bindingNavHead.btnLogout.setOnClickListener {
+            viewModel.eventsVm(EventsVmMainActivity.Logout)
+            if (binding.mainDrawerLayout.isDrawerOpen(GravityCompat.START))
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+    // Отрисовка выхода
+    private fun logOutView() {
+        bindingNavHead.signText1.text = ""
+        bindingNavHead.signText2.text = ""
+        bindingNavHead.signText3.text = ""
+        bindingNavHead.signText1.visibility = View.INVISIBLE
+        bindingNavHead.signText2.visibility = View.INVISIBLE
+        bindingNavHead.signText3.visibility = View.INVISIBLE
+        bindingNavHead.btnLogout.visibility = View.INVISIBLE
+        bindingNavHead.cardSign.visibility = View.VISIBLE
+    }
+
+    // Отрисовка входа
+    private fun logInView(mUser: MUser) {
+        bindingNavHead.cardSign.visibility = View.INVISIBLE
+        bindingNavHead.signText1.text = mUser.email
+        bindingNavHead.signText2.text = ""
+        bindingNavHead.signText3.text = "expTime: ${timeToStringShort(mUser.expTime)}"
+        bindingNavHead.signText1.visibility = View.VISIBLE
+        bindingNavHead.signText2.visibility = View.VISIBLE
+        bindingNavHead.signText3.visibility = View.VISIBLE
+        bindingNavHead.btnLogout.visibility = View.VISIBLE
     }
 }

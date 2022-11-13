@@ -207,6 +207,7 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                     }
                     is EventsGoods.UnSuccess -> {}
                     is EventsGoods.Update -> {}
+                    is EventsGoods.Info -> {}
                     is EventsGoods.Error -> {}
                 }
             }

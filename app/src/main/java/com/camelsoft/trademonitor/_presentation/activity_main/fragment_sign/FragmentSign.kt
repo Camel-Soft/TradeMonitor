@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.activity_main.ActivityMainViewModel
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.utils.validateEmail
@@ -24,7 +26,7 @@ class FragmentSign : Fragment() {
     private lateinit var binding: FragmentSignBinding
     private lateinit var weakContext: WeakReference<Context>
     @Inject lateinit var settings: Settings
-    private val viewModel: ActivityMainViewModel by viewModels()
+    private val viewModel: FragmentSignViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +39,34 @@ class FragmentSign : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         weakContext = WeakReference<Context>(requireContext())
+        handleEventsUi()
         handlePd()
         tabLayoutListener()
         loadAccount()
+    }
+
+    // Обработка событий пользовательского интерфейса
+    private fun handleEventsUi() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.eventsUi.collect { event ->
+                when (event) {
+                    is EventsUiSign.ShowError -> showError(weakContext.get()!!, event.message) {}
+                    is EventsUiSign.ShowInfo -> showInfo(weakContext.get()!!, event.message) {}
+                    is EventsUiSign.ShowToast -> Toast.makeText(weakContext.get()!!, event.message, Toast.LENGTH_LONG).show()
+                    is EventsUiSign.Progress -> {
+                        if (event.show) {
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.progressBar.isIndeterminate = true
+                        }
+                        else {
+                            binding.progressBar.isIndeterminate = false
+                            binding.progressBar.visibility = View.INVISIBLE
+                        }
+                    }
+                    is EventsUiSign.Close -> findNavController().popBackStack()
+                }
+            }
+        }
     }
 
     // Галочка Согласие на обработку персональных данных
@@ -94,16 +121,19 @@ class FragmentSign : Fragment() {
 
     // Листенер для кнопки Вход
     private val signIn: View.OnClickListener = View.OnClickListener {
-        signStart()
-
-
+        if (signStart()) viewModel.eventsVm(EventsVmSign.SignIn(EmlPass = Pair(
+            first = binding.textEmail.text.toString().trim(),
+            second = binding.textPass.text.toString().trim()
+        )))
     }
 
     // Листенер для кнопки Регистрация
     private val signUp: View.OnClickListener = View.OnClickListener {
-        signStart()
-
-
+        if (signStart()) viewModel.eventsVm(EventsVmSign.SignUp(EmlPassInf = Triple(
+            first = binding.textEmail.text.toString().trim(),
+            second = binding.textPass.text.toString().trim(),
+            third = binding.checkIsInforming.isChecked
+        )))
     }
 
     private fun signStart(): Boolean {
