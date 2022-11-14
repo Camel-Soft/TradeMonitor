@@ -57,12 +57,20 @@
     <string name="save_accound">Сохранить E-mail и пароль</string>
     <string name="is_informing">Информировать о новостях и изменениях</string>
     <string name="handle_personal_data">Даю свое согласие на обработку\nперсональных данных</string>
+    <string name="lic_exp">Лицензия до</string>
+    <string name="lic_trial">Пробная</string>
+    <string name="lic_zero">Отсутствует</string>
+    <string name="lic_base">Базовая</string>
+    <string name="lic_empty">Не определена</string>
+    <string name="dev_mob">Мобильные</string>
+    <string name="dev_srv">Серверы</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
 
     <string name="info_empty_export_format">Выбранный формат для экспорта не предусмотрен в данном архиве</string>
     <string name="info_password">Не менее 8 символов</string>
+    <string name="info_need_registration">Для использования необходимо \"Войти\" или \"Зарегистрироваться\"</string>
 
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>

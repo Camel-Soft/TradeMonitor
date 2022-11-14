@@ -52,12 +52,13 @@
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
+        android:visibility="visible"
         app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="@color/black"
-        android:visibility="visible"
-        app:strokeWidth="0dp">
+        app:strokeWidth="0dp"
+        tools:ignore="TouchTargetSizeCheck">
 
         <TextView
             android:id="@+id/textSign"
@@ -91,6 +92,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="testemail.user@megabox.com"
+        android:layout_marginEnd="5dp"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:gravity="start"
@@ -103,7 +105,8 @@
         android:id="@+id/signText2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Лицензия: Пробная до 10.12.2023"
+        android:text="Лицензия до 10.12.2023"
+        android:layout_marginEnd="5dp"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:visibility="invisible"
@@ -115,7 +118,21 @@
         android:id="@+id/signText3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Устройства: Мобильные, серверы"
+        android:layout_marginEnd="5dp"
+        android:text="Мобильные(Базовая)"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/signText4"
+        app:layout_constraintEnd_toStartOf="@+id/btnLogout"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/signText4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:text="Серверы(Базовая)"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:visibility="invisible"

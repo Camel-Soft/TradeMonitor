@@ -39,7 +39,7 @@ class RetroMy {
                 .build()
 
             return Retrofit.Builder()
-                .baseUrl("https://81.28.174.175:7777")
+                .baseUrl("https://81.28.174.175:7000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())

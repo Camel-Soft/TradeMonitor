@@ -48,6 +48,18 @@ class ActivityMainViewModel @Inject constructor(
                 sendEventUi(EventsUiMainActivity.ShowToast(getAppContext().resources.getString(R.string.logout_go)))
                 sendEventUi(EventsUiMainActivity.LogOut)
             }
+            is EventsVmMainActivity.VerifyTaskPrice -> {
+                if (tokenUserVerifier.verifyExistToken())
+                    sendEventUi(EventsUiMainActivity.HandleTaskPrice(run = true))
+                else
+                    sendEventUi(EventsUiMainActivity.HandleTaskPrice(run = false))
+            }
+            is EventsVmMainActivity.VerifyTaskAlko -> {
+                if (tokenUserVerifier.verifyExistToken())
+                    sendEventUi(EventsUiMainActivity.HandleTaskAlko(run = true))
+                else
+                    sendEventUi(EventsUiMainActivity.HandleTaskAlko(run = false))
+            }
         }
     }
 

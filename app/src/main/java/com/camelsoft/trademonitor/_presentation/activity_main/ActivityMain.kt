@@ -51,9 +51,6 @@ class ActivityMain : AppCompatActivity() {
 
         weakContext = WeakReference<Context>(this)
 
-        // Шторка (левая) открывается только с кнопки
-        binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-
         // Показать версию в NavHeader`е
         bindingNavHead.navVer.text =  StringBuilder(resources.getString(R.string.version)+" "+BuildConfig.VERSION_NAME)
 
@@ -72,17 +69,18 @@ class ActivityMain : AppCompatActivity() {
         // Нажатия Navigation-списка
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navMenuPrice -> { navController.navigate(R.id.fragGraphPrice) }
-                R.id.navMenuAlko -> { navController.navigate(R.id.fragGraphAlko) }
-                R.id.navMenuSettings -> { navController.navigate(R.id.fragGraphSettings) }
-                R.id.navMenuAbout -> { writeDeveloper(weakContext.get()!!) }
-                R.id.navMenuExit -> { finish() }
+                R.id.navMenuPrice -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskPrice)
+                R.id.navMenuAlko -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskAlko)
+                R.id.navMenuSettings -> navController.navigate(R.id.fragGraphSettings)
+                R.id.navMenuAbout -> writeDeveloper(weakContext.get()!!)
+                R.id.navMenuExit -> finish()
                 else -> {}
             }
             binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
+        navControllerListener()
         btnSignListener()
         btnLogoutListener()
         eventsUi()
@@ -99,6 +97,18 @@ class ActivityMain : AppCompatActivity() {
                     is EventsUiMainActivity.ShowToast -> Toast.makeText(weakContext.get()!!, eventUiMain.message, Toast.LENGTH_SHORT).show()
                     is EventsUiMainActivity.LogIn -> logInView(eventUiMain.mUser)
                     is EventsUiMainActivity.LogOut -> logOutView()
+                    is EventsUiMainActivity.HandleTaskPrice -> {
+                        if (eventUiMain.run) navController.navigate(R.id.fragGraphPrice)
+                        else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
+                            navController.navigate(R.id.fragGraphSign)
+                        }
+                    }
+                    is EventsUiMainActivity.HandleTaskAlko -> {
+                        if (eventUiMain.run) navController.navigate(R.id.fragGraphAlko)
+                        else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
+                            navController.navigate(R.id.fragGraphSign)
+                        }
+                    }
                 }
             }
         }
@@ -174,27 +184,59 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
+    private fun navControllerListener() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Шторка (левая) открывается только с кнопки, или нет
+            if (destination.displayName == "com.camelsoft.trademonitor:id/fragGraphMain")
+                binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            else
+                binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }
+    }
+
     // Отрисовка выхода
     private fun logOutView() {
         bindingNavHead.signText1.text = ""
         bindingNavHead.signText2.text = ""
         bindingNavHead.signText3.text = ""
+        bindingNavHead.signText4.text = ""
         bindingNavHead.signText1.visibility = View.INVISIBLE
         bindingNavHead.signText2.visibility = View.INVISIBLE
         bindingNavHead.signText3.visibility = View.INVISIBLE
+        bindingNavHead.signText4.visibility = View.INVISIBLE
         bindingNavHead.btnLogout.visibility = View.INVISIBLE
         bindingNavHead.cardSign.visibility = View.VISIBLE
     }
 
     // Отрисовка входа
     private fun logInView(mUser: MUser) {
+        var mob = ""
+        var srv = ""
+        if (mUser.isActiveDev) {
+            when (mUser.licLevelDev) {
+                -1 -> mob = "${resources.getString(R.string.dev_mob)} - ${resources.getString(R.string.lic_trial)}"
+                0 -> mob = "${resources.getString(R.string.dev_mob)} - ${resources.getString(R.string.lic_zero)}"
+                1 -> mob = "${resources.getString(R.string.dev_mob)} - ${resources.getString(R.string.lic_base)}"
+                else -> mob = "${resources.getString(R.string.dev_mob)} - ${resources.getString(R.string.lic_empty)}"
+            }
+        }
+        if (mUser.isActiveSrv) {
+            when (mUser.licLevelSrv) {
+                -1 -> srv = "${resources.getString(R.string.dev_srv)} - ${resources.getString(R.string.lic_trial)}"
+                0 -> srv = "${resources.getString(R.string.dev_srv)} - ${resources.getString(R.string.lic_zero)}"
+                1 -> srv = "${resources.getString(R.string.dev_srv)} - ${resources.getString(R.string.lic_base)}"
+                else -> srv = "${resources.getString(R.string.dev_srv)} - ${resources.getString(R.string.lic_empty)}"
+            }
+        }
         bindingNavHead.cardSign.visibility = View.INVISIBLE
         bindingNavHead.signText1.text = mUser.email
-        bindingNavHead.signText2.text = ""
-        bindingNavHead.signText3.text = "expTime: ${timeToStringShort(mUser.expTime)}"
+        bindingNavHead.signText2.text = "${resources.getString(R.string.lic_exp)} ${timeToStringShort(mUser.expTime)}"
+        bindingNavHead.signText3.text = mob
+        bindingNavHead.signText4.text = srv
         bindingNavHead.signText1.visibility = View.VISIBLE
         bindingNavHead.signText2.visibility = View.VISIBLE
         bindingNavHead.signText3.visibility = View.VISIBLE
+        bindingNavHead.signText4.visibility = View.VISIBLE
         bindingNavHead.btnLogout.visibility = View.VISIBLE
     }
 }
