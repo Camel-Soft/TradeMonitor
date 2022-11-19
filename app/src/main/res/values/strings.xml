@@ -91,6 +91,8 @@
     <string name="error_unauthorized">Запрос не авторизован сервером</string>
     <string name="error_email">Проверьте правильность указанного E-mail</string>
     <string name="error_password">Проверьте правильность указанного пароля. Пароль должен содержать не менее 8 символов</string>
+    <string name="error_handshake">Протокол-handshake не выполнен. Проверьте правильность указания адреса сервера</string>
+    <string name="error_unknown_host">Неизвестный хост. Проверьте правильность указания адреса сервера</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
@@ -122,6 +124,10 @@
     <!-- Единицы измерения -->
     <string name="ed_sht">шт</string>
     <string name="ed_kg">кг</string>
+
+    <!-- Entry Connection -->
+    <string name="conn">Подключения</string>
+    <string name="conn_server_loc">Локальный сервер</string>
 
     <!-- Entry Weight-Goods -->
     <string name="weight_goods">Весовой товар</string>

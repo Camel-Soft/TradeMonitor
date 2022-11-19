@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
-import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.*
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
@@ -14,6 +13,7 @@ import com.camelsoft.trademonitor._presentation.utils.scan.getScanFromDataMatrix
 import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
+import com.camelsoft.trademonitor._presentation.api.IGoods
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

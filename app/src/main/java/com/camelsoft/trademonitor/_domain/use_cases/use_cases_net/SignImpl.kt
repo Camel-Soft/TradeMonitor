@@ -1,11 +1,13 @@
 package com.camelsoft.trademonitor._domain.use_cases.use_cases_net
 
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._data.net.api.NetApiSign
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiSign
 import com.camelsoft.trademonitor._presentation.api.ISign
 import com.camelsoft.trademonitor._presentation.models.user.MUserSign
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import java.net.ConnectException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
 
 class SignImpl(private val netApiSign: NetApiSign): ISign {
@@ -32,6 +34,14 @@ class SignImpl(private val netApiSign: NetApiSign): ISign {
         catch (e: SSLPeerUnverifiedException) {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_ssl_unverified))
+        }
+        catch (e: SSLHandshakeException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_handshake))
+        }
+        catch (e: UnknownHostException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
         }
         catch (e: Exception) {
             e.printStackTrace()
@@ -62,6 +72,14 @@ class SignImpl(private val netApiSign: NetApiSign): ISign {
         catch (e: SSLPeerUnverifiedException) {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_ssl_unverified))
+        }
+        catch (e: SSLHandshakeException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_handshake))
+        }
+        catch (e: UnknownHostException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
         }
         catch (e: Exception) {
             e.printStackTrace()

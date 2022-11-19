@@ -2,6 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        app:title="@string/conn"
+        app:icon="@drawable/img_connection_24">
+
+        <EditTextPreference
+            android:title="@string/conn_server_loc"
+            android:key="conn_server_loc"
+            android:defaultValue=""
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:title="@string/weight_goods"
         app:icon="@drawable/img_scale_24">
 

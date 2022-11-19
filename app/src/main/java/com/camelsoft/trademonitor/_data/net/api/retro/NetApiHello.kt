@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._data.net.api
+package com.camelsoft.trademonitor._data.net.api.retro
 
 import com.camelsoft.trademonitor._presentation.models.MMessage
 import retrofit2.Response

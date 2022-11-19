@@ -11,10 +11,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
@@ -24,13 +24,12 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
-import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor._presentation.utils.scan.barcodeAutoCorrection
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
+import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentAlkoMarkDetailBinding
 import com.journeyapps.barcodescanner.ScanContract
@@ -41,13 +40,13 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentAlkoMarkDetail : Fragment() {
-    @Inject lateinit var iGoods: IGoods
     private lateinit var binding: FragmentAlkoMarkDetailBinding
     private lateinit var weakContext: WeakReference<Context>
     private lateinit var weakView: WeakReference<View>
     private var argAlkoMark: MAlkoMark? = null
     @Inject lateinit var settings: Settings
     private lateinit var honeywellEDA50K: HoneywellEDA50K
+    private val viewModel: FragmentAlkoMarkDetailViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -97,20 +96,34 @@ class FragmentAlkoMarkDetail : Fragment() {
             binding.btnScan.setOnClickListener { camStart() }
             // Вешаем листенер для refresh-slide
             binding.refreshLayout.setOnRefreshListener {
-                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                    if (binding.editScan.text.toString().trim().count() in 6..13) {
-                        when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = binding.editScan.text.toString().trim()))) {
-                            is EventsGoods.Success -> { binding.editName.setText(result.data.name) }
-                            is EventsGoods.UnSuccess -> { Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show() }
-                            is EventsGoods.Update -> { Toast.makeText(weakContext.get()!!, result.message, Toast.LENGTH_SHORT).show() }
-                            is EventsGoods.Info -> { showInfo(weakContext.get()!!, result.message){} }
-                            is EventsGoods.Error -> { showError(weakContext.get()!!, result.message){} }
-                        }
-                    }
-                    else
-                        Toast.makeText(weakContext.get()!!, getAppContext().resources.getString(R.string.bad_scancod), Toast.LENGTH_SHORT).show()
-
+                if (binding.editScan.text.toString().trim().count() in 6..13) {
+                    viewModel.eventsVm(EventsVmAlkoMarkDetail.SendRequestGoods(mGoodsBig = MGoodsBig(scancod = binding.editScan.text.toString().trim())))
+                }
+                else {
                     binding.refreshLayout.isRefreshing = false
+                    Toast.makeText(weakContext.get()!!, getAppContext().resources.getString(R.string.bad_scancod), Toast.LENGTH_SHORT).show()
+                }
+            }
+            handleEventsUi()
+        }
+    }
+
+    // Обработка событий пользовательского интерфейса
+    private fun handleEventsUi() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.eventsUi.collect { event ->
+                when (event) {
+                    is EventsUiAlkoMarkDetail.ShowError -> showError(weakContext.get()!!, event.message) {}
+                    is EventsUiAlkoMarkDetail.ShowInfo -> showInfo(weakContext.get()!!, event.message) {}
+                    is EventsUiAlkoMarkDetail.Progress -> {
+                        if (event.show) binding.refreshLayout.isRefreshing = true
+                        else binding.refreshLayout.isRefreshing = false
+                    }
+                    is EventsUiAlkoMarkDetail.Update -> Toast.makeText(weakContext.get()!!, event.message, Toast.LENGTH_SHORT).show()
+                    is EventsUiAlkoMarkDetail.UnSuccess -> Toast.makeText(weakContext.get()!!, event.message, Toast.LENGTH_SHORT).show()
+                    is EventsUiAlkoMarkDetail.Success -> {
+                        binding.editName.setText(event.mGoodsBig.name)
+                    }
                 }
             }
         }

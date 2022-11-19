@@ -1,12 +1,14 @@
 package com.camelsoft.trademonitor._domain.use_cases.use_cases_repository
 
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._data.net.api.NetApiScan
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiScan
 import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.google.gson.Gson
 import java.net.ConnectException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
 
 class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
@@ -36,6 +38,14 @@ class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
         catch (e: SSLPeerUnverifiedException) {
             e.printStackTrace()
             return EventsGoods.Error(getAppContext().resources.getString(R.string.error_ssl_unverified))
+        }
+        catch (e: SSLHandshakeException) {
+            e.printStackTrace()
+            return EventsGoods.Error(getAppContext().resources.getString(R.string.error_handshake))
+        }
+        catch (e: UnknownHostException) {
+            e.printStackTrace()
+            return EventsGoods.Error(getAppContext().resources.getString(R.string.error_unknown_host))
         }
         catch (e: Exception) {
             e.printStackTrace()

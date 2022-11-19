@@ -1,5 +1,11 @@
 package com.camelsoft.trademonitor.common.di
 
+import com.camelsoft.trademonitor._data.net.api.ISsl
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiScan
+import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
+import com.camelsoft.trademonitor._data.net.servers.RetroLoc
+import com.camelsoft.trademonitor._data.net.servers.RetroMy
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_chzn.UseCaseChZnParamImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.*
@@ -8,7 +14,11 @@ import com.camelsoft.trademonitor._domain.libs.ExportExcelSheet
 import com.camelsoft.trademonitor._domain.libs.ExportJsonGoodes
 import com.camelsoft.trademonitor._domain.libs.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.libs.ExportSouthRevision
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.HelloImpl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsBigImpl
 import com.camelsoft.trademonitor._presentation.api.IChZnParam
+import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.api.IHello
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -162,5 +172,43 @@ object DataModuleVm {
     @ViewModelScoped
     fun provideUseCaseChZnParamImpl(): IChZnParam {
         return UseCaseChZnParamImpl()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideNetApiScan(retroMy: RetroMy, settings: Settings,
+                          iSsl: ISsl, tokenInterceptor: TokenInterceptor
+    ): NetApiScan {
+        if (settings.getConnSrvLoc().isBlank())
+            return retroMy.makeRetrofit().create(NetApiScan::class.java)
+        else {
+            val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+            return retroLoc.makeRetrofit().create(NetApiScan::class.java)
+        }
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideNetApiHello(retroMy: RetroMy, settings: Settings,
+                           iSsl: ISsl, tokenInterceptor: TokenInterceptor
+    ): NetApiHello {
+        if (settings.getConnSrvLoc().isBlank())
+            return retroMy.makeRetrofit().create(NetApiHello::class.java)
+        else {
+            val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+            return retroLoc.makeRetrofit().create(NetApiHello::class.java)
+        }
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideUseCaseRepoGoodsBigImpl(netApiScan: NetApiScan): IGoods {
+        return UseCaseRepoGoodsBigImpl(netApiScan = netApiScan)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideHello(netApiHello: NetApiHello): IHello {
+        return HelloImpl(netApiHello = netApiHello)
     }
 }

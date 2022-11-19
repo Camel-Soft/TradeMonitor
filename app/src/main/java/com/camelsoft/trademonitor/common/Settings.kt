@@ -8,9 +8,15 @@ class Settings {
 
     private val prefManager = PreferenceManager.getDefaultSharedPreferences(getAppContext())
 
+    fun getConnSrvLoc(): String {
+        var connSrvLoc = ""
+        prefManager.getString("conn_server_loc", "")?.let { connSrvLoc = it.trim() }
+        return connSrvLoc
+    }
+
     fun getPrefix(): String {
         var prefix = "99"
-        prefManager.getString("weight_prefix", "99")?.let { prefix = it }
+        prefManager.getString("weight_prefix", "99")?.let { prefix = it.trim() }
         return prefix
     }
 

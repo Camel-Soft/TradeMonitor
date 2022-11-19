@@ -4,9 +4,9 @@ import com.camelsoft.trademonitor._data.net.managers.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import javax.inject.Inject
 
-class TokenInterceptor : Interceptor {
-    private val tokenManager = TokenManager
+class TokenInterceptor @Inject constructor(private val tokenManager: TokenManager): Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()

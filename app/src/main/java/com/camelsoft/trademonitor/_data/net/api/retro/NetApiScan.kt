@@ -1,4 +1,4 @@
-package com.camelsoft.trademonitor._data.net.api
+package com.camelsoft.trademonitor._data.net.api.retro
 
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor._presentation.models.MMessage

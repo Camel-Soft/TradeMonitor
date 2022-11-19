@@ -1,10 +1,12 @@
 package com.camelsoft.trademonitor._domain.use_cases.use_cases_net
 
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._data.net.api.NetApiHello
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
 import com.camelsoft.trademonitor._presentation.api.IHello
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import java.net.ConnectException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
 
 class HelloImpl(private val netApiHello: NetApiHello): IHello {
@@ -31,6 +33,14 @@ class HelloImpl(private val netApiHello: NetApiHello): IHello {
         catch (e: SSLPeerUnverifiedException) {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_ssl_unverified))
+        }
+        catch (e: SSLHandshakeException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_handshake))
+        }
+        catch (e: UnknownHostException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
         }
         catch (e: Exception) {
             e.printStackTrace()
@@ -61,6 +71,14 @@ class HelloImpl(private val netApiHello: NetApiHello): IHello {
         catch (e: SSLPeerUnverifiedException) {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_ssl_unverified))
+        }
+        catch (e: SSLHandshakeException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_handshake))
+        }
+        catch (e: UnknownHostException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
         }
         catch (e: Exception) {
             e.printStackTrace()
