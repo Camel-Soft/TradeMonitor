@@ -196,6 +196,7 @@
                     app:errorEnabled="true"
                     app:helperText=""
                     app:helperTextEnabled="true"
+                    app:helperTextTextColor="@color/orange_100"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/layoutEdIzm">

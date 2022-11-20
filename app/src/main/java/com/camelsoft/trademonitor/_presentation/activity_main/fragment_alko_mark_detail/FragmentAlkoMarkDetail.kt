@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,7 +107,26 @@ class FragmentAlkoMarkDetail : Fragment() {
                 }
             }
             handleEventsUi()
+            summListeners()
+            summShow()
         }
+    }
+
+    // Авторасчет суммы (листенеры)
+    private fun summListeners() {
+        val textWatcher: TextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) { summShow() }
+        }
+        binding.editQuantity.addTextChangedListener(textWatcher)
+        binding.editCena.addTextChangedListener(textWatcher)
+    }
+
+    // Авторасчет суммы (отображение)
+    private fun summShow() {
+        val summ = autoSumm(kolvo = binding.editQuantity.text.toString(), cena = binding.editCena.text.toString())
+        if (summ.isNotBlank() && summ != "0") binding.layoutCena.helperText = "${resources.getString(R.string.summa)}: $summ" else binding.layoutCena.helperText = ""
     }
 
     // Обработка событий пользовательского интерфейса
@@ -123,6 +144,7 @@ class FragmentAlkoMarkDetail : Fragment() {
                     is EventsUiAlkoMarkDetail.UnSuccess -> Toast.makeText(weakContext.get()!!, event.message, Toast.LENGTH_SHORT).show()
                     is EventsUiAlkoMarkDetail.Success -> {
                         binding.editName.setText(event.mGoodsBig.name)
+                        binding.editCena.setText(event.mGoodsBig.cena1.toSouthCena())
                     }
                 }
             }

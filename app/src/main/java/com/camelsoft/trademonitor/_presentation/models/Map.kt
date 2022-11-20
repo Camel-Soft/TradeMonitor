@@ -7,7 +7,7 @@ import com.camelsoft.trademonitor._presentation.utils.getErrCode
 fun mapPriceGoods(mPriceGoods: MPriceGoods, mGoodsBig: MGoodsBig): MPriceGoods {
     try {
         var cena = 0F
-        try { cena = mGoodsBig.cena1.toFloat() } catch (_: Exception) {}
+        try { cena = mGoodsBig.cena1.toFloat()/1000 } catch (_: Exception) {}
 
         return MPriceGoods(
             id = mPriceGoods.id,
@@ -32,7 +32,7 @@ fun mapPriceGoods(mPriceGoods: MPriceGoods, mGoodsBig: MGoodsBig): MPriceGoods {
 fun mapAlkoMark(mAlkoMark: MAlkoMark, mGoodsBig: MGoodsBig): MAlkoMark {
     try {
         var cena = 0F
-        try { cena = mGoodsBig.cena1.toFloat() } catch (_: Exception) {}
+        try { cena = mGoodsBig.cena1.toFloat()/1000 } catch (_: Exception) {}
 
         return MAlkoMark(
             id = mAlkoMark.id,

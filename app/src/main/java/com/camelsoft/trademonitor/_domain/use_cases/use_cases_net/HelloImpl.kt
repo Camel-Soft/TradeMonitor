@@ -4,6 +4,7 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
 import com.camelsoft.trademonitor._presentation.api.IHello
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import java.io.InterruptedIOException
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
@@ -42,6 +43,10 @@ class HelloImpl(private val netApiHello: NetApiHello): IHello {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
         }
+        catch (e: InterruptedIOException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_interrupted_io))
+        }
         catch (e: Exception) {
             e.printStackTrace()
             return EventsNet.Error("[HelloImpl.hello] ${e.localizedMessage}")
@@ -79,6 +84,10 @@ class HelloImpl(private val netApiHello: NetApiHello): IHello {
         catch (e: UnknownHostException) {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
+        }
+        catch (e: InterruptedIOException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_interrupted_io))
         }
         catch (e: Exception) {
             e.printStackTrace()

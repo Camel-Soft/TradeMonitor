@@ -111,3 +111,14 @@ fun writeDeveloper(context: Context) {
     intentEmail.putExtra(Intent.EXTRA_TEXT, getAppContext().resources.getString(R.string.version)+" "+ BuildConfig.VERSION_NAME)
     startActivity(context, Intent.createChooser(intentEmail, getAppContext().resources.getString(R.string.developer_write)), null)
 }
+
+fun autoSumm(kolvo: String, cena: String): String {
+    var result = ""
+    try {
+        val k = kolvo.toFloat()
+        val c = cena.toFloat()
+        result = toMoney(k*c)
+    }
+    catch (_: Exception) {}
+    return result
+}

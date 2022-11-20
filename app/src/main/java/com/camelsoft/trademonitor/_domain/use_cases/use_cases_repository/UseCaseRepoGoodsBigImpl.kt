@@ -6,6 +6,7 @@ import com.camelsoft.trademonitor._presentation.api.IGoods
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.google.gson.Gson
+import java.io.InterruptedIOException
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
@@ -46,6 +47,10 @@ class UseCaseRepoGoodsBigImpl(private val netApiScan: NetApiScan): IGoods {
         catch (e: UnknownHostException) {
             e.printStackTrace()
             return EventsGoods.Error(getAppContext().resources.getString(R.string.error_unknown_host))
+        }
+        catch (e: InterruptedIOException) {
+            e.printStackTrace()
+            return EventsGoods.Error(getAppContext().resources.getString(R.string.error_interrupted_io))
         }
         catch (e: Exception) {
             e.printStackTrace()

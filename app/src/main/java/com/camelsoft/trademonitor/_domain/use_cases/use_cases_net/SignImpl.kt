@@ -5,6 +5,7 @@ import com.camelsoft.trademonitor._data.net.api.retro.NetApiSign
 import com.camelsoft.trademonitor._presentation.api.ISign
 import com.camelsoft.trademonitor._presentation.models.user.MUserSign
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import java.io.InterruptedIOException
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
@@ -43,6 +44,10 @@ class SignImpl(private val netApiSign: NetApiSign): ISign {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
         }
+        catch (e: InterruptedIOException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_interrupted_io))
+        }
         catch (e: Exception) {
             e.printStackTrace()
             return EventsNet.Error("[SignImpl.signUp] ${e.localizedMessage}")
@@ -80,6 +85,10 @@ class SignImpl(private val netApiSign: NetApiSign): ISign {
         catch (e: UnknownHostException) {
             e.printStackTrace()
             return EventsNet.Error(getAppContext().resources.getString(R.string.error_unknown_host))
+        }
+        catch (e: InterruptedIOException) {
+            e.printStackTrace()
+            return EventsNet.Error(getAppContext().resources.getString(R.string.error_interrupted_io))
         }
         catch (e: Exception) {
             e.printStackTrace()

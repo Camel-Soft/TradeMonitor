@@ -3,6 +3,8 @@ package com.camelsoft.trademonitor._presentation.activity_main.fragment_price_go
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -129,8 +131,26 @@ class FragmentPriceGoodsDetail : Fragment() {
                 Toast.makeText(weakContext.get()!!, getAppContext().resources.getString(R.string.bad_scancod), Toast.LENGTH_SHORT).show()
             }
         }
-
         handleEventsUi()
+        summListeners()
+        summShow()
+    }
+
+    // Авторасчет суммы (листенеры)
+    private fun summListeners() {
+        val textWatcher: TextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) { summShow() }
+        }
+        binding.editQuantity.addTextChangedListener(textWatcher)
+        binding.editCena.addTextChangedListener(textWatcher)
+    }
+
+    // Авторасчет суммы (отображение)
+    private fun summShow() {
+        val summ = autoSumm(kolvo = binding.editQuantity.text.toString(), cena = binding.editCena.text.toString())
+        if (summ.isNotBlank() && summ != "0") binding.layoutCena.helperText = "${resources.getString(R.string.summa)}: $summ" else binding.layoutCena.helperText = ""
     }
 
     // Обработка событий пользовательского интерфейса
@@ -148,6 +168,7 @@ class FragmentPriceGoodsDetail : Fragment() {
                     is EventsUiPriceGoodsDetail.UnSuccess -> Toast.makeText(weakContext.get()!!, event.message, Toast.LENGTH_SHORT).show()
                     is EventsUiPriceGoodsDetail.Success -> {
                         binding.editName.setText(event.mGoodsBig.name)
+                        binding.editCena.setText(event.mGoodsBig.cena1.toSouthCena())
                     }
                 }
             }

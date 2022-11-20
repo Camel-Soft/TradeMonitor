@@ -28,3 +28,9 @@ fun String.prepareUrl(): String {
     if (!this.contains("https")) return this.replaceFirst(oldValue = "http", newValue = "https", ignoreCase = true)
     return this
 }
+
+fun String.toSouthCena(): String {
+    var cena = 0F
+    try { cena = this.toFloat()/1000 } catch (_: Exception) {}
+    return toMoney(cena)
+}

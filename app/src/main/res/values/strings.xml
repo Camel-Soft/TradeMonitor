@@ -36,6 +36,7 @@
     <string name="scancode">Сканкод</string>
     <string name="scancode_type">Тип сканкода</string>
     <string name="cena">Цена</string>
+    <string name="summa">Сумма</string>
     <string name="note">Примечание</string>
     <string name="name">Наименование</string>
     <string name="quantity">Количество</string>
@@ -93,6 +94,7 @@
     <string name="error_password">Проверьте правильность указанного пароля. Пароль должен содержать не менее 8 символов</string>
     <string name="error_handshake">Протокол-handshake не выполнен. Проверьте правильность указания адреса сервера</string>
     <string name="error_unknown_host">Неизвестный хост. Проверьте правильность указания адреса сервера</string>
+    <string name="error_interrupted_io">Сервер не ответил. Проверьте правильность указания адреса сервера</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
