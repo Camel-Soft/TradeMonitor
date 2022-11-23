@@ -14,6 +14,9 @@ import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
 import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.utils.mixPrcString
+import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.Settings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -28,11 +31,22 @@ class FragmentAlkoMarkViewModel @Inject constructor(
     private val useCaseStorageAlkoMarkInsertOrUpdate: UseCaseStorageAlkoMarkInsertOrUpdate,
     private val useCaseStorageAlkoMarkUpdate: UseCaseStorageAlkoMarkUpdate,
     private val useCaseStorageAlkoCollUpdate: UseCaseStorageAlkoCollUpdate,
+    private val settings: Settings,
     private val iGoods: IGoods
 ): ViewModel() {
-
     private val _eventUiAlkoMark =  Channel<EventUiAlkoMark>()
     val eventUiAlkoMark = _eventUiAlkoMark.receiveAsFlow()
+
+    private var lastPrice: String? = null
+
+    init {
+        lastPrice = settings.getPrice()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        settings.putPrice(lastPrice)
+    }
 
     // Список товаров
     private val _listAlkoMark = MutableLiveData<List<MAlkoMark>>()
@@ -143,8 +157,11 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                         _listAlkoMark.value = useCaseStorageAlkoMarkGetAll.execute(id_coll = eventVmAlkoMark.parentAlkoColl.id_coll)
                     }
                 }
+                is EventVmAlkoMark.OnPublishPrice -> {
+                    sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.gray_200, null) ))
+                }
             }
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             sendEventUiAlkoMark(EventUiAlkoMark.ShowErrorUi(App.getAppContext().resources.getString(R.string.error_in)+
                     " FragmentAlkoMarkViewModel.onEventAlkoMark: "+e.message))
@@ -177,16 +194,30 @@ class FragmentAlkoMarkViewModel @Inject constructor(
                 when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = returnAlkoMark.scancode))) {
                     is EventsGoods.Success -> {
                         val mGoodsBig = result.data
-                        sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = mGoodsBig))
+                        lastPrice = mixPrcString(nomer = mGoodsBig.prc_number, dateTurn = mGoodsBig.prc_date, time = mGoodsBig.prc_time)
+                        lastPrice?.let {
+                            sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = it, color = getAppContext().resources.getColor(R.color.green_300, null) ))
+                        }?: sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+
                         useCaseStorageAlkoMarkUpdate.execute(alkoMark = mapAlkoMark(mAlkoMark = returnAlkoMark, mGoodsBig = mGoodsBig))
                         _listAlkoMark.value = useCaseStorageAlkoMarkGetAll.execute(id_coll = id_coll)
                     }
-                    is EventsGoods.UnSuccess -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
-                    is EventsGoods.Update -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
-                    is EventsGoods.Info -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
-                    is EventsGoods.Error -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
+                    is EventsGoods.UnSuccess -> {
+                        sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
+                    is EventsGoods.Update -> {
+                        sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
+                    is EventsGoods.Info -> {
+                        sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
+                    is EventsGoods.Error -> {
+                        sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
                 }
             }
+            else
+                sendEventUiAlkoMark(EventUiAlkoMark.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.gray_200, null) ))
         }
         catch (e: Exception) {
             e.printStackTrace()

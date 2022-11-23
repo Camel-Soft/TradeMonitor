@@ -10,4 +10,5 @@ sealed class EventVmAlkoMark {
     data class OnDeleteAlkoMark(val parentAlkoColl: MAlkoColl, val pos: Int): EventVmAlkoMark()
     data class OnUpdateAlkoMark(val parentAlkoColl: MAlkoColl, val alkoMark: MAlkoMark): EventVmAlkoMark()
     data class OnGetAlkoMarks(val parentAlkoColl: MAlkoColl): EventVmAlkoMark()
+    object OnPublishPrice : EventVmAlkoMark()
 }

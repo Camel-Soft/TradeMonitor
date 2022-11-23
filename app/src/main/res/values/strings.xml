@@ -65,6 +65,8 @@
     <string name="lic_empty">Не определена</string>
     <string name="dev_mob">Мобильные</string>
     <string name="dev_srv">Серверы</string>
+    <string name="price">Прайс</string>
+    <string name="from">от</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>

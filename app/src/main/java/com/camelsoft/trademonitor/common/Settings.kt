@@ -67,4 +67,17 @@ class Settings {
         if (!privateManager.contains("password")) return null
         else return privateManager.getString("password", null)
     }
+
+    fun putPrice(price: String?) {
+        synchronized(this) {
+            val editor = privateManager.edit()
+            editor.putString("price", price)
+            editor.apply()
+        }
+    }
+
+    fun getPrice(): String? {
+        if (!privateManager.contains("price")) return null
+        else return privateManager.getString("price", null)
+    }
 }
