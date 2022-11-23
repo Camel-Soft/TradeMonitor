@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context="._presentation.activity_main.fragment_alko_mark.FragmentAlkoMark">
 
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipPrc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        tools:text="Прайс № 1958 от 12.12.2002 14:54:23"
+        android:textSize="11sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMarks"
         android:layout_width="0dp"
@@ -15,7 +26,7 @@
         app:layout_constraintBottom_toTopOf="@+id/layoutBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/chipPrc" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutBottom"

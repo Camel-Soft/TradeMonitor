@@ -58,8 +58,9 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
                 textScancodeType.text = getScanType(priceGoods.scancode_type)
                 textName.text = priceGoods.name
                 textNote.text = priceGoods.note
-                textCena.text = toMoney(priceGoods.cena)+" "+getAppContext().resources.getString(R.string.money)
                 textQuantity.text = toQuantity(priceGoods.quantity)+" "+priceGoods.ed_izm
+                textCena.text = "x  "+toMoney(priceGoods.cena)+" "+getAppContext().resources.getString(R.string.money)
+                textSumma.text = "=  "+autoSumm(kolvo =toQuantity(priceGoods.quantity), cena = toMoney(priceGoods.cena))+" "+getAppContext().resources.getString(R.string.money)
                 // Обработка Рабочего кода
                 val wrkMess = getWrkMess(priceGoods.status_code)
                 textStatus.text = wrkMess.first

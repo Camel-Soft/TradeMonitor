@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -87,6 +88,16 @@ class FragmentAlkoMark : Fragment() {
                     when(eventUiAlkoMark) {
                         is EventUiAlkoMark.ShowErrorUi -> { showError(weakContext.get()!!, eventUiAlkoMark.message) {} }
                         is EventUiAlkoMark.ScrollToPos -> { binding.rvMarks.scrollToPosition(eventUiAlkoMark.position) }
+                        is EventUiAlkoMark.PublishGoodsBig -> {
+                            if (eventUiAlkoMark.mGoodsBig == null || eventUiAlkoMark.mGoodsBig.prc_number.isBlank()) {
+                                binding.chipPrc.setTextColor(Color.RED)
+                            }
+                            else {
+                                binding.chipPrc.text = "Прайс № ${eventUiAlkoMark.mGoodsBig.prc_number} от ${eventUiAlkoMark.mGoodsBig.prc_date} ${eventUiAlkoMark.mGoodsBig.prc_time}"
+                                binding.chipPrc.setTextColor(Color.GREEN)
+                                binding.chipPrc.visibility = View.VISIBLE
+                            }
+                        }
                     }
                 }
             }

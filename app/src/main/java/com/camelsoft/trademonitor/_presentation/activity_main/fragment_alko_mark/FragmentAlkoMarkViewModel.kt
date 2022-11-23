@@ -176,13 +176,15 @@ class FragmentAlkoMarkViewModel @Inject constructor(
             if ((returnAlkoMark.name.isEmpty() || returnAlkoMark.cena == 0F) && returnAlkoMark.scancode.isNotEmpty()) {
                 when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = returnAlkoMark.scancode))) {
                     is EventsGoods.Success -> {
-                        useCaseStorageAlkoMarkUpdate.execute(alkoMark = mapAlkoMark(mAlkoMark = returnAlkoMark, mGoodsBig = result.data))
+                        val mGoodsBig = result.data
+                        sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = mGoodsBig))
+                        useCaseStorageAlkoMarkUpdate.execute(alkoMark = mapAlkoMark(mAlkoMark = returnAlkoMark, mGoodsBig = mGoodsBig))
                         _listAlkoMark.value = useCaseStorageAlkoMarkGetAll.execute(id_coll = id_coll)
                     }
-                    is EventsGoods.UnSuccess -> {}
-                    is EventsGoods.Update -> {}
-                    is EventsGoods.Info -> {}
-                    is EventsGoods.Error -> {}
+                    is EventsGoods.UnSuccess -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
+                    is EventsGoods.Update -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
+                    is EventsGoods.Info -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
+                    is EventsGoods.Error -> { sendEventUiAlkoMark(EventUiAlkoMark.PublishGoodsBig(mGoodsBig = null)) }
                 }
             }
         }

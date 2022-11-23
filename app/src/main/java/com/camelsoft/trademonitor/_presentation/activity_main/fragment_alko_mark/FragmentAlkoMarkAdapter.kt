@@ -60,8 +60,9 @@ class FragmentAlkoMarkAdapter : RecyclerView.Adapter<FragmentAlkoMarkAdapter.Vie
                 textScancodeType.text = getScanType(alkoMark.scancode_type)
                 textName.text = alkoMark.name
                 textNote.text = alkoMark.note
-                textCena.text = toMoney(alkoMark.cena)+" "+App.getAppContext().resources.getString(R.string.money)
                 textQuantity.text = toQuantity(alkoMark.quantity)
+                textCena.text = "x  "+toMoney(alkoMark.cena)+" "+App.getAppContext().resources.getString(R.string.money)
+                textSumma.text = "=  "+autoSumm(kolvo = toQuantity(alkoMark.quantity), cena = toMoney(alkoMark.cena))+" "+ App.getAppContext().resources.getString(R.string.money)
                 // Обработка Рабочего кода
                 val wrkMess = getWrkMess(alkoMark.status_code)
                 textStatus.text = wrkMess.first

@@ -5,9 +5,7 @@ import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.models.MChZnXmlHead
-import com.camelsoft.trademonitor._presentation.utils.rm001d
-import com.camelsoft.trademonitor._presentation.utils.timeToChZn
-import com.camelsoft.trademonitor._presentation.utils.toMoneyKop
+import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.events.EventsSync
 import org.redundent.kotlin.xml.PrintOptions
@@ -69,7 +67,7 @@ class UseCaseExpChZnMilkWithdrawal @Inject constructor(private val iRoom: IRoom)
                                 -it.marka.rm001d().substring(0, 24)
                             }
                             "cost" {
-                                -toMoneyKop(it.cena)
+                                -autoSummKop(kolvo = toQuantity(it.quantity), cena = toMoney(it.cena))
                             }
                         }
                     }

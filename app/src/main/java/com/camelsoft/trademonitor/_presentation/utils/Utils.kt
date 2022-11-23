@@ -122,3 +122,14 @@ fun autoSumm(kolvo: String, cena: String): String {
     catch (_: Exception) {}
     return result
 }
+
+fun autoSummKop(kolvo: String, cena: String): String {
+    var result = ""
+    try {
+        val k = kolvo.toFloat()
+        val c = cena.toFloat()
+        result = toMoney(toMoney(k*c).toFloat()*100)
+    }
+    catch (_: Exception) {}
+    return result
+}
