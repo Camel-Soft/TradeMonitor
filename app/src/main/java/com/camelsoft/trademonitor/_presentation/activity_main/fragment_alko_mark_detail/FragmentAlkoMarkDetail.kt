@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -45,6 +46,7 @@ class FragmentAlkoMarkDetail : Fragment() {
     private lateinit var binding: FragmentAlkoMarkDetailBinding
     private lateinit var weakContext: WeakReference<Context>
     private lateinit var weakView: WeakReference<View>
+    private lateinit var weakActivity: WeakReference<AppCompatActivity>
     private var argAlkoMark: MAlkoMark? = null
     @Inject lateinit var settings: Settings
     private lateinit var honeywellEDA50K: HoneywellEDA50K
@@ -62,13 +64,13 @@ class FragmentAlkoMarkDetail : Fragment() {
 
         weakContext = WeakReference<Context>(requireContext())
         weakView = WeakReference<View>(view)
+        weakActivity = WeakReference<AppCompatActivity>(requireActivity() as AppCompatActivity)
 
         // Устанавливаем заголовок
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = ""
+        weakActivity.get()!!.supportActionBar?.title = ""
 
         // Устанавливаем цвет верхней панели - белый
-        val actionbar = (activity as AppCompatActivity).supportActionBar
-        actionbar?.setBackgroundDrawable(ColorDrawable(getAppContext().getColor(R.color.white)))
+        weakActivity.get()!!.supportActionBar?.setBackgroundDrawable(ColorDrawable(getAppContext().getColor(R.color.white)))
 
         // Встроенный сканер
         if (settings.getScanner() == "honeywell_eda50k")

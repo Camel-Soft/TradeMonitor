@@ -2,6 +2,8 @@ package com.camelsoft.trademonitor._presentation.activity_main.fragment_alko_mar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
@@ -11,9 +13,10 @@ import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.databinding.FragmentAlkoMarkItemBinding
 
-class FragmentAlkoMarkAdapter : RecyclerView.Adapter<FragmentAlkoMarkAdapter.ViewHolder>() {
+class FragmentAlkoMarkAdapter : RecyclerView.Adapter<FragmentAlkoMarkAdapter.ViewHolder>(), Filterable {
 
     private var list: List<MAlkoMark> = ArrayList()
+    private var listFull: List<MAlkoMark> = ArrayList()
     var setOnItemClickListener: ((Int) -> Unit)? = null
     var setOnItemLongClickListener: ((Int) -> Unit)? = null
 
@@ -25,6 +28,7 @@ class FragmentAlkoMarkAdapter : RecyclerView.Adapter<FragmentAlkoMarkAdapter.Vie
             ListItemsDiffCallback (oldList = oldList, newList = newList)
         )
         list = newList
+        listFull = newList
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -95,4 +99,31 @@ class FragmentAlkoMarkAdapter : RecyclerView.Adapter<FragmentAlkoMarkAdapter.Vie
     }
 
     override fun getItemCount() = list.size
+
+    override fun getFilter(): Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val filterResults = FilterResults()
+            val suggestions = ArrayList<MAlkoMark>()
+
+            if (constraint.isNullOrBlank()) suggestions.addAll(listFull)
+            else {
+                val filterPattern = constraint.toString().lowercase().trim()
+                listFull.forEach {
+                    if (it.name.lowercase().contains(filterPattern)
+                        || it.scancode.lowercase().contains(filterPattern))
+                        suggestions.add(it)
+                }
+            }
+
+            filterResults.values = suggestions
+            filterResults.count = suggestions.size
+            return filterResults
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        override fun publishResults(constraint: CharSequence?, filterResults: FilterResults?) {
+            list = filterResults?.values as List<MAlkoMark>
+            notifyDataSetChanged()
+        }
+    }
 }

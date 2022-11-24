@@ -5,14 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +33,7 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.utils.hideKeyboard
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -47,10 +50,13 @@ class FragmentAlkoMark : Fragment() {
 
     private lateinit var binding: FragmentAlkoMarkBinding
     private lateinit var weakContext: WeakReference<Context>
+    private lateinit var weakView: WeakReference<View>
+    private lateinit var weakActivity: WeakReference<AppCompatActivity>
     private val viewModel: FragmentAlkoMarkViewModel by viewModels()
     private lateinit var parentAlkoColl: MAlkoColl
     @Inject lateinit var settings: Settings
     private lateinit var honeywellEDA50K: HoneywellEDA50K
+    private val adapterAlkoMark = FragmentAlkoMarkAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -63,6 +69,8 @@ class FragmentAlkoMark : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         weakContext = WeakReference<Context>(requireContext())
+        weakView = WeakReference<View>(view)
+        weakActivity = WeakReference<AppCompatActivity>(requireActivity() as AppCompatActivity)
 
         if (settings.getScanner() == "honeywell_eda50k")
             honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanProp2D())
@@ -79,42 +87,21 @@ class FragmentAlkoMark : Fragment() {
             parentAlkoColl = argAlkoColl
 
             // Устанавливаем заголовок
-            (requireActivity() as AppCompatActivity).supportActionBar?.title = parentAlkoColl.note
+            weakActivity.get()!!.supportActionBar?.title = parentAlkoColl.note
 
-            // Обработка событий от View Model
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.eventUiAlkoMark.collect { eventUiAlkoMark ->
-                    when(eventUiAlkoMark) {
-                        is EventUiAlkoMark.ShowErrorUi -> { showError(weakContext.get()!!, eventUiAlkoMark.message) {} }
-                        is EventUiAlkoMark.ScrollToPos -> { binding.rvMarks.scrollToPosition(eventUiAlkoMark.position) }
-                        is EventUiAlkoMark.PublishPrice -> {
-                            eventUiAlkoMark.price?.let {
-                                binding.chipPrc.text = it
-                                binding.chipPrc.setTextColor(eventUiAlkoMark.color)
-                                binding.chipPrc.visibility = View.VISIBLE
-                            }?: binding.chipPrc.setTextColor(eventUiAlkoMark.color)
-                        }
-                    }
-                }
-            }
+            // Клавиатура поверх/не поверх View (Совместно с манифестом. Устанавливать в каждом фрагменте)
+            // поверх
+            //weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+            // не поверх
+            //weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            // в манифесте для активити
+            // android:windowSoftInputMode="adjustResize"
 
-            // Список товаров
-            val adapterAlkoMark = FragmentAlkoMarkAdapter()
-            // Нажатие - Обновление товара
-            adapterAlkoMark.setOnItemClickListener = { pos ->
-                val bundle = Bundle()
-                bundle.putParcelable("alkoMark", adapterAlkoMark.getList()[pos])
-                findNavController().navigate(R.id.action_fragGraphAlkoMark_to_fragGraphAlkoMarkDetail, bundle)
-            }
-            // Нажатие - Удаление товара
-            adapterAlkoMark.setOnItemLongClickListener = { pos ->
-                showConfirm(
-                    context = weakContext.get()!!,
-                    title = resources.getString(R.string.marka_del_title),
-                    message = "${resources.getString(R.string.marka_del_message)}?"
-                )
-                {viewModel.onEventAlkoMark(EventVmAlkoMark.OnDeleteAlkoMark(parentAlkoColl, pos))}
-            }
+            // Меню
+            val menuHost: MenuHost = requireActivity()
+            menuHost.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+            adapterListeners()
             binding.rvMarks.layoutManager = LinearLayoutManager(weakContext.get()!!, RecyclerView.VERTICAL,false)
             binding.rvMarks.adapter = adapterAlkoMark
             viewModel.listAlkoMark.observe(viewLifecycleOwner) { adapterAlkoMark.submitList(it) }
@@ -122,17 +109,11 @@ class FragmentAlkoMark : Fragment() {
 
             // Фотосканер одиночный
             binding.btnScan.setOnClickListener { camStart() }
-
             // Фотосканер Список
             binding.btnScanList.setOnClickListener { camListStart() }
 
-            // Ловим Update от detail-фрагмента (обновление выбранной позиции)
-            setFragmentResultListener("DetailAlkoMark_Update") { key, bundle ->
-                val updAlkoMark: MAlkoMark? = bundle.getParcelable("alkoMark")
-                updAlkoMark?.let {
-                    viewModel.onEventAlkoMark(EventVmAlkoMark.OnUpdateAlkoMark(parentAlkoColl = parentAlkoColl, alkoMark = it))
-                }
-            }
+            eventsUiCollector()
+            fragmentResultListener()
         }
     }
 
@@ -145,6 +126,82 @@ class FragmentAlkoMark : Fragment() {
     override fun onPause() {
         super.onPause()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
+        hideKeyboard(weakContext.get()!!, weakView.get())
+    }
+
+    // Меню - Создание, Обработка нажатий
+    private val menuProvider: MenuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_fragment_alko_mark, menu)
+            val searchView = menu.findItem(R.id.btnSearch).actionView as SearchView
+            searchView.queryHint = resources.getString(R.string.search_view_hint)
+            searchView.setOnQueryTextListener(searchListener)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return false
+        }
+    }
+
+    // Поисковый листенер для меню
+    private val searchListener: SearchView.OnQueryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            adapterAlkoMark.filter.filter(newText)
+            return false
+        }
+    }
+
+    // Адаптер - Листенеры нажатий
+    private fun adapterListeners() {
+        // Обновление товара
+        adapterAlkoMark.setOnItemClickListener = { pos ->
+            val bundle = Bundle()
+            bundle.putParcelable("alkoMark", adapterAlkoMark.getList()[pos])
+            findNavController().navigate(R.id.action_fragGraphAlkoMark_to_fragGraphAlkoMarkDetail, bundle)
+        }
+
+        // Удаление товара
+        adapterAlkoMark.setOnItemLongClickListener = { pos ->
+            showConfirm(
+                context = weakContext.get()!!,
+                title = resources.getString(R.string.marka_del_title),
+                message = "${resources.getString(R.string.marka_del_message)}?"
+            )
+            { viewModel.onEventAlkoMark(EventVmAlkoMark.OnDeleteAlkoMark(parentAlkoColl, pos)) }
+        }
+    }
+
+    // Ловим Update от detail-фрагмента (обновление выбранной позиции)
+    private fun fragmentResultListener() {
+        setFragmentResultListener("DetailAlkoMark_Update") { key, bundle ->
+            val updAlkoMark: MAlkoMark? = bundle.getParcelable("alkoMark")
+            updAlkoMark?.let {
+                viewModel.onEventAlkoMark(EventVmAlkoMark.OnUpdateAlkoMark(parentAlkoColl = parentAlkoColl, alkoMark = it))
+            }
+        }
+    }
+
+    // Обработка событий Пользовательского Интерфейса
+    private fun eventsUiCollector() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.eventUiAlkoMark.collect { eventUiAlkoMark ->
+                when(eventUiAlkoMark) {
+                    is EventUiAlkoMark.ShowErrorUi -> { showError(weakContext.get()!!, eventUiAlkoMark.message) {} }
+                    is EventUiAlkoMark.ScrollToPos -> { binding.rvMarks.scrollToPosition(eventUiAlkoMark.position) }
+                    is EventUiAlkoMark.PublishPrice -> {
+                        eventUiAlkoMark.price?.let {
+                            binding.chipPrc.text = it
+                            binding.chipPrc.setTextColor(eventUiAlkoMark.color)
+                            binding.chipPrc.visibility = View.VISIBLE
+                        }?: binding.chipPrc.setTextColor(eventUiAlkoMark.color)
+                    }
+                }
+            }
+        }
     }
 
     // Фотосканер одиночный

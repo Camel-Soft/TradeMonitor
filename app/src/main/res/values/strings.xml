@@ -67,6 +67,8 @@
     <string name="dev_srv">Серверы</string>
     <string name="price">Прайс</string>
     <string name="from">от</string>
+    <string name="search">Поиск</string>
+    <string name="search_view_hint">Скан или Название</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>

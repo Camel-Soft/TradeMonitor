@@ -16,6 +16,7 @@ import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn.SpecifyChZn
+import com.camelsoft.trademonitor._presentation.utils.hideKeyboard
 import com.camelsoft.trademonitor._presentation.utils.shareFile
 import com.camelsoft.trademonitor.databinding.FragmentAlkoBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +26,7 @@ import java.lang.ref.WeakReference
 class FragmentAlko : Fragment() {
     private lateinit var binding: FragmentAlkoBinding
     private lateinit var weakContext: WeakReference<Context>
+    private lateinit var weakView: WeakReference<View>
     private val viewModel: FragmentAlkoViewModel by viewModels()
 
     override fun onCreateView(
@@ -39,6 +41,7 @@ class FragmentAlko : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         weakContext = WeakReference<Context>(requireContext())
+        weakView = WeakReference<View>(view)
 
         // Дабавить пустую сборку
         binding.btnAddColl.setOnClickListener {
@@ -92,5 +95,10 @@ class FragmentAlko : Fragment() {
         binding.rvColl.adapter = adapterAlkoColl
         viewModel.listAlkoColl.observe(viewLifecycleOwner) { adapterAlkoColl.submitList(it) }
         viewModel.onEventAlkoColl(EventVmAlkoColl.OnGetColl)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard(weakContext.get()!!, weakView.get())
     }
 }
