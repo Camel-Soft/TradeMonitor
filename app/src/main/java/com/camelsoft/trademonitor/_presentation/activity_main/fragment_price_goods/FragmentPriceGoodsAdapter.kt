@@ -2,6 +2,8 @@ package com.camelsoft.trademonitor._presentation.activity_main.fragment_price_go
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
@@ -11,9 +13,10 @@ import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsItemBinding
 
-class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter.ViewHolder>() {
+class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter.ViewHolder>(), Filterable {
 
     private var list: List<MPriceGoods> = ArrayList()
+    private var listFull: List<MPriceGoods> = ArrayList()
     var setOnItemClickListener: ((Int) -> Unit)? = null
     var setOnItemLongClickListener: ((Int) -> Unit)? = null
 
@@ -25,6 +28,7 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
             ListItemsDiffCallback (oldList = oldList, newList = newList)
         )
         list = newList
+        listFull = newList
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -92,4 +96,31 @@ class FragmentPriceGoodsAdapter : RecyclerView.Adapter<FragmentPriceGoodsAdapter
     }
 
     override fun getItemCount() = list.size
+
+    override fun getFilter(): Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val filterResults = FilterResults()
+            val suggestions = ArrayList<MPriceGoods>()
+
+            if (constraint.isNullOrBlank()) suggestions.addAll(listFull)
+            else {
+                val filterPattern = constraint.toString().lowercase().trim()
+                listFull.forEach {
+                    if (it.name.lowercase().contains(filterPattern)
+                        || it.scancode.lowercase().contains(filterPattern))
+                        suggestions.add(it)
+                }
+            }
+
+            filterResults.values = suggestions
+            filterResults.count = suggestions.size
+            return filterResults
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        override fun publishResults(constraint: CharSequence?, filterResults: FilterResults?) {
+            list = filterResults?.values as List<MPriceGoods>
+            notifyDataSetChanged()
+        }
+    }
 }

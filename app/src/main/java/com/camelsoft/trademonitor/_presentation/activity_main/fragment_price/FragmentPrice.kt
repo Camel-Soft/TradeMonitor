@@ -15,6 +15,7 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.utils.hideKeyboard
 import com.camelsoft.trademonitor._presentation.utils.shareFile
 import com.camelsoft.trademonitor.databinding.FragmentPriceBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +25,7 @@ import java.lang.ref.WeakReference
 class FragmentPrice : Fragment() {
     private lateinit var binding: FragmentPriceBinding
     private lateinit var weakContext: WeakReference<Context>
+    private lateinit var weakView: WeakReference<View>
     private val viewModel: FragmentPriceViewModel by viewModels()
 
     override fun onCreateView(
@@ -39,6 +41,7 @@ class FragmentPrice : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         weakContext = WeakReference<Context>(requireContext())
+        weakView = WeakReference<View>(view)
 
         // Дабавить пустую сборку
         binding.btnAddColl.setOnClickListener {
@@ -89,5 +92,10 @@ class FragmentPrice : Fragment() {
         binding.rvColl.adapter = adapterColl
         viewModel.listPriceColl.observe(viewLifecycleOwner) { adapterColl.submitList(it) }
         viewModel.onEventPrice(EventVmPrice.OnGetColl)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard(weakContext.get()!!, weakView.get())
     }
 }

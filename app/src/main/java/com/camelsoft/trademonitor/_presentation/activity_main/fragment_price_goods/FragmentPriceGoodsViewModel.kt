@@ -15,6 +15,8 @@ import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
 import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.utils.mixPrcString
+import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -35,6 +37,17 @@ class FragmentPriceGoodsViewModel @Inject constructor(
 
     private val _eventUiGoods =  Channel<EventUiGoods>()
     val eventUiGoods = _eventUiGoods.receiveAsFlow()
+
+    private var lastPrice: String? = null
+
+    init {
+        lastPrice = settings.getPrice()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        settings.putPrice(lastPrice)
+    }
 
     // Список товаров
     private val _listPriceGoods = MutableLiveData<List<MPriceGoods>>()
@@ -167,6 +180,9 @@ class FragmentPriceGoodsViewModel @Inject constructor(
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = eventVmGoods.parentColl.id_coll)
                     }
                 }
+                is EventVmGoods.OnPublishPrice -> {
+                    sendEventUiGoods(EventUiGoods.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.gray_200, null) ))
+                }
             }
         }catch (e: Exception) {
             e.printStackTrace()
@@ -202,15 +218,31 @@ class FragmentPriceGoodsViewModel @Inject constructor(
             if ((returnPriceGoods.name.isEmpty() || returnPriceGoods.cena == 0F) && returnPriceGoods.scancode.isNotEmpty()) {
                 when (val result = iGoods.getGoodsBig(MGoodsBig(scancod = returnPriceGoods.scancode))) {
                     is EventsGoods.Success -> {
-                        useCaseStorageGoodsUpdate.execute(priceGoods = mapPriceGoods(mPriceGoods = returnPriceGoods, mGoodsBig = result.data))
+                        val mGoodsBig = result.data
+                        lastPrice = mixPrcString(nomer = mGoodsBig.prc_number, dateTurn = mGoodsBig.prc_date, time = mGoodsBig.prc_time)
+                        lastPrice?.let {
+                            sendEventUiGoods(EventUiGoods.PublishPrice(price = it, color = getAppContext().resources.getColor(R.color.green_300, null) ))
+                        }?: sendEventUiGoods(EventUiGoods.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+
+                        useCaseStorageGoodsUpdate.execute(priceGoods = mapPriceGoods(mPriceGoods = returnPriceGoods, mGoodsBig = mGoodsBig))
                         _listPriceGoods.value = useCaseStorageGoodsGetAll.execute(id_coll = id_coll)
                     }
-                    is EventsGoods.UnSuccess -> {}
-                    is EventsGoods.Update -> {}
-                    is EventsGoods.Info -> {}
-                    is EventsGoods.Error -> {}
+                    is EventsGoods.UnSuccess -> {
+                        sendEventUiGoods(EventUiGoods.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
+                    is EventsGoods.Update -> {
+                        sendEventUiGoods(EventUiGoods.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
+                    is EventsGoods.Info -> {
+                        sendEventUiGoods(EventUiGoods.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
+                    is EventsGoods.Error -> {
+                        sendEventUiGoods(EventUiGoods.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.red_300, null) ))
+                    }
                 }
             }
+            else
+                sendEventUiGoods(EventUiGoods.PublishPrice(price = lastPrice, color = getAppContext().resources.getColor(R.color.gray_200, null) ))
         }
         catch (e: Exception) {
             e.printStackTrace()

@@ -98,7 +98,7 @@ class FragmentAlkoMark : Fragment() {
             // android:windowSoftInputMode="adjustResize"
 
             // Меню
-            val menuHost: MenuHost = requireActivity()
+            val menuHost: MenuHost = weakActivity.get()!!
             menuHost.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
             adapterListeners()

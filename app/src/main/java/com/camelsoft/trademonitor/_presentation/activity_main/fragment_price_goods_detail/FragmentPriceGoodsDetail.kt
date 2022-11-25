@@ -42,6 +42,7 @@ class FragmentPriceGoodsDetail : Fragment() {
     private lateinit var binding: FragmentPriceGoodsDetailBinding
     private lateinit var weakContext: WeakReference<Context>
     private lateinit var weakView: WeakReference<View>
+    private lateinit var weakActivity: WeakReference<AppCompatActivity>
     private var argPriceGoods: MPriceGoods? = null
     private var argPriceColl: MPriceColl? = null
     @Inject lateinit var settings: Settings
@@ -61,13 +62,13 @@ class FragmentPriceGoodsDetail : Fragment() {
 
         weakContext = WeakReference<Context>(requireContext())
         weakView = WeakReference<View>(view)
+        weakActivity = WeakReference<AppCompatActivity>(requireActivity() as AppCompatActivity)
 
         // Устанавливаем заголовок
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = ""
+        weakActivity.get()!!.supportActionBar?.title = ""
 
         // Устанавливаем цвет верхней панели - белый
-        val actionbar = (activity as AppCompatActivity).supportActionBar
-        actionbar?.setBackgroundDrawable(ColorDrawable(getAppContext().getColor(R.color.white)))
+        weakActivity.get()!!.supportActionBar?.setBackgroundDrawable(ColorDrawable(getAppContext().getColor(R.color.white)))
 
         // Встроенный сканер
         if (settings.getScanner() == "honeywell_eda50k")

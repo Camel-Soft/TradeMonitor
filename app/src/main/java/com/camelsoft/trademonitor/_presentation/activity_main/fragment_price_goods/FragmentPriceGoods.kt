@@ -5,14 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +33,7 @@ import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
+import com.camelsoft.trademonitor._presentation.utils.hideKeyboard
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -47,10 +50,13 @@ class FragmentPriceGoods : Fragment() {
 
     private lateinit var binding: FragmentPriceGoodsBinding
     private lateinit var weakContext: WeakReference<Context>
+    private lateinit var weakView: WeakReference<View>
+    private lateinit var weakActivity: WeakReference<AppCompatActivity>
     private val viewModel: FragmentPriceGoodsViewModel by viewModels()
     private lateinit var parentPriceColl: MPriceColl
     @Inject lateinit var settings: Settings
     private lateinit var honeywellEDA50K: HoneywellEDA50K
+    private val adapterGoods = FragmentPriceGoodsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +70,8 @@ class FragmentPriceGoods : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         weakContext = WeakReference<Context>(requireContext())
+        weakView = WeakReference<View>(view)
+        weakActivity = WeakReference<AppCompatActivity>(requireActivity() as AppCompatActivity)
 
         if (settings.getScanner() == "honeywell_eda50k")
             honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanProp1D())
@@ -80,35 +88,13 @@ class FragmentPriceGoods : Fragment() {
             parentPriceColl = argPriceColl
 
             // Устанавливаем заголовок
-            (requireActivity() as AppCompatActivity).supportActionBar?.title = parentPriceColl.note
+            weakActivity.get()!!.supportActionBar?.title = parentPriceColl.note
 
-            // Обработка событий от View Model
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.eventUiGoods.collect { eventUiGoods ->
-                    when(eventUiGoods) {
-                        is EventUiGoods.ShowErrorUi -> { showError(weakContext.get()!!, eventUiGoods.message) {} }
-                        is EventUiGoods.ScrollToPos -> { binding.rvGoods.scrollToPosition(eventUiGoods.position) }
-                    }
-                }
-            }
+            // Меню
+            val menuHost: MenuHost = weakActivity.get()!!
+            menuHost.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-            // Список товаров
-            val adapterGoods = FragmentPriceGoodsAdapter()
-            // Нажатие - Обновление товара
-            adapterGoods.setOnItemClickListener = { pos ->
-                val bundle = Bundle()
-                bundle.putParcelable("priceGoods", adapterGoods.getList()[pos])
-                findNavController().navigate(R.id.action_fragGraphPriceGoods_to_fragGraphPriceGoodsDetail, bundle)
-            }
-            // Нажатие - Удаление товара
-            adapterGoods.setOnItemLongClickListener = { pos ->
-                showConfirm(
-                    context = weakContext.get()!!,
-                    title = resources.getString(R.string.goods_del_title),
-                    message = resources.getString(R.string.goods_del_message)+": ${adapterGoods.getList()[pos].scancode} ?"
-                )
-                { viewModel.onEventGoods(EventVmGoods.OnDeleteGoods(parentPriceColl, pos)) }
-            }
+            adapterListeners()
             binding.rvGoods.layoutManager = LinearLayoutManager(weakContext.get()!!, RecyclerView.VERTICAL,false)
             binding.rvGoods.adapter = adapterGoods
             viewModel.listPriceGoods.observe(viewLifecycleOwner) { adapterGoods.submitList(it) }
@@ -120,40 +106,115 @@ class FragmentPriceGoods : Fragment() {
             // Фотосканер Список
             binding.btnScanList.setOnClickListener { camListStart() }
 
-            // Добавление вручную
-            binding.btnHand.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putParcelable("parentPriceColl", parentPriceColl)
-                findNavController().navigate(R.id.action_fragGraphPriceGoods_to_fragGraphPriceGoodsDetail, bundle)
-            }
-
-            // Ловим Insert от detail-фрагмента (добавление вручную)
-            setFragmentResultListener("DetailPriceGoods_Insert") { key, bundle ->
-                val insPriceGoods: MPriceGoods? = bundle.getParcelable("priceGoods")
-                insPriceGoods?.let {
-                    viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoodsHandmade(parentColl = parentPriceColl, priceGoods = it))
-
-                }
-            }
-
-            // Ловим Update от detail-фрагмента (обновление выбранной позиции)
-            setFragmentResultListener("DetailPriceGoods_Update") { key, bundle ->
-                val updPriceGoods: MPriceGoods? = bundle.getParcelable("priceGoods")
-                updPriceGoods?.let {
-                    viewModel.onEventGoods(EventVmGoods.OnUpdateGoods(parentColl = parentPriceColl, priceGoods = it))
-                }
-            }
+            eventsUiCollector()
+            fragmentResultListeners()
+            btnHandListener()
         }
     }
 
     override fun onResume() {
         super.onResume()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.reg()
+        viewModel.onEventGoods(EventVmGoods.OnPublishPrice)
     }
 
     override fun onPause() {
         super.onPause()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
+        hideKeyboard(weakContext.get()!!, weakView.get())
+    }
+
+    // Меню - Создание, Обработка нажатий
+    private val menuProvider: MenuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_fragment_price_goods, menu)
+            val searchView = menu.findItem(R.id.btnSearch).actionView as SearchView
+            searchView.queryHint = resources.getString(R.string.search_view_hint)
+            searchView.setOnQueryTextListener(searchListener)
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return false
+        }
+    }
+
+    // Поисковый листенер для меню
+    private val searchListener: SearchView.OnQueryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            adapterGoods.filter.filter(newText)
+            return false
+        }
+    }
+
+    // Кнопка - Добавление вручную
+    private fun btnHandListener() {
+        binding.btnHand.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable("parentPriceColl", parentPriceColl)
+            findNavController().navigate(R.id.action_fragGraphPriceGoods_to_fragGraphPriceGoodsDetail, bundle)
+        }
+    }
+
+    // Адаптер - Листенеры нажатий
+    private fun adapterListeners() {
+        // Нажатие - Обновление товара
+        adapterGoods.setOnItemClickListener = { pos ->
+            val bundle = Bundle()
+            bundle.putParcelable("priceGoods", adapterGoods.getList()[pos])
+            findNavController().navigate(R.id.action_fragGraphPriceGoods_to_fragGraphPriceGoodsDetail, bundle)
+        }
+        // Нажатие - Удаление товара
+        adapterGoods.setOnItemLongClickListener = { pos ->
+            showConfirm(
+                context = weakContext.get()!!,
+                title = resources.getString(R.string.goods_del_title),
+                message = resources.getString(R.string.goods_del_message)+": ${adapterGoods.getList()[pos].scancode} ?"
+            )
+            { viewModel.onEventGoods(EventVmGoods.OnDeleteGoods(parentPriceColl, pos)) }
+        }
+    }
+
+    // Result - Listeners
+    private fun fragmentResultListeners() {
+        // Ловим Insert от detail-фрагмента (добавление вручную)
+        setFragmentResultListener("DetailPriceGoods_Insert") { key, bundle ->
+            val insPriceGoods: MPriceGoods? = bundle.getParcelable("priceGoods")
+            insPriceGoods?.let {
+                viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoodsHandmade(parentColl = parentPriceColl, priceGoods = it))
+
+            }
+        }
+
+        // Ловим Update от detail-фрагмента (обновление выбранной позиции)
+        setFragmentResultListener("DetailPriceGoods_Update") { key, bundle ->
+            val updPriceGoods: MPriceGoods? = bundle.getParcelable("priceGoods")
+            updPriceGoods?.let {
+                viewModel.onEventGoods(EventVmGoods.OnUpdateGoods(parentColl = parentPriceColl, priceGoods = it))
+            }
+        }
+    }
+
+    // Обработка событий Пользовательского Интерфейса
+    private fun eventsUiCollector() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.eventUiGoods.collect { eventUiGoods ->
+                when(eventUiGoods) {
+                    is EventUiGoods.ShowErrorUi -> { showError(weakContext.get()!!, eventUiGoods.message) {} }
+                    is EventUiGoods.ScrollToPos -> { binding.rvGoods.scrollToPosition(eventUiGoods.position) }
+                    is EventUiGoods.PublishPrice -> {
+                        eventUiGoods.price?.let {
+                            binding.chipPrc.text = it
+                            binding.chipPrc.setTextColor(eventUiGoods.color)
+                            binding.chipPrc.visibility = View.VISIBLE
+                        }?: binding.chipPrc.setTextColor(eventUiGoods.color)
+                    }
+                }
+            }
+        }
     }
 
     // Фотосканер одиночный

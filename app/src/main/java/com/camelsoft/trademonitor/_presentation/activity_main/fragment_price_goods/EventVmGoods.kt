@@ -11,4 +11,5 @@ sealed class EventVmGoods {
     data class OnDeleteGoods(val parentColl: MPriceColl, val pos: Int): EventVmGoods()
     data class OnUpdateGoods(val parentColl: MPriceColl, val priceGoods: MPriceGoods): EventVmGoods()
     data class OnGetGoodes(val parentColl: MPriceColl): EventVmGoods()
+    object OnPublishPrice : EventVmGoods()
 }

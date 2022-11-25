@@ -12,10 +12,21 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/layoutBottom"
+        app:layout_constraintBottom_toTopOf="@+id/chipPrc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipPrc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:textSize="11sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/layoutBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Прайс 1958 от 12.12.2002 14:54:23" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutBottom"
