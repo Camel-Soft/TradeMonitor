@@ -18,6 +18,11 @@
                 android:icon="@drawable/img_done_24"
                 android:title="@string/monitor_alko_label"
                 android:contentDescription="@string/monitor_alko_label"/>
+            <item
+                android:id="@+id/navMenuChecker"
+                android:icon="@drawable/img_done_24"
+                android:title="@string/monitor_checker_label"
+                android:contentDescription="@string/monitor_checker_label"/>
         </menu>
     </item>
 

@@ -10,4 +10,5 @@ sealed class EventsUiMainActivity {
     object LogOut: EventsUiMainActivity()
     data class HandleTaskPrice(val run: Boolean): EventsUiMainActivity()
     data class HandleTaskAlko(val run: Boolean): EventsUiMainActivity()
+    data class HandleTaskChecker(val run: Boolean): EventsUiMainActivity()
 }

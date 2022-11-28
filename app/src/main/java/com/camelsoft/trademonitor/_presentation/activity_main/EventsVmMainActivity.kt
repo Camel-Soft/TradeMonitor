@@ -4,4 +4,5 @@ sealed class EventsVmMainActivity {
     object Logout : EventsVmMainActivity()
     object VerifyTaskPrice : EventsVmMainActivity()
     object VerifyTaskAlko : EventsVmMainActivity()
+    object VerifyTaskChecker : EventsVmMainActivity()
 }

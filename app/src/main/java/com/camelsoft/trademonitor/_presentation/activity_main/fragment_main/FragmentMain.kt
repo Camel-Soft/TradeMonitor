@@ -46,6 +46,9 @@ class FragmentMain : Fragment() {
         binding.mainCardAlko.setOnClickListener {
             viewModel.eventsVm(EventsVmMain.VerifyTaskAlko)
         }
+        binding.mainCardChecker.setOnClickListener {
+            viewModel.eventsVm(EventsVmMain.VerifyTaskChecker)
+        }
     }
 
     // Обработка событий от View Model
@@ -61,6 +64,12 @@ class FragmentMain : Fragment() {
                     }
                     is EventsUiMain.HandleTaskAlko -> {
                         if (eventUiMain.run) findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphAlko)
+                        else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
+                            findNavController().navigate(R.id.fragGraphSign)
+                        }
+                    }
+                    is EventsUiMain.HandleTaskChecker -> {
+                        if (eventUiMain.run) findNavController().navigate(R.id.action_fragGraphMain_to_fragGraphChecker)
                         else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
                             findNavController().navigate(R.id.fragGraphSign)
                         }

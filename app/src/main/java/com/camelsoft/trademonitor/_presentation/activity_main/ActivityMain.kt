@@ -71,6 +71,7 @@ class ActivityMain : AppCompatActivity() {
             when (it.itemId) {
                 R.id.navMenuPrice -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskPrice)
                 R.id.navMenuAlko -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskAlko)
+                R.id.navMenuChecker -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskChecker)
                 R.id.navMenuSettings -> navController.navigate(R.id.fragGraphSettings)
                 R.id.navMenuAbout -> writeDeveloper(weakContext.get()!!)
                 R.id.navMenuExit -> finish()
@@ -105,6 +106,12 @@ class ActivityMain : AppCompatActivity() {
                     }
                     is EventsUiMainActivity.HandleTaskAlko -> {
                         if (eventUiMain.run) navController.navigate(R.id.fragGraphAlko)
+                        else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
+                            navController.navigate(R.id.fragGraphSign)
+                        }
+                    }
+                    is EventsUiMainActivity.HandleTaskChecker -> {
+                        if (eventUiMain.run) navController.navigate(R.id.fragGraphChecker)
                         else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
                             navController.navigate(R.id.fragGraphSign)
                         }

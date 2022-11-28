@@ -31,6 +31,12 @@ class FragmentMainViewModel @Inject constructor(
                 else
                     sendEventUi(EventsUiMain.HandleTaskAlko(run = false))
             }
+            is EventsVmMain.VerifyTaskChecker -> {
+                if (tokenUserVerifier.verifyExistToken())
+                    sendEventUi(EventsUiMain.HandleTaskChecker(run = true))
+                else
+                    sendEventUi(EventsUiMain.HandleTaskChecker(run = false))
+            }
         }
     }
 

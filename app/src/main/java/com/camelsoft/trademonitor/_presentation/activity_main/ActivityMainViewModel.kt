@@ -60,6 +60,12 @@ class ActivityMainViewModel @Inject constructor(
                 else
                     sendEventUi(EventsUiMainActivity.HandleTaskAlko(run = false))
             }
+            is EventsVmMainActivity.VerifyTaskChecker -> {
+                if (tokenUserVerifier.verifyExistToken())
+                    sendEventUi(EventsUiMainActivity.HandleTaskChecker(run = true))
+                else
+                    sendEventUi(EventsUiMainActivity.HandleTaskChecker(run = false))
+            }
         }
     }
 

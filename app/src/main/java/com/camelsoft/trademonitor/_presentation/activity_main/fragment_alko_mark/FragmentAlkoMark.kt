@@ -90,9 +90,9 @@ class FragmentAlkoMark : Fragment() {
             weakActivity.get()!!.supportActionBar?.title = parentAlkoColl.note
 
             // Клавиатура поверх/не поверх View (Совместно с манифестом. Устанавливать в каждом фрагменте)
-            // поверх
+            // Клавиатура поверх
             //weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-            // не поверх
+            // Клавиатура не поверх
             //weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
             // в манифесте для активити
             // android:windowSoftInputMode="adjustResize"
@@ -121,12 +121,16 @@ class FragmentAlkoMark : Fragment() {
         super.onResume()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.reg()
         viewModel.onEventAlkoMark(EventVmAlkoMark.OnPublishPrice)
+        // Клавиатура поверх
+        weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     }
 
     override fun onPause() {
         super.onPause()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
         hideKeyboard(weakContext.get()!!, weakView.get())
+        // Клавиатура не поверх
+        weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
     // Меню - Создание, Обработка нажатий

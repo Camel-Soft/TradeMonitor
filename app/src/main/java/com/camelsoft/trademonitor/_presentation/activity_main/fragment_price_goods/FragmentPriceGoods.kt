@@ -116,12 +116,16 @@ class FragmentPriceGoods : Fragment() {
         super.onResume()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.reg()
         viewModel.onEventGoods(EventVmGoods.OnPublishPrice)
+        // Клавиатура поверх
+        weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     }
 
     override fun onPause() {
         super.onPause()
         if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
         hideKeyboard(weakContext.get()!!, weakView.get())
+        // Клавиатура не поверх
+        weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
     // Меню - Создание, Обработка нажатий

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_fragGraphMain_to_fragGraphSign"
             app:destination="@id/fragGraphSign" />
+        <action
+            android:id="@+id/action_fragGraphMain_to_fragGraphChecker"
+            app:destination="@id/fragGraphChecker" />
     </fragment>
 
     <fragment
@@ -112,6 +115,16 @@
         tools:layout="@layout/fragment_sign" >
         <action
             android:id="@+id/action_fragGraphSign_to_fragGraphMain"
+            app:destination="@id/fragGraphMain" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphChecker"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_checker.FragmentChecker"
+        android:label="@string/monitor_checker_label"
+        tools:layout="@layout/fragment_checker" >
+        <action
+            android:id="@+id/action_fragGraphChecker_to_fragGraphMain"
             app:destination="@id/fragGraphMain" />
     </fragment>
 
