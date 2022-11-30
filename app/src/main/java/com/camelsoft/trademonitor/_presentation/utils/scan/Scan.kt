@@ -39,6 +39,7 @@ fun getScanType(sysString: String): String {
         "PDF_417" -> App.getAppContext().resources.getString(R.string.pdf_417)
         "DATA_MATRIX" -> App.getAppContext().resources.getString(R.string.data_matrix)
         "EAN_13_WEIGHT" -> App.getAppContext().resources.getString(R.string.ean_13_weight)
+        "HAND_MADE" -> App.getAppContext().resources.getString(R.string.hand_made)
         "SCANCODE_TYPE_NOT_DEFINED" -> App.getAppContext().resources.getString(R.string.scancode_type_not_defined)
         else -> sysString
     }

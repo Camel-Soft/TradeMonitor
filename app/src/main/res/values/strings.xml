@@ -76,6 +76,7 @@
     <string name="info_empty_export_format">Выбранный формат для экспорта не предусмотрен в данном архиве</string>
     <string name="info_password">Не менее 8 символов</string>
     <string name="info_need_registration">Для использования необходимо \"Войти\" или \"Зарегистрироваться\"</string>
+    <string name="info_scan_or_write">Сканируйте или введите вручную</string>
 
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>
@@ -83,6 +84,7 @@
     <string name="error_root_fragment_id">Id корневого фрагмента не определен</string>
     <string name="error_parent_coll">Сборка не определена</string>
     <string name="error_scancode">! Сканкод</string>
+    <string name="error_scancode_search">Сканкод для поиска не определен</string>
     <string name="error_clear_file">Невозможно очистить файл, вероятно, он занят другим приложением</string>
     <string name="error_create_file">Невозможно создать файл</string>
     <string name="error_export_file_format">Формат файла для экспорта не определен</string>
@@ -166,6 +168,7 @@
     <string name="pdf_417">PDF_417</string>
     <string name="data_matrix">DATA_MATRIX</string>
     <string name="ean_13_weight">EAN_13 весовой</string>
+    <string name="hand_made">Ручной ввод</string>
     <string name="scancode_type_not_defined">Тип сканкода не определен</string>
 
     <!-- Material-Calendar-View -->
