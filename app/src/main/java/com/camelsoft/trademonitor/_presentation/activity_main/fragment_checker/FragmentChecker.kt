@@ -10,6 +10,10 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.api.IResultScan
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
@@ -37,6 +41,8 @@ class FragmentChecker : Fragment() {
     private lateinit var weakActivity: WeakReference<AppCompatActivity>
     @Inject lateinit var settings: Settings
     private lateinit var honeywellEDA50K: HoneywellEDA50K
+    private val viewModel: FragmentCheckerViewModel by viewModels()
+    private val fragmentCheckerAdapter = FragmentCheckerAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentCheckerBinding.inflate(inflater)
@@ -55,6 +61,10 @@ class FragmentChecker : Fragment() {
 
         // Фотосканер одиночный
         binding.btnScan.setOnClickListener { camStart() }
+
+        eventsUiCollector()
+        rvSetter()
+        btnSearchListeners()
     }
 
     override fun onResume() {
@@ -70,6 +80,40 @@ class FragmentChecker : Fragment() {
         hideKeyboard(weakContext.get()!!, weakView.get())
         // Клавиатура не поверх
         weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
+
+    // Кнопка Ручного поиска - Листенер
+    private fun btnSearchListeners() {
+        binding.btnSearch.setOnClickListener {
+            if (binding.editScan.text.toString().trim().length > 1)
+                viewModel.eventsVm(EventsVmChecker.PerformRequest(mScan = MScan(
+                    scancode = binding.editScan.text.toString().trim(),
+                    format = "HAND_MADE"
+                )))
+            else showInfo(weakContext.get()!!, resources.getString(R.string.info_length_2)) {}
+        }
+    }
+
+    // Установки RecyclerView - Список с данными о товаре
+    private fun rvSetter() {
+        binding.rv.layoutManager = LinearLayoutManager(weakContext.get()!!, RecyclerView.VERTICAL,false)
+        binding.rv.adapter = fragmentCheckerAdapter
+        viewModel.listMStringString.observe(viewLifecycleOwner) {
+            fragmentCheckerAdapter.submitList(it)
+        }
+    }
+
+    // Обработка событий Пользовательского Интерфейса
+    private fun eventsUiCollector() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.eventsUi.collect { eventUi ->
+                when(eventUi) {
+                    is EventsUiChecker.ShowError -> showError(weakContext.get()!!, eventUi.message) {}
+                    is EventsUiChecker.ShowInfo -> showInfo(weakContext.get()!!, eventUi.message) {}
+                    is EventsUiChecker.ShowToast -> Toast.makeText(weakContext.get()!!, eventUi.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     // Фотосканер одиночный
@@ -116,10 +160,8 @@ class FragmentChecker : Fragment() {
             try {
                 when(scan) {
                     is EventsSync.Success -> {
-
-                        Toast.makeText(weakContext.get()!!, scan.data.scancode, Toast.LENGTH_SHORT).show()
-                        //viewModel.onEventGoods(EventVmGoods.OnInsertOrUpdateGoods(parentPriceColl, scan.data))
-
+                        binding.editScan.setText(scan.data.scancode)
+                        viewModel.eventsVm(EventsVmChecker.PerformRequest(mScan = scan.data))
                     }
                     is EventsSync.Error -> {
                         showError(weakContext.get()!!, scan.message) {}

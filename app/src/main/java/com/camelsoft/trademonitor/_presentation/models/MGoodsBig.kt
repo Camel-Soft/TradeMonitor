@@ -84,7 +84,7 @@ data class MGoodsBig (
     @SerializedName("holder_color")
     var holder_color: String = "",      // Цвет holder`ов (from mobile)
     @SerializedName("rezerv1")
-    var rezerv1: String = "",           //
+    var rezerv1: String = "",           // Менеджер
     @SerializedName("rezerv2")
     var rezerv2: String = "",           //
     @SerializedName("rezerv3")

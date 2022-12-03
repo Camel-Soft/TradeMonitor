@@ -67,6 +67,7 @@
     <string name="dev_srv">Серверы</string>
     <string name="price">Прайс</string>
     <string name="from">от</string>
+    <string name="and">и</string>
     <string name="search">Поиск</string>
     <string name="search_view_hint">Скан или Название</string>
 
@@ -77,6 +78,7 @@
     <string name="info_password">Не менее 8 символов</string>
     <string name="info_need_registration">Для использования необходимо \"Войти\" или \"Зарегистрироваться\"</string>
     <string name="info_scan_or_write">Сканируйте или введите вручную</string>
+    <string name="info_length_2">Не менее 2 символов</string>
 
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>
@@ -194,6 +196,43 @@
         <item>Декабрь</item>
     </array>
     <string name="material_calendar_today_button">Сегодня</string>
-    <string name="material_calendar_positive_button">Ok</string>
+    <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_negative_button">Отмена</string>
+
+    <!-- Price-Checker Entry -->
+    <string name="price_cod">Код товара</string>
+    <string name="price_scancod_is_find">Сканкод товара, найденный в базе</string>
+    <string name="price_scancod_type">Тип сканкода товара</string>
+    <string name="price_sklad">Склад</string>
+    <string name="price_name">Наименование товара</string>
+    <string name="price_name_full">Полное наименование товара</string>
+    <string name="price_cena">Цена товара</string>
+    <string name="price_ed_izm">Единицы измерения товара</string>
+    <string name="price_articul">Артикул товара</string>
+    <string name="price_grt">Группа товара</string>
+    <string name="price_sgrt">Подгруппа товара</string>
+    <string name="price_made">Производитель товара</string>
+    <string name="price_day_save">Дней хранения товара</string>
+    <string name="price_in_place">Кол-во товара в упаковке</string>
+    <string name="price_litera">Литера товара</string>
+    <string name="price_list">Прайс-лист</string>
+    <string name="price_type">Тип прайс-листа</string>
+    <string name="price_nds">НДС товара</string>
+    <string name="price_mrc">МРЦ (сигареты и алкоголь)</string>
+    <string name="price_cod_vvp">Код Алкогольной продукции</string>
+    <string name="price_capacity">Объем единицы товара</string>
+    <string name="price_rezerv1">Менеджер</string>
+    <string name="price_marker_title">Акционный маркер</string>
+    <string name="price_marker_a">A - акция, без скидок</string>
+    <string name="price_marker_b">B - cоциальная цена, без скидок</string>
+    <string name="price_marker_c">C - фиксированная скидка при наличии дисконтной карты</string>
+    <string name="price_marker_d">D - cпец-цена при кол-ве равном или большем упаковки</string>
+    <string name="price_marker_e">E - cпец-цена при наличии дисконтной карты</string>
+    <string name="price_marker_f">F - cпец-цена для каждого второго одноименного товара</string>
+    <string name="price_marker_g">G - aкция, без контроля МРЦ</string>
+    <string name="price_marker_r">R - pаспродажа, без скидок</string>
+    <string name="price_marker_loc_title">Локальная акция</string>
+    <string name="price_marker_loc">Товар добавлен в архив локальных акций склада</string>
+    <string name="price_marker_t">T - товар первой цены, без скидок</string>
+    <string name="price_additional_mrc">Дополнительные цены (МРЦ)</string>
 </resources>

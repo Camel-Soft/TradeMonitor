@@ -135,7 +135,12 @@ fun autoSummKop(kolvo: String, cena: String): String {
 }
 
 fun mixPrcString(nomer: String, dateTurn: String, time: String): String? {
-    if (nomer.isBlank() || dateTurn.isBlank() || dateTurn.trim().length != 8) return null
+    if (nomer.isBlank() || dateTurn.trim().length != 8) return null
     val date = dateTurn.trim().substring(6)+"."+dateTurn.trim().substring(4, 6)+"."+dateTurn.trim().substring(0, 4)
     return "${getAppContext().resources.getString(R.string.price)} $nomer ${getAppContext().resources.getString(R.string.from)} $date $time"
+}
+
+fun prcDateReturn(dateTurn: String): String {
+    if (dateTurn.trim().length != 8) return ""
+    return dateTurn.trim().substring(6)+"."+dateTurn.trim().substring(4, 6)+"."+dateTurn.trim().substring(0, 4)
 }

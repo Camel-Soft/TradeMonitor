@@ -1,6 +1,7 @@
 package com.camelsoft.trademonitor._presentation.utils.scan
 
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
 
@@ -71,9 +72,10 @@ fun pickBarcodeType(barcode: String): String {
 }
 
 fun getScanFromDataMatrix(dataMatrix: String): Pair<String, String> {
-    if (dataMatrix.length < 18) return Pair("", "")
-    if (dataMatrix.substring(0,2) != "01" || dataMatrix.substring(16,18) != "21") return Pair("", "")
-    val gtin = dataMatrix.substring(2,16)
+    val dataMatrixTrim = dataMatrix.trim001d()
+    if (dataMatrixTrim.length < 18) return Pair("", "")
+    if (dataMatrixTrim.substring(0,2) != "01" || dataMatrixTrim.substring(16,18) != "21") return Pair("", "")
+    val gtin = dataMatrixTrim.substring(2,16)
     var scanLong = 0L
     try {
         scanLong = gtin.toLong()
