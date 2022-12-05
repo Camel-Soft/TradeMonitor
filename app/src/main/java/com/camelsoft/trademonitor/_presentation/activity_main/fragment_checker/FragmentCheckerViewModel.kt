@@ -13,6 +13,7 @@ import com.camelsoft.trademonitor._presentation.models.secondary.MStringString
 import com.camelsoft.trademonitor._presentation.utils.prcDateReturn
 import com.camelsoft.trademonitor._presentation.utils.scan.checkBarcode
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanFromDataMatrix
+import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor._presentation.utils.toQuantity
 import com.camelsoft.trademonitor._presentation.utils.toSouthCena
@@ -121,7 +122,7 @@ class FragmentCheckerViewModel @Inject constructor(
             }
             if (mGoodsBig.cod.isNotBlank()) result.add(MStringString(getAppContext().resources.getString(R.string.price_cod), mGoodsBig.cod))
             if (mGoodsBig.scancod_is_find.isNotBlank()) result.add(MStringString(getAppContext().resources.getString(R.string.price_scancod_is_find), mGoodsBig.scancod_is_find))
-            if (mGoodsBig.scancod_type.isNotBlank()) result.add(MStringString(getAppContext().resources.getString(R.string.price_scancod_type), mGoodsBig.scancod_type))
+            if (mGoodsBig.scancod_type.isNotBlank()) result.add(MStringString(getAppContext().resources.getString(R.string.price_scancod_type), getScanType(mGoodsBig.scancod_type)))
             return result
         }
         catch (e: Exception) {
