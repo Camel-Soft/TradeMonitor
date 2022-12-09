@@ -2,7 +2,7 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_net
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
-import com.camelsoft.trademonitor._presentation.api.IHello
+import com.camelsoft.trademonitor._presentation.api.repo.IHello
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import java.io.InterruptedIOException
 import java.net.ConnectException

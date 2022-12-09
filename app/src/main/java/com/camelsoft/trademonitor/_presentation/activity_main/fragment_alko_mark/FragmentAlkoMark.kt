@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
-import com.camelsoft.trademonitor._presentation.api.IResultScan
-import com.camelsoft.trademonitor._presentation.api.IResultScanList
+import com.camelsoft.trademonitor._presentation.api.scan.IResultScan
+import com.camelsoft.trademonitor._presentation.api.scan.IResultScanList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat

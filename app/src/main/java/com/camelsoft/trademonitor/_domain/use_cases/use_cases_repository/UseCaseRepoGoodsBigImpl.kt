@@ -2,7 +2,7 @@ package com.camelsoft.trademonitor._domain.use_cases.use_cases_repository
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiScan
-import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.api.repo.IGoods
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.google.gson.Gson

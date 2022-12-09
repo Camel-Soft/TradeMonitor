@@ -3,6 +3,7 @@ package com.camelsoft.trademonitor._presentation.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import okhttp3.Headers
 
 fun isOnline(appContext: Context): Boolean {
     try {
@@ -26,4 +27,9 @@ fun isOnline(appContext: Context): Boolean {
         e.printStackTrace()
         throw Exception ("[UtilsNet.isOnline] ${e.localizedMessage}")
     }
+}
+
+fun Headers.isStatusExists(): Boolean {
+    this.forEach { if (it.first == "status") return true }
+    return false
 }

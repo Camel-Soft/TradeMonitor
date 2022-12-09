@@ -3,7 +3,7 @@ package com.camelsoft.trademonitor._presentation.activity_main.fragment_price_go
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
-import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.api.repo.IGoods
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

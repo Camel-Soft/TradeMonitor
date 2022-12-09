@@ -14,7 +14,7 @@ import com.camelsoft.trademonitor._presentation.utils.scan.checkBarcode
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.Settings
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
-import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.api.repo.IGoods
 import com.camelsoft.trademonitor._presentation.utils.mixPrcString
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import dagger.hilt.android.lifecycle.HiltViewModel

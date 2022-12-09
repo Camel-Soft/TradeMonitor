@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.models.price.MPriceColl
 import com.camelsoft.trademonitor._presentation.models.price.MPriceGoods
-import com.camelsoft.trademonitor._presentation.api.IResultScan
+import com.camelsoft.trademonitor._presentation.api.scan.IResultScan
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
 import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanProp1D
 import com.camelsoft.trademonitor._presentation.models.MScan

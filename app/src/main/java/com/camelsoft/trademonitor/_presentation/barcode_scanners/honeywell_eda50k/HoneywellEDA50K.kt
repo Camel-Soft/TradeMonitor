@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.camelsoft.trademonitor.R
-import com.camelsoft.trademonitor._presentation.api.IResultScan
+import com.camelsoft.trademonitor._presentation.api.scan.IResultScan
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.events.EventsSync

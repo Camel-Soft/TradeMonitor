@@ -103,6 +103,10 @@
     <string name="error_handshake">Протокол-handshake не выполнен. Проверьте правильность указания адреса сервера</string>
     <string name="error_unknown_host">Неизвестный хост. Проверьте правильность указания адреса сервера</string>
     <string name="error_interrupted_io">Сервер не ответил. Проверьте правильность указания адреса сервера</string>
+    <string name="error_not_200">Код ответа не 200</string>
+    <string name="error_header_status_not_found">В заголовке ответа не обнаружен статус</string>
+    <string name="error_folder_create">Не могу создать папку(и)</string>
+    <string name="error_file_delete">Не могу удалить файл(ы)</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>

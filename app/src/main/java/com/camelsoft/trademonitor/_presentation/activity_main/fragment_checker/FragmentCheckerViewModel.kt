@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.EventsGoods
-import com.camelsoft.trademonitor._presentation.api.IGoods
+import com.camelsoft.trademonitor._presentation.api.repo.IGoods
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.models.secondary.MStringString
 import com.camelsoft.trademonitor._presentation.utils.prcDateReturn
-import com.camelsoft.trademonitor._presentation.utils.scan.checkBarcode
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanFromDataMatrix
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType

@@ -2,6 +2,7 @@ package com.camelsoft.trademonitor.common.di
 
 import com.camelsoft.trademonitor._data.net.api.ISsl
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiOfflBase
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiScan
 import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
 import com.camelsoft.trademonitor._data.net.servers.RetroLoc
@@ -17,8 +18,8 @@ import com.camelsoft.trademonitor._domain.libs.ExportSouthRevision
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.HelloImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsBigImpl
 import com.camelsoft.trademonitor._presentation.api.IChZnParam
-import com.camelsoft.trademonitor._presentation.api.IGoods
-import com.camelsoft.trademonitor._presentation.api.IHello
+import com.camelsoft.trademonitor._presentation.api.repo.IGoods
+import com.camelsoft.trademonitor._presentation.api.repo.IHello
 import com.camelsoft.trademonitor.common.Settings
 import dagger.Module
 import dagger.Provides
@@ -198,6 +199,13 @@ object DataModuleVm {
             val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
             return retroLoc.makeRetrofit().create(NetApiHello::class.java)
         }
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideNetApiOfflBase(settings: Settings, iSsl: ISsl, tokenInterceptor: TokenInterceptor): NetApiOfflBase {
+        val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+        return retroLoc.makeRetrofit().create(NetApiOfflBase::class.java)
     }
 
     @Provides

@@ -1,5 +1,7 @@
 package com.camelsoft.trademonitor._presentation.utils
 
+import java.io.File
+
 fun String.rm001d() = this.replace(oldValue = "\u001d", newValue = "", ignoreCase = false)
 
 fun String.trim001d(): String {
@@ -33,4 +35,8 @@ fun String.toSouthCena(): String {
     var cena = 0F
     try { cena = this.toFloat()/1000 } catch (_: Exception) {}
     return toMoney(cena)
+}
+
+fun String.addSep(): String {
+    return if (this.substring(this.length - 1) == File.separator) this else this + File.separator
 }
