@@ -40,3 +40,7 @@ fun String.toSouthCena(): String {
 fun String.addSep(): String {
     return if (this.substring(this.length - 1) == File.separator) this else this + File.separator
 }
+
+fun String.getParentFromAbsolute(): String {
+    return this.substring(0, this.lastIndexOf(File.separator))
+}

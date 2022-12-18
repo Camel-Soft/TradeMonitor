@@ -95,8 +95,10 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     // Auth (JWT)
     implementation("com.nimbusds:nimbus-jose-jwt:9.25.6")
-    // LIBs
-    // honeywell.aar    - Honeywell EDA50K
-    // jxl-2.6.jar      - *.xls files
+    /*
+     LIBs
+     honeywell.aar    - Honeywell EDA50K
+     jxl-2.6.jar      - *.xls files
+    */
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
 }

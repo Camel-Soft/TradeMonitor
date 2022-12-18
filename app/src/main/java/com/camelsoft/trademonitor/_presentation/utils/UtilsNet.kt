@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import okhttp3.Headers
+import java.util.*
 
 fun isOnline(appContext: Context): Boolean {
     try {
@@ -30,6 +31,16 @@ fun isOnline(appContext: Context): Boolean {
 }
 
 fun Headers.isStatusExists(): Boolean {
-    this.forEach { if (it.first == "status") return true }
+    this.forEach { if (it.first.lowercase().trim() == "status") return true }
+    return false
+}
+
+fun Headers.isContentTypeExists(): Boolean {
+    this.forEach { if (it.first.lowercase().trim() == "content-type") return true }
+    return false
+}
+
+fun Headers.isContentLengthExists(): Boolean {
+    this.forEach { if (it.first.lowercase().trim() == "content-length") return true }
     return false
 }

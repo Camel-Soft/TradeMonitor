@@ -18,8 +18,7 @@ class RetroLoc @Inject constructor(
 ) {
     fun makeRetrofit(): Retrofit {
         val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(2, TimeUnit.SECONDS)
-            .callTimeout(2, TimeUnit.SECONDS)
+            .connectTimeout(3, TimeUnit.SECONDS)
             .followRedirects(true)
             .followSslRedirects(true)
             .sslSocketFactory(iSsl.getSslContext().socketFactory, iSsl.getTrustManagerFactory().trustManagers[0] as X509TrustManager)

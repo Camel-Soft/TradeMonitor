@@ -146,7 +146,7 @@ class ActivityMain : AppCompatActivity() {
                 is EventsSync.Error -> {
                     val backupMessage = resources.getString(R.string.error_in)+
                             " ActivityMain.getPermissions: "+
-                            resources.getString(R.string.error_text_unknown)
+                            resources.getString(R.string.error_unknown)
                     showError(weakContext.get()!!, result.message?:backupMessage) {
                         finish()
                     }

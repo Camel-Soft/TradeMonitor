@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FragmentCheckerViewModel @Inject constructor(
     private val settings: Settings,
-    private val iGoods: IGoods
+    private val iGoods: IGoods,
 ): ViewModel() {
 
     private val _eventsUi = Channel<EventsUiChecker>()
