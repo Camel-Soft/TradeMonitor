@@ -1,10 +1,10 @@
-package com.camelsoft.trademonitor.common
+package com.camelsoft.trademonitor.common.settings
 
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 
-class Settings {
+object Settings {
 
     private val prefManager = PreferenceManager.getDefaultSharedPreferences(getAppContext())
 
@@ -37,6 +37,13 @@ class Settings {
         prefManager.getString("scanner", "empty")?.let { scanner = it }
         return scanner
     }
+
+    fun getWorkModeOffline(): Boolean {
+        var workModeOffline = false
+        prefManager.getBoolean("work_mode_offline", false).let { workModeOffline = it }
+        return workModeOffline
+    }
+    val workModeOfflineLiveData = prefManager.booleanLiveData("work_mode_offline", false)
 
     // ****************************************************************************************
 

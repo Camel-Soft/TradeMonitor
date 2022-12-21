@@ -3,7 +3,7 @@ package com.camelsoft.trademonitor._data.net.servers
 import com.camelsoft.trademonitor._data.net.api.ISsl
 import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
 import com.camelsoft.trademonitor._presentation.utils.prepareUrl
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

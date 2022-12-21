@@ -3,7 +3,7 @@ package com.camelsoft.trademonitor._presentation.utils.scan
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.utils.trim001d
 import com.camelsoft.trademonitor.common.App
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 
 fun checkBarcode(prefix: String, barcode: String): Boolean {
     if (prefix == barcode.substring(0,2)) {
@@ -52,7 +52,7 @@ fun pickBarcodeType(barcode: String): String {
         val l = barcode.length
         if (l < 7 || l > 13)  return "SCANCODE_TYPE_NOT_DEFINED"
         else {
-            if (Settings().getPrefix() == barcode.substring(0,2)) return "EAN_13_WEIGHT"
+            if (Settings.getPrefix() == barcode.substring(0,2)) return "EAN_13_WEIGHT"
             else {
                 val first = barcode.substring(0,1)
                 if (l == 8 && (first == "0" || first == "1" || first == "2")) return "UPC_E"

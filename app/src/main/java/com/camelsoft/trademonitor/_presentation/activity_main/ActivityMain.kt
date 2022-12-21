@@ -25,12 +25,14 @@ import com.camelsoft.trademonitor._presentation.models.user.MUser
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.timeToStringShort
 import com.camelsoft.trademonitor._presentation.utils.writeDeveloper
+import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
 import com.camelsoft.trademonitor.databinding.ActivityMainNavHeaderBinding
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ActivityMain : AppCompatActivity() {
@@ -41,6 +43,7 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var rootFragmentId: Int? = null
     private val viewModel: ActivityMainViewModel by viewModels()
+    @Inject lateinit var settings: Settings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +89,14 @@ class ActivityMain : AppCompatActivity() {
         btnLogoutListener()
         eventsUi()
         getPermissions()
+        showWorkModeOffline()
+    }
+
+    // Рулит отображением пункта меню OFF-Line источник
+    private fun showWorkModeOffline() {
+        settings.workModeOfflineLiveData.observe(this) {
+            binding.mainNavView.menu.getItem(0).subMenu?.getItem(3)?.isVisible = it
+        }
     }
 
     // Обработка событий от View Model

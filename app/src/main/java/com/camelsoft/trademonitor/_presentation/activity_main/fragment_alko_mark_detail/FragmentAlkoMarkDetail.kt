@@ -30,7 +30,7 @@ import com.camelsoft.trademonitor._presentation.utils.scan.barcodeAutoCorrection
 import com.camelsoft.trademonitor._presentation.utils.scan.getScanType
 import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor._presentation.models.MGoodsBig
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentAlkoMarkDetailBinding

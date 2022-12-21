@@ -35,7 +35,7 @@ import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.utils.hideKeyboard
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentPriceGoodsBinding
 import com.google.zxing.BarcodeFormat

@@ -14,7 +14,7 @@ import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.utils.validateEmail
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.databinding.FragmentSignBinding
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint

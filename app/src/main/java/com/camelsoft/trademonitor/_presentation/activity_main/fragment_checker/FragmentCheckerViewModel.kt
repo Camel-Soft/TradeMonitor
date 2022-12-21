@@ -17,7 +17,7 @@ import com.camelsoft.trademonitor._presentation.utils.scan.pickBarcodeType
 import com.camelsoft.trademonitor._presentation.utils.toQuantity
 import com.camelsoft.trademonitor._presentation.utils.toSouthCena
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel

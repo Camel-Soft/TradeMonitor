@@ -23,6 +23,12 @@
                 android:icon="@drawable/img_done_24"
                 android:title="@string/monitor_checker_label"
                 android:contentDescription="@string/monitor_checker_label"/>
+            <item
+                android:id="@+id/navMenuOfflSource"
+                android:icon="@drawable/img_source_24"
+                android:title="@string/monitor_offlsource_label"
+                android:contentDescription="@string/monitor_offlsource_label"
+                android:visible="false"/>
         </menu>
     </item>
 

@@ -5,7 +5,7 @@ import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._presentation.models.price.MPriceGoods
 import com.camelsoft.trademonitor._presentation.utils.getErrCode
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import javax.inject.Inject
 
 class UseCaseStorageGoodsInsertOrUpdate @Inject constructor(

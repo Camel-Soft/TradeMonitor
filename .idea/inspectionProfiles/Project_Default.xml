@@ -7,6 +7,7 @@
     <inspection_tool class="KotlinEqualsBetweenInconvertibleTypes" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="LiftReturnOrAssignment" enabled="false" level="INFO" enabled_by_default="false" />
     <inspection_tool class="LocalVariableName" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="MemberVisibilityCanBePrivate" enabled="false" level="INFO" enabled_by_default="false" />
     <inspection_tool class="NestedLambdaShadowedImplicitParameter" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="ObjectPropertyName" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="PrivatePropertyName" enabled="false" level="WEAK WARNING" enabled_by_default="false" />

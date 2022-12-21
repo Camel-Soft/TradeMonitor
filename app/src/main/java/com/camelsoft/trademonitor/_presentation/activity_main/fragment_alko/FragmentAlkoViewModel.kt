@@ -16,7 +16,7 @@ import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseSto
 import com.camelsoft.trademonitor._presentation.api.IChZnParam
 import com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn.makeNoteChZn
 import com.camelsoft.trademonitor.common.App
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

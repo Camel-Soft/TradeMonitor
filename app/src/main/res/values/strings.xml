@@ -70,6 +70,7 @@
     <string name="and">и</string>
     <string name="search">Поиск</string>
     <string name="search_view_hint">Скан или Название</string>
+    <string name="work_mode">Режим работы</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -129,6 +130,7 @@
     <string name="monitor_alko_call">Сборки марок</string>
     <string name="monitor_checker_label">Прайс-Чекер</string>
     <string name="monitor_checker_call">Прайс-Чекер</string>
+    <string name="monitor_offlsource_label">OFF-Line источник</string>
 
     <string name="coll_created">Сборка создана</string>
     <string name="coll_changed">Сборка изменена</string>
@@ -149,6 +151,9 @@
     <!-- Entry Connection -->
     <string name="conn">Подключения</string>
     <string name="conn_server_loc">Локальный сервер</string>
+
+    <!-- Entry Workmode -->
+    <string name="work_mode_offline">Автономно (OFF-Line)</string>
 
     <!-- Entry Weight-Goods -->
     <string name="weight_goods">Весовой товар</string>

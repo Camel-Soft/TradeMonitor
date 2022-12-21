@@ -15,6 +15,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:title="@string/work_mode"
+        app:icon="@drawable/img_mode_24">
+
+        <SwitchPreference
+            android:title="@string/work_mode_offline"
+            android:defaultValue="false"
+            android:key="work_mode_offline" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:title="@string/weight_goods"
         app:icon="@drawable/img_scale_24">
 

@@ -18,7 +18,7 @@ import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.SignImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserVerifier
 import com.camelsoft.trademonitor._presentation.api.ISign
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,7 +48,7 @@ object DataModuleSingl {
     @Provides
     @Singleton
     fun provideSettings(): Settings {
-        return Settings()
+        return Settings
     }
 
     @Provides

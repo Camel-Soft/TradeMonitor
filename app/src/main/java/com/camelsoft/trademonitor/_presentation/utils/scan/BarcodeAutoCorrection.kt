@@ -2,14 +2,14 @@ package com.camelsoft.trademonitor._presentation.utils.scan
 
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
-import com.camelsoft.trademonitor.common.Settings
+import com.camelsoft.trademonitor.common.settings.Settings
 
 fun barcodeAutoCorrection(barcode: String): String {
     try {
         if (barcode.isEmpty()) return barcode
         if (barcode.length <= 5 || barcode.length >=14) return barcode
 
-        val prefix = Settings().getPrefix()
+        val prefix = Settings.getPrefix()
         val s1 = barcode.substring(0,1);
         val s2 = barcode.substring(1,2);
 
