@@ -66,6 +66,12 @@ class ActivityMainViewModel @Inject constructor(
                 else
                     sendEventUi(EventsUiMainActivity.HandleTaskChecker(run = false))
             }
+            is EventsVmMainActivity.VerifyTaskOffline -> {
+                if (tokenUserVerifier.verifyExistToken())
+                    sendEventUi(EventsUiMainActivity.HandleTaskOffline(run = true))
+                else
+                    sendEventUi(EventsUiMainActivity.HandleTaskOffline(run = false))
+            }
         }
     }
 

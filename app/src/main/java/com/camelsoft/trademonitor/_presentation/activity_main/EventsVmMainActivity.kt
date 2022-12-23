@@ -5,4 +5,5 @@ sealed class EventsVmMainActivity {
     object VerifyTaskPrice : EventsVmMainActivity()
     object VerifyTaskAlko : EventsVmMainActivity()
     object VerifyTaskChecker : EventsVmMainActivity()
+    object VerifyTaskOffline : EventsVmMainActivity()
 }

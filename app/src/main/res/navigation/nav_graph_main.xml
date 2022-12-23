@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_fragGraphMain_to_fragGraphChecker"
             app:destination="@id/fragGraphChecker" />
+        <action
+            android:id="@+id/action_fragGraphMain_to_fragGraphOffline"
+            app:destination="@id/fragGraphOffline" />
     </fragment>
 
     <fragment
@@ -125,6 +128,16 @@
         tools:layout="@layout/fragment_checker" >
         <action
             android:id="@+id/action_fragGraphChecker_to_fragGraphMain"
+            app:destination="@id/fragGraphMain" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragGraphOffline"
+        android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_offline.FragmentOffline"
+        android:label="@string/monitor_offlsource_label"
+        tools:layout="@layout/fragment_offline" >
+        <action
+            android:id="@+id/action_fragGraphOffline_to_fragGraphMain"
             app:destination="@id/fragGraphMain" />
     </fragment>
 

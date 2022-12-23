@@ -69,12 +69,23 @@ class ActivityMain : AppCompatActivity() {
         navigationView.setupWithNavController(navController)
         rootFragmentId = navController.currentDestination?.id
 
-        // Нажатия Navigation-списка
+        navControllerListener()
+        btnSignListener()
+        btnLogoutListener()
+        eventsUi()
+        getPermissions()
+        navigationClick()
+        showWorkModeOffline()
+    }
+
+    // Нажатия Navigation-списка
+    private fun navigationClick() {
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navMenuPrice -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskPrice)
                 R.id.navMenuAlko -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskAlko)
                 R.id.navMenuChecker -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskChecker)
+                R.id.navMenuOffline -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskOffline)
                 R.id.navMenuSettings -> navController.navigate(R.id.fragGraphSettings)
                 R.id.navMenuAbout -> writeDeveloper(weakContext.get()!!)
                 R.id.navMenuExit -> finish()
@@ -83,13 +94,6 @@ class ActivityMain : AppCompatActivity() {
             binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
             true
         }
-
-        navControllerListener()
-        btnSignListener()
-        btnLogoutListener()
-        eventsUi()
-        getPermissions()
-        showWorkModeOffline()
     }
 
     // Рулит отображением пункта меню OFF-Line источник
@@ -123,6 +127,12 @@ class ActivityMain : AppCompatActivity() {
                     }
                     is EventsUiMainActivity.HandleTaskChecker -> {
                         if (eventUiMain.run) navController.navigate(R.id.fragGraphChecker)
+                        else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
+                            navController.navigate(R.id.fragGraphSign)
+                        }
+                    }
+                    is EventsUiMainActivity.HandleTaskOffline -> {
+                        if (eventUiMain.run) navController.navigate(R.id.fragGraphOffline)
                         else showInfo(weakContext.get()!!, resources.getString(R.string.info_need_registration)) {
                             navController.navigate(R.id.fragGraphSign)
                         }

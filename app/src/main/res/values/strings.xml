@@ -71,6 +71,13 @@
     <string name="search">Поиск</string>
     <string name="search_view_hint">Скан или Название</string>
     <string name="work_mode">Режим работы</string>
+    <string name="stage_copy">Копирование</string>
+    <string name="stage_unpack">Распаковка</string>
+    <string name="stage_public">Публикация</string>
+    <string name="download">Загрузить</string>
+    <string name="downloaded">Загружен</string>
+    <string name="clear">Очистить</string>
+    <string name="empty">Отсутствует</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>

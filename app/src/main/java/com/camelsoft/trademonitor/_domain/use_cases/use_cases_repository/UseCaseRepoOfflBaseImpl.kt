@@ -60,7 +60,10 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
                 while (inputStream.read(buffer).also { read = it } != -1) {
                     fileOutputStream.write(buffer, 0, read)
                     capacitor += read
-                    emit(EventsProgress.Progress(percent = (capacitor * 100 / length).toFloat().roundToInt()))
+                    emit(EventsProgress.Progress(
+                        stage=getAppContext().resources.getString(R.string.stage_copy),
+                        percent = (capacitor * 100 / length).toFloat().roundToInt()
+                    ))
                 }
             }
             catch (e: Exception) {
@@ -186,7 +189,10 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
             var entryTotal = 0
             while (zis.nextEntry != null) {
                 entryTotal++
-                emit(EventsProgress.Progress(percent = entryTotal))
+                emit(EventsProgress.Progress(
+                    stage=getAppContext().resources.getString(R.string.stage_unpack),
+                    percent = entryTotal
+                ))
             }
             zis.closeEntry()
             zis.close()
@@ -208,7 +214,10 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
                 fileOutputStream.flush()
                 fileOutputStream.close()
                 entryCurrent++
-                emit(EventsProgress.Progress(percent = (entryCurrent * 100 / entryTotal).toFloat().roundToInt()))
+                emit(EventsProgress.Progress(
+                    stage=getAppContext().resources.getString(R.string.stage_unpack),
+                    percent = (entryCurrent * 100 / entryTotal).toFloat().roundToInt()
+                ))
                 zipEntry = zipInputStream.nextEntry
             }
             zipInputStream.closeEntry()
@@ -224,7 +233,7 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
 
     override suspend fun publishOfflBase(sourceFolder: File): Flow<EventsProgress<File>> = flow {
         try {
-            emit(EventsProgress.Progress(percent = 1))
+            emit(EventsProgress.Progress(stage=getAppContext().resources.getString(R.string.stage_public), percent = 1))
 
             val publishFolder = sourceFolder.absolutePath.getParentFromAbsolute()
 
@@ -244,7 +253,10 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
                             )
                 ) file.copyTo(target = File(publishFolder.addSep(), file.name), overwrite = true)
                 current++
-                if (total > 0) emit(EventsProgress.Progress(percent = (current * 100 / total).toFloat().roundToInt()))
+                if (total > 0) emit(EventsProgress.Progress(
+                    stage=getAppContext().resources.getString(R.string.stage_public),
+                    percent = (current * 100 / total).toFloat().roundToInt()
+                ))
             }
 
             emit(EventsProgress.Success(File(publishFolder)))
