@@ -1,14 +1,20 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_offline
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.Fragment
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.services.OfflineService
+import com.camelsoft.trademonitor.common.Constants.Companion.BROADCAST_ACTION_OFFLINE
 import com.camelsoft.trademonitor.databinding.FragmentOfflineBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
@@ -34,6 +40,10 @@ class FragmentOffline: Fragment() {
 
         showDoneSource()
 
+        val intentFilter = IntentFilter(BROADCAST_ACTION_OFFLINE)
+
+        registerReceiver(weakContext.get()!!, offlineReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+
 
         binding.btnDownload.setOnClickListener {
             Intent(weakContext.get(), OfflineService::class.java).also {
@@ -48,14 +58,19 @@ class FragmentOffline: Fragment() {
             }
         }
 
-
-
-
-
-
-
-
     }
+
+    private val offlineReceiver : BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            TODO("Not yet implemented")
+        }
+    }
+
+
+
+
+
+
 
     private fun showEmptySource() {
         binding.apply {
