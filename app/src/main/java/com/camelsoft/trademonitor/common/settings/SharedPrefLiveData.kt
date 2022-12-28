@@ -95,7 +95,7 @@ fun SharedPreferences.setStringLiveData(key: String, defValue: Set<String>): Sha
 class SharedPrefLiveDataMOffline(private val sharedPrefs: SharedPreferences): LiveData<MOffline>() {
 
     override fun getValue() = MOffline(
-        isRunning = sharedPrefs.getBoolean("offl_isRunning",false),
+        status = sharedPrefs.getInt("offl_status", 0),
         info = sharedPrefs.getString("offl_info", "") as String,
         stageCurrent = sharedPrefs.getInt("offl_stageCurrent", -1),
         stageTotal = sharedPrefs.getInt("offl_stageTotal", -1),
@@ -104,7 +104,7 @@ class SharedPrefLiveDataMOffline(private val sharedPrefs: SharedPreferences): Li
     )
 
     private val prefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == "offl_isRunning" || key == "offl_info" ||
+        if (key == "offl_status" || key == "offl_info" ||
             key == "offl_stageCurrent" || key == "offl_stageTotal" ||
             key == "offl_stageName" || key == "offl_stagePercent") value = value
     }

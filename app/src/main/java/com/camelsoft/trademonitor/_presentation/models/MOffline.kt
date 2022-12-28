@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MOffline(
-    var isRunning: Boolean,
+    var status: Int,
     var info: String,
     var stageCurrent: Int,
     var stageTotal: Int,

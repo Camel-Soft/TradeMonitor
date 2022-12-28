@@ -92,7 +92,7 @@ object Settings {
     fun putMOffline(mOffline: MOffline) {
         synchronized(this) {
             val editor = privateManager.edit()
-            editor.putBoolean("offl_isRunning", mOffline.isRunning)
+            editor.putInt("offl_status", mOffline.status)
             editor.putString("offl_info", mOffline.info)
             editor.putInt("offl_stageCurrent", mOffline.stageCurrent)
             editor.putInt("offl_stageTotal", mOffline.stageTotal)
@@ -104,7 +104,7 @@ object Settings {
 
     fun getMOffline(): MOffline {
         return MOffline(
-            isRunning = privateManager.getBoolean("offl_isRunning",false),
+            status = privateManager.getInt("offl_status", 0),
             info = privateManager.getString("offl_info", "") as String,
             stageCurrent = privateManager.getInt("offl_stageCurrent", -1),
             stageTotal = privateManager.getInt("offl_stageTotal", -1),

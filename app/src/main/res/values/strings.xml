@@ -80,6 +80,7 @@
     <string name="empty">Отсутствует</string>
     <string name="start">Старт</string>
     <string name="finish">Завершение</string>
+    <string name="info">Инфо</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>

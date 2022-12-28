@@ -8,12 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
 import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.Fragment
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.models.MOffline
 import com.camelsoft.trademonitor._presentation.services.OfflineService
+import com.camelsoft.trademonitor.common.Constants.Companion.ACTION_BROADCAST_OFFLINE
 import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.databinding.FragmentOfflineBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,18 +39,15 @@ class FragmentOffline: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         weakContext = WeakReference<Context>(requireContext())
 
-        //showEmptySource()
+        showDownloadProcessSource()
+        binding.btnClear.isEnabled = true
+        binding.btnDownload.isEnabled = true
 
-        showDoneSource()
-
-        val intentFilter = IntentFilter("sdfg")
-
-       // registerReceiver(weakContext.get()!!, offlineReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+        registerReceiver(weakContext.get()!!, offlineReceiver, IntentFilter(ACTION_BROADCAST_OFFLINE), RECEIVER_NOT_EXPORTED)
 
 
         binding.btnDownload.setOnClickListener {
             Intent(weakContext.get(), OfflineService::class.java).also {
-                it.action = "maine Action"
                 weakContext.get()!!.startService(it)
             }
         }
@@ -59,10 +57,6 @@ class FragmentOffline: Fragment() {
                 weakContext.get()!!.stopService(it)
             }
 
-//            val ttt = settings.getTest()
-//            if (ttt == null) binding.textInfo.text = "null" else binding.textInfo.text = ttt
-
-
 
         }
 
@@ -70,15 +64,25 @@ class FragmentOffline: Fragment() {
 
     private val offlineReceiver : BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            TODO("Not yet implemented")
+            intent?.let {
+                val mOffline: MOffline? = it.getParcelableExtra("mOffline")
+                mOffline?.let {
+                    binding.textStage.text = "${it.stageName} ${it.stageCurrent}/${it.stageTotal}"
+                    binding.progressBar.progress = it.stagePercent
+                    binding.textProcent.text = "${it.stagePercent}%"
+                    binding.textInfo.text = it.info
+                }
+            }
         }
     }
 
 
 
 
-
-
+    override fun onDestroyView() {
+        weakContext.get()!!.unregisterReceiver(offlineReceiver)
+        super.onDestroyView()
+    }
 
     private fun showEmptySource() {
         binding.apply {
