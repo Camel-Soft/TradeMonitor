@@ -17,3 +17,8 @@ fun timeToChZn(timeStamp: Long): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return dateFormat.format(timeStamp)
 }
+
+fun timeToLog(): String {
+    val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS", Locale.getDefault())
+    return simpleDateFormat.format(System.currentTimeMillis())
+}

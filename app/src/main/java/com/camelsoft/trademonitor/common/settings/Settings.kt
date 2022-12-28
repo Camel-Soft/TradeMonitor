@@ -2,52 +2,53 @@ package com.camelsoft.trademonitor.common.settings
 
 import android.content.Context
 import androidx.preference.PreferenceManager
+import com.camelsoft.trademonitor._presentation.models.MOffline
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 
 object Settings {
 
-    private val prefManager = PreferenceManager.getDefaultSharedPreferences(getAppContext())
+    private val settingsManager = PreferenceManager.getDefaultSharedPreferences(getAppContext())
 
     fun getConnSrvLoc(): String {
         var connSrvLoc = ""
-        prefManager.getString("conn_server_loc", "")?.let { connSrvLoc = it.trim() }
+        settingsManager.getString("conn_server_loc", "")?.let { connSrvLoc = it.trim() }
         return connSrvLoc
     }
 
     fun getPrefix(): String {
         var prefix = "99"
-        prefManager.getString("weight_prefix", "99")?.let { prefix = it.trim() }
+        settingsManager.getString("weight_prefix", "99")?.let { prefix = it.trim() }
         return prefix
     }
 
     fun getAutoCorrBarcode(): Boolean {
         var autoCorrBar = true
-        prefManager.getBoolean("barcode_autocorrection", true).let { autoCorrBar = it }
+        settingsManager.getBoolean("barcode_autocorrection", true).let { autoCorrBar = it }
         return autoCorrBar
     }
 
     fun getExportFileFormat(): String {
         var format = "excel"
-        prefManager.getString("export_file_format", "excel")?.let { format = it }
+        settingsManager.getString("export_file_format", "excel")?.let { format = it }
         return format
     }
 
     fun getScanner(): String {
         var scanner = "empty"
-        prefManager.getString("scanner", "empty")?.let { scanner = it }
+        settingsManager.getString("scanner", "empty")?.let { scanner = it }
         return scanner
     }
 
     fun getWorkModeOffline(): Boolean {
         var workModeOffline = false
-        prefManager.getBoolean("work_mode_offline", false).let { workModeOffline = it }
+        settingsManager.getBoolean("work_mode_offline", false).let { workModeOffline = it }
         return workModeOffline
     }
-    val workModeOfflineLiveData = prefManager.booleanLiveData("work_mode_offline", false)
+    val workModeOfflineLiveData = settingsManager.booleanLiveData("work_mode_offline", false)
 
-    // ****************************************************************************************
+// *************************************************************************************************
 
-    private val privateManager = getAppContext().getSharedPreferences("pm", Context.MODE_PRIVATE)
+    private val privateManager = getAppContext().getSharedPreferences("privateManager", Context.MODE_PRIVATE)
 
     fun putEmail(email: String?) {
         synchronized(this) {
@@ -87,4 +88,29 @@ object Settings {
         if (!privateManager.contains("price")) return null
         else return privateManager.getString("price", null)
     }
+
+    fun putMOffline(mOffline: MOffline) {
+        synchronized(this) {
+            val editor = privateManager.edit()
+            editor.putBoolean("offl_isRunning", mOffline.isRunning)
+            editor.putString("offl_info", mOffline.info)
+            editor.putInt("offl_stageCurrent", mOffline.stageCurrent)
+            editor.putInt("offl_stageTotal", mOffline.stageTotal)
+            editor.putString("offl_stageName", mOffline.stageName)
+            editor.putInt("offl_stagePercent", mOffline.stagePercent)
+            editor.apply()
+        }
+    }
+
+    fun getMOffline(): MOffline {
+        return MOffline(
+            isRunning = privateManager.getBoolean("offl_isRunning",false),
+            info = privateManager.getString("offl_info", "") as String,
+            stageCurrent = privateManager.getInt("offl_stageCurrent", -1),
+            stageTotal = privateManager.getInt("offl_stageTotal", -1),
+            stageName = privateManager.getString("offl_stageName", "") as String,
+            stagePercent = privateManager.getInt("offl_stagePercent", 0)
+        )
+    }
+    val mOfflineLiveData = privateManager.mOfflineLiveData()
 }

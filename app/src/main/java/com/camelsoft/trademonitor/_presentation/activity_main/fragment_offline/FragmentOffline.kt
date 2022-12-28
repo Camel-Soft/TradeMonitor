@@ -14,15 +14,17 @@ import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.Fragment
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.services.OfflineService
-import com.camelsoft.trademonitor.common.Constants.Companion.BROADCAST_ACTION_OFFLINE
+import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.databinding.FragmentOfflineBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentOffline: Fragment() {
     private lateinit var binding: FragmentOfflineBinding
     private lateinit var weakContext: WeakReference<Context>
+    @Inject lateinit var settings: Settings
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +42,9 @@ class FragmentOffline: Fragment() {
 
         showDoneSource()
 
-        val intentFilter = IntentFilter(BROADCAST_ACTION_OFFLINE)
+        val intentFilter = IntentFilter("sdfg")
 
-        registerReceiver(weakContext.get()!!, offlineReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
+       // registerReceiver(weakContext.get()!!, offlineReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
 
 
         binding.btnDownload.setOnClickListener {
@@ -56,6 +58,12 @@ class FragmentOffline: Fragment() {
             Intent(weakContext.get(), OfflineService::class.java).also {
                 weakContext.get()!!.stopService(it)
             }
+
+//            val ttt = settings.getTest()
+//            if (ttt == null) binding.textInfo.text = "null" else binding.textInfo.text = ttt
+
+
+
         }
 
     }

@@ -2,6 +2,7 @@ package com.camelsoft.trademonitor.common.settings
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
+import com.camelsoft.trademonitor._presentation.models.MOffline
 
 abstract class SharedPrefLiveData<T>(
     val sharedPrefs: SharedPreferences,
@@ -28,6 +29,8 @@ abstract class SharedPrefLiveData<T>(
         super.onInactive()
     }
 }
+
+// *************************************************************************************************
 
 class SharedPrefLiveDataInt(sharedPrefs: SharedPreferences, key: String, defValue: Int) :
     SharedPrefLiveData<Int>(sharedPrefs, key, defValue) {
@@ -61,6 +64,8 @@ class SharedPrefLiveDataSetString(sharedPrefs: SharedPreferences, key: String, d
         sharedPrefs.getStringSet(key, defValue) as Set<String>
 }
 
+// *************************************************************************************************
+
 fun SharedPreferences.intLiveData(key: String, defValue: Int): SharedPrefLiveData<Int> {
     return SharedPrefLiveDataInt(this, key, defValue)
 }
@@ -84,3 +89,36 @@ fun SharedPreferences.longLiveData(key: String, defValue: Long): SharedPrefLiveD
 fun SharedPreferences.setStringLiveData(key: String, defValue: Set<String>): SharedPrefLiveData<Set<String>> {
     return SharedPrefLiveDataSetString(this, key, defValue)
 }
+
+// *************************************************************************************************
+
+class SharedPrefLiveDataMOffline(private val sharedPrefs: SharedPreferences): LiveData<MOffline>() {
+
+    override fun getValue() = MOffline(
+        isRunning = sharedPrefs.getBoolean("offl_isRunning",false),
+        info = sharedPrefs.getString("offl_info", "") as String,
+        stageCurrent = sharedPrefs.getInt("offl_stageCurrent", -1),
+        stageTotal = sharedPrefs.getInt("offl_stageTotal", -1),
+        stageName = sharedPrefs.getString("offl_stageName", "") as String,
+        stagePercent = sharedPrefs.getInt("offl_stagePercent", 0)
+    )
+
+    private val prefChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == "offl_isRunning" || key == "offl_info" ||
+            key == "offl_stageCurrent" || key == "offl_stageTotal" ||
+            key == "offl_stageName" || key == "offl_stagePercent") value = value
+    }
+
+    override fun onActive() {
+        super.onActive()
+        value = value
+        sharedPrefs.registerOnSharedPreferenceChangeListener(prefChangeListener)
+    }
+
+    override fun onInactive() {
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(prefChangeListener)
+        super.onInactive()
+    }
+}
+
+fun SharedPreferences.mOfflineLiveData() = SharedPrefLiveDataMOffline(sharedPrefs = this)
