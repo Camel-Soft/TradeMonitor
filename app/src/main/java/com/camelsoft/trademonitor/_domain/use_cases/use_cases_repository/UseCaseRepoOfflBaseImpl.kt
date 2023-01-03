@@ -10,7 +10,8 @@ import com.camelsoft.trademonitor._presentation.utils.isStatusExists
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.events.EventsProgress
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.flow
@@ -18,7 +19,9 @@ import kotlinx.coroutines.flow.flowOn
 import java.io.*
 import java.net.ConnectException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeoutException
 import java.util.zip.ZipInputStream
+import javax.net.ssl.SSLException
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
 import kotlin.math.roundToInt
@@ -57,14 +60,40 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
             val length = responseBody.contentLength()
             var capacitor = 0L
             try {
+                val stage = getAppContext().resources.getString(R.string.stage_copy)
+                var percent = 0
+                var percentTemp: Int
+                emit(EventsProgress.Progress(
+                    stage = stage,
+                    percent = percent
+                ))
                 while (inputStream.read(buffer).also { read = it } != -1) {
                     fileOutputStream.write(buffer, 0, read)
                     capacitor += read
-                    emit(EventsProgress.Progress(
-                        stage=getAppContext().resources.getString(R.string.stage_copy),
-                        percent = (capacitor * 100 / length).toFloat().roundToInt()
-                    ))
+                    percentTemp = (capacitor * 100 / length).toInt()
+                    if (percentTemp > percent) {
+                        percent = percentTemp
+                        emit(EventsProgress.Progress(
+                            stage = stage,
+                            percent = percent
+                        ))
+                    }
                 }
+            }
+            catch (e: SSLException) {
+                e.printStackTrace()
+                emit(EventsProgress.Error(getAppContext().resources.getString(R.string.error_сonnect)))
+                return@flow
+            }
+            catch (e: TimeoutCancellationException) {
+                e.printStackTrace()
+                emit(EventsProgress.Error(getAppContext().resources.getString(R.string.error_timeout)))
+                return@flow
+            }
+            catch (e: TimeoutException) {
+                e.printStackTrace()
+                emit(EventsProgress.Error(getAppContext().resources.getString(R.string.error_timeout)))
+                return@flow
             }
             catch (e: Exception) {
                 e.printStackTrace()
@@ -167,7 +196,7 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
             e.printStackTrace()
             emit(EventsProgress.Error("[UseCaseRepoOfflBaseImpl.getOfflBase] ${e.localizedMessage}"))
         }
-    }.flowOn(Dispatchers.IO).buffer(capacity = Channel.CONFLATED)
+    }.flowOn(Dispatchers.IO).buffer(capacity = 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     override suspend fun unzipOfflBase(zipFile: File): Flow<EventsProgress<File>> = flow {
         try {
@@ -229,7 +258,7 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
             e.printStackTrace()
             emit(EventsProgress.Error("[UseCaseRepoOfflBaseImpl.unzipOfflBase] ${e.localizedMessage}"))
         }
-    }.flowOn(Dispatchers.IO).buffer(capacity = Channel.CONFLATED)
+    }.flowOn(Dispatchers.IO).buffer(capacity = 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     override suspend fun publishOfflBase(sourceFolder: File): Flow<EventsProgress<File>> = flow {
         try {
@@ -265,5 +294,5 @@ class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOffl
             e.printStackTrace()
             emit(EventsProgress.Error("[UseCaseRepoOfflBaseImpl.publishOfflBase] ${e.localizedMessage}"))
         }
-    }.flowOn(Dispatchers.IO).buffer(capacity = Channel.CONFLATED)
+    }.flowOn(Dispatchers.IO).buffer(capacity = 100, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 }

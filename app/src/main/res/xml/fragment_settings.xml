@@ -57,7 +57,7 @@
             app:defaultValue="excel"
             app:entries="@array/export_file_format_entries"
             app:entryValues="@array/export_file_format_values"
-            app:negativeButtonText="@string/cancel"
+            app:negativeButtonText="@string/cancel1"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
@@ -71,7 +71,7 @@
             app:defaultValue="empty"
             app:entries="@array/scanner_entries"
             app:entryValues="@array/scanner_values"
-            app:negativeButtonText="@string/cancel"
+            app:negativeButtonText="@string/cancel1"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

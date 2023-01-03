@@ -14,7 +14,7 @@ fun showConfirm(context: Context, title: String, message: String, click: () -> U
             dialog.dismiss()
             click()
         }
-        .setNegativeButton(R.string.cancel) { dialog, id ->
+        .setNegativeButton(R.string.cancel1) { dialog, id ->
             dialog.dismiss()
         }
         .create()

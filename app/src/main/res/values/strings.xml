@@ -6,7 +6,8 @@
     <string name="add_collection">Добавить сборку</string>
     <string name="about">Написать разработчику</string>
     <string name="ok">OK</string>
-    <string name="cancel">Отмена</string>
+    <string name="cancel1">Отмена</string>
+    <string name="cancel2">Отменить</string>
     <string name="signin">Вход</string>
     <string name="signin_go">Вход выполнен</string>
     <string name="signin_stop">Вход НЕ выполнен. Тухлый токен</string>
@@ -81,6 +82,11 @@
     <string name="start">Старт</string>
     <string name="finish">Завершение</string>
     <string name="info">Инфо</string>
+    <string name="cancel_download">Отменить загрузку</string>
+    <string name="delete_files">Удалить файлы</string>
+    <string name="offlsource_download_success">OFF-Line источник загружен успешно</string>
+    <string name="offlsource_download_unsuccess">OFF-Line источник загружен не полностью</string>
+    <string name="offlsource_download_request">Загрузить OFF-Line источник?</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -105,7 +111,7 @@
     <string name="error_withdrawal_type">Не определен тип вывода из оборота</string>
     <string name="error_response_body">Тело ответа не определено. Попробуйте повторить запрос</string>
     <string name="error_response_status">Статус ответа не определен</string>
-    <string name="error_сonnect">Нет связи. Проверьте соединение с интернетом</string>
+    <string name="error_сonnect">Нет связи. Проверьте соединение с Интернетом</string>
     <string name="error_ssl_unverified">SSL верификация не выполнена</string>
     <string name="error_tab_handler">Не найден обработчик для вкладки</string>
     <string name="error_unauthorized">Запрос не авторизован сервером</string>
@@ -114,15 +120,20 @@
     <string name="error_handshake">Протокол-handshake не выполнен. Проверьте правильность указания адреса сервера</string>
     <string name="error_unknown_host">Неизвестный хост. Проверьте правильность указания адреса сервера</string>
     <string name="error_interrupted_io">Сервер не ответил. Проверьте правильность указания адреса сервера</string>
+    <string name="error_timeout">Сервер не ответил за отведенное время. Повторите запрос позднее</string>
     <string name="error_not_200">Код ответа не 200. Попробуйте повторить запрос</string>
     <string name="error_header_subheaders_not_found">В заголовке ответа не обнаружены нужные подзаголовки. Попробуйте повторить запрос</string>
     <string name="error_header_parametr">В заголовке значение параметра не определено</string>
     <string name="error_folder_create">Не могу создать папку(и)</string>
     <string name="error_file_delete">Не могу удалить файл(ы)</string>
     <string name="error_file_not_found">Файл не найден</string>
+    <string name="error_folder_not_found">Папка не найдена</string>
     <string name="error_offlbase_not_found">Off-Line базы не найдены на сервере</string>
     <string name="error_content_type">Content-Type не соответствует ожидаемому. Попробуйте повторить запрос</string>
     <string name="error_file_size">Размер полученного файла не соответствует ожидаемому. Попробуйте повторить запрос</string>
+    <string name="error_arc_file">Не определен файл для распаковки</string>
+    <string name="error_folder_unzip">Не определена папка с распакованными файлами</string>
+    <string name="error_folder_publish">Не определена папка с опубликованными файлами</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>

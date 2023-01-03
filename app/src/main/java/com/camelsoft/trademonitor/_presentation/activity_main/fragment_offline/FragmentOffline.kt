@@ -1,23 +1,23 @@
 package com.camelsoft.trademonitor._presentation.activity_main.fragment_offline
 
-import android.content.BroadcastReceiver
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
-import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.Fragment
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.models.MOffline
 import com.camelsoft.trademonitor._presentation.services.OfflineService
-import com.camelsoft.trademonitor.common.Constants.Companion.ACTION_BROADCAST_OFFLINE
+import com.camelsoft.trademonitor._presentation.utils.isServiceRunning
+import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.databinding.FragmentOfflineBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -37,95 +37,101 @@ class FragmentOffline: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         weakContext = WeakReference<Context>(requireContext())
 
-        showDownloadProcessSource()
-        binding.btnClear.isEnabled = true
-        binding.btnDownload.isEnabled = true
-
-        registerReceiver(weakContext.get()!!, offlineReceiver, IntentFilter(ACTION_BROADCAST_OFFLINE), RECEIVER_NOT_EXPORTED)
-
-
-        binding.btnDownload.setOnClickListener {
-            Intent(weakContext.get(), OfflineService::class.java).also {
-                weakContext.get()!!.startService(it)
-            }
-        }
-
-        binding.btnClear.setOnClickListener {
-            Intent(weakContext.get(), OfflineService::class.java).also {
-                weakContext.get()!!.stopService(it)
-            }
-
-
-        }
-
+        showStandBy()
+        beforeObserver()
+        startObserver()
+        clickDownload()
+        clickCancel()
+        clickClear()
     }
 
-    private val offlineReceiver : BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            intent?.let {
-                val mOffline: MOffline? = it.getParcelableExtra("mOffline")
-                mOffline?.let {
-                    binding.textStage.text = "${it.stageName} ${it.stageCurrent}/${it.stageTotal}"
-                    binding.progressBar.progress = it.stagePercent
-                    binding.textProcent.text = "${it.stagePercent}%"
-                    binding.textInfo.text = it.info
+    private fun clickDownload() {
+        binding.btnDownload.setOnClickListener {
+            showConfirm(weakContext.get()!!, resources.getString(R.string.monitor_offlsource_label), resources.getString(R.string.offlsource_download_request)) {
+                clearOffline()
+                Intent(weakContext.get(), OfflineService::class.java).also {
+                    weakContext.get()!!.startService(it)
                 }
             }
         }
     }
 
-
-
-
-    override fun onDestroyView() {
-        weakContext.get()!!.unregisterReceiver(offlineReceiver)
-        super.onDestroyView()
-    }
-
-    private fun showEmptySource() {
-        binding.apply {
-            textStage.text = ""
-            textStage.visibility = View.GONE
-            progressBar.progress = 0
-            progressBar.visibility = View.GONE
-            textProcent.text = ""
-            textProcent.visibility = View.GONE
-            textInfo.text = resources.getString(R.string.empty)
-            textInfo.visibility = View.VISIBLE
-            btnClear.isEnabled = false
-            btnDownload.isEnabled = true
+    private fun clickCancel() {
+        binding.btnCancel.setOnClickListener {
+            showConfirm(weakContext.get()!!, resources.getString(R.string.monitor_offlsource_label), resources.getString(R.string.cancel_download)+"?") {
+                Intent(weakContext.get(), OfflineService::class.java).also {
+                    weakContext.get()!!.stopService(it)
+                }
+            }
         }
     }
 
-    private fun showDownloadProcessSource() {
+    private fun clickClear() {
+        binding.btnClear.setOnClickListener {
+            showConfirm(weakContext.get()!!, resources.getString(R.string.monitor_offlsource_label), resources.getString(R.string.delete_files)+"?") {
+                clearOffline()
+            }
+        }
+    }
+
+    private fun clearOffline() {
+        val taskFolder = File(getAppContext().externalCacheDir, File.separator+"offlBase")
+        taskFolder.deleteRecursively()
+        settings.putMOffline(MOffline(
+            status = 0,
+            info = "",
+            stageCurrent = 0,
+            stageTotal = 0,
+            stageName = "",
+            stagePercent = 0
+        ))
+    }
+
+    private fun beforeObserver() {
+        if (!isServiceRunning(weakContext.get()!!, OfflineService::class.java)) {
+            val mOffline = settings.getMOffline()
+            if (mOffline.status > 0) {
+                mOffline.status = -1
+                settings.putMOffline(mOffline)
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun startObserver() {
+        settings.mOfflineLiveData.observe(viewLifecycleOwner) { mOffline ->
+            binding.textInfo.text = mOffline.info
+            if (mOffline.status <= 0) showStandBy() else {
+                showProgress()
+                binding.textStage.text = "${mOffline.stageName} ${mOffline.stageCurrent}/${mOffline.stageTotal}"
+                binding.progressBar.progress = mOffline.stagePercent
+                binding.textPercent.text = "${mOffline.stagePercent}%"
+            }
+        }
+    }
+
+    private fun showStandBy() {
         binding.apply {
-            textStage.text = ""
+            textStage.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            textPercent.visibility = View.GONE
+            btnDownload.visibility = View.VISIBLE
+            btnCancel.visibility = View.INVISIBLE
+            btnClear.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showProgress() {
+        binding.apply {
             textStage.visibility = View.VISIBLE
-            progressBar.progress = 0
             progressBar.visibility = View.VISIBLE
-            textProcent.text = ""
-            textProcent.visibility = View.VISIBLE
-            textInfo.text = ""
-            textInfo.visibility = View.VISIBLE
-            btnClear.isEnabled = false
-            btnDownload.isEnabled = false
-        }
-    }
-
-    private fun showDoneSource() {
-        binding.apply {
-            textStage.text = ""
-            textStage.visibility = View.GONE
-            progressBar.progress = 0
-            progressBar.visibility = View.GONE
-            textProcent.text = ""
-            textProcent.visibility = View.GONE
-            textInfo.text = ""
-            textInfo.visibility = View.VISIBLE
-            btnClear.isEnabled = true
-            btnDownload.isEnabled = true
+            textPercent.visibility = View.VISIBLE
+            btnDownload.visibility = View.INVISIBLE
+            btnCancel.visibility = View.VISIBLE
+            btnClear.visibility = View.INVISIBLE
         }
     }
 }
