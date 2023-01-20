@@ -138,6 +138,9 @@
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
 
+    <string name="notification_name_offline">Загрузка источника</string>
+    <string name="notification_description_offline">Индикатор обработки offline-источника (баз данных)</string>
+
     <string name="need_fill_fields">Необходимо заполнить поля</string>
     <string name="need_permissions_title">Отсутствуют разрешения</string>
     <string name="need_permissions_message">Для работы приложения необходимы все запрашиваемые разрешения. Добавить отсутствующие разрешения можно в настройках приложения</string>

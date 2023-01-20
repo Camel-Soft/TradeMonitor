@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.api.repo.IOfflBase
 import com.camelsoft.trademonitor._presentation.models.MOffline
+import com.camelsoft.trademonitor._presentation.notifications.OfflineNotification
 import com.camelsoft.trademonitor._presentation.utils.timeToLog
 import com.camelsoft.trademonitor.common.Constants.Companion.ACTION_BROADCAST_OFFLINE
 import com.camelsoft.trademonitor.common.events.EventsProgress
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class OfflineService : LifecycleService() {
     @Inject lateinit var iOfflBase: IOfflBase
     @Inject lateinit var settings: Settings
+    @Inject lateinit var offlineNotification: OfflineNotification
     private lateinit var sourceZip: File
     private lateinit var sourceFolder: File
     private lateinit var publishFolder: File
@@ -48,11 +50,13 @@ class OfflineService : LifecycleService() {
                 )
                 settings.putMOffline(mOffline)
                 sendIntent(mOffline)
+                offlineNotification.show(mOffline)
                 iOfflBase.getOfflBase().collect {
                     when (it) {
                         is EventsProgress.Success -> {
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             sourceZip = it.data
                         }
                         is EventsProgress.UnSuccess -> {
@@ -60,6 +64,7 @@ class OfflineService : LifecycleService() {
                             mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.info)}: ${it.message}\n"
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             stopSelf()
                         }
                         is EventsProgress.Error -> {
@@ -67,6 +72,7 @@ class OfflineService : LifecycleService() {
                             mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${it.message}\n"
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             stopSelf()
                         }
                         is EventsProgress.Progress -> {
@@ -74,6 +80,7 @@ class OfflineService : LifecycleService() {
                             mOffline.stagePercent = it.percent
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                         }
                     }
                 }
@@ -88,11 +95,13 @@ class OfflineService : LifecycleService() {
                 mOffline.stagePercent = 0
                 settings.putMOffline(mOffline)
                 sendIntent(mOffline)
+                offlineNotification.show(mOffline)
                 if (!this@OfflineService::sourceZip.isInitialized) {
                     mOffline.status = -1
                     mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${resources.getString(R.string.error_arc_file)}\n"
                     settings.putMOffline(mOffline)
                     sendIntent(mOffline)
+                    offlineNotification.show(mOffline)
                     stopSelf()
                     return@launch
                 }
@@ -101,6 +110,7 @@ class OfflineService : LifecycleService() {
                     mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${resources.getString(R.string.error_file_not_found)} - ${sourceZip.name}\n"
                     settings.putMOffline(mOffline)
                     sendIntent(mOffline)
+                    offlineNotification.show(mOffline)
                     stopSelf()
                     return@launch
                 }
@@ -109,6 +119,7 @@ class OfflineService : LifecycleService() {
                         is EventsProgress.Success -> {
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             sourceFolder = it.data
                         }
                         is EventsProgress.UnSuccess -> {
@@ -116,6 +127,7 @@ class OfflineService : LifecycleService() {
                             mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.info)}: ${it.message}\n"
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             stopSelf()
                         }
                         is EventsProgress.Error -> {
@@ -123,6 +135,7 @@ class OfflineService : LifecycleService() {
                             mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${it.message}\n"
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             stopSelf()
                         }
                         is EventsProgress.Progress -> {
@@ -130,6 +143,7 @@ class OfflineService : LifecycleService() {
                             mOffline.stagePercent = it.percent
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                         }
                     }
                 }
@@ -144,11 +158,13 @@ class OfflineService : LifecycleService() {
                 mOffline.stagePercent = 0
                 settings.putMOffline(mOffline)
                 sendIntent(mOffline)
+                offlineNotification.show(mOffline)
                 if (!this@OfflineService::sourceFolder.isInitialized) {
                     mOffline.status = -1
                     mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${resources.getString(R.string.error_folder_unzip)}\n"
                     settings.putMOffline(mOffline)
                     sendIntent(mOffline)
+                    offlineNotification.show(mOffline)
                     stopSelf()
                     return@launch
                 }
@@ -157,6 +173,7 @@ class OfflineService : LifecycleService() {
                     mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${resources.getString(R.string.error_folder_not_found)} - ${sourceFolder.name}\n"
                     settings.putMOffline(mOffline)
                     sendIntent(mOffline)
+                    offlineNotification.show(mOffline)
                     stopSelf()
                     return@launch
                 }
@@ -165,6 +182,7 @@ class OfflineService : LifecycleService() {
                         is EventsProgress.Success -> {
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             publishFolder = it.data
                         }
                         is EventsProgress.UnSuccess -> {
@@ -172,6 +190,7 @@ class OfflineService : LifecycleService() {
                             mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.info)}: ${it.message}\n"
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             stopSelf()
                         }
                         is EventsProgress.Error -> {
@@ -179,6 +198,7 @@ class OfflineService : LifecycleService() {
                             mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${it.message}\n"
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                             stopSelf()
                         }
                         is EventsProgress.Progress -> {
@@ -186,6 +206,7 @@ class OfflineService : LifecycleService() {
                             mOffline.stagePercent = it.percent
                             settings.putMOffline(mOffline)
                             sendIntent(mOffline)
+                            offlineNotification.show(mOffline)
                         }
                     }
                 }
@@ -197,6 +218,7 @@ class OfflineService : LifecycleService() {
                     mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${resources.getString(R.string.error_folder_publish)}\n"
                     settings.putMOffline(mOffline)
                     sendIntent(mOffline)
+                    offlineNotification.show(mOffline)
                     stopSelf()
                     return@launch
                 }
@@ -205,6 +227,7 @@ class OfflineService : LifecycleService() {
                     mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${resources.getString(R.string.error_folder_not_found)} - ${publishFolder.name}\n"
                     settings.putMOffline(mOffline)
                     sendIntent(mOffline)
+                    offlineNotification.show(mOffline)
                     stopSelf()
                     return@launch
                 }
@@ -229,6 +252,7 @@ class OfflineService : LifecycleService() {
                 }
                 settings.putMOffline(mOffline)
                 sendIntent(mOffline)
+                offlineNotification.show(mOffline)
                 stopSelf()
                 return@launch
             }
@@ -238,6 +262,7 @@ class OfflineService : LifecycleService() {
                 mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.cancel1)}\n"
                 settings.putMOffline(mOffline)
                 sendIntent(mOffline)
+                offlineNotification.show(mOffline)
                 stopSelf()
                 return@launch
             }
@@ -247,6 +272,7 @@ class OfflineService : LifecycleService() {
                 mOffline.info = mOffline.info + "${timeToLog()}     ${resources.getString(R.string.error)}: ${e.localizedMessage}\n"
                 settings.putMOffline(mOffline)
                 sendIntent(mOffline)
+                offlineNotification.show(mOffline)
                 stopSelf()
                 return@launch
             }

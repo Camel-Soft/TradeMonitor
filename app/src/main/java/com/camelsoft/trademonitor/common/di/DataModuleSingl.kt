@@ -18,6 +18,7 @@ import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.SignImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserVerifier
 import com.camelsoft.trademonitor._presentation.api.ISign
+import com.camelsoft.trademonitor._presentation.notifications.OfflineNotification
 import com.camelsoft.trademonitor.common.settings.Settings
 import dagger.Module
 import dagger.Provides
@@ -127,5 +128,11 @@ object DataModuleSingl {
     @Singleton
     fun provideTokenUserVerifier(tokenUser: ITokenUser, tokenManager: TokenManager): TokenUserVerifier {
         return TokenUserVerifier(tokenUser = tokenUser, tokenManager = tokenManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOfflineNotification(): OfflineNotification {
+        return OfflineNotification()
     }
 }

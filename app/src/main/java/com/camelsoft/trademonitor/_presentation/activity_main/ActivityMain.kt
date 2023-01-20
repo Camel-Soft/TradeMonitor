@@ -25,6 +25,8 @@ import com.camelsoft.trademonitor._presentation.models.user.MUser
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.timeToStringShort
 import com.camelsoft.trademonitor._presentation.utils.writeDeveloper
+import com.camelsoft.trademonitor.common.Constants.Companion.NAVIGATE_FRAGMENT_KEY
+import com.camelsoft.trademonitor.common.Constants.Companion.NAVIGATE_FRAGMENT_VALUE_OFFLINE
 import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.ActivityMainBinding
@@ -76,6 +78,7 @@ class ActivityMain : AppCompatActivity() {
         getPermissions()
         navigationClick()
         showWorkModeOffline()
+        maybeNavigate()
     }
 
     // Нажатия Navigation-списка
@@ -173,6 +176,15 @@ class ActivityMain : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    // Автонавигация ... , если нужна
+    private fun maybeNavigate() {
+        when (intent.getStringExtra(NAVIGATE_FRAGMENT_KEY)) {
+            NAVIGATE_FRAGMENT_VALUE_OFFLINE ->
+                viewModel.eventsVm(EventsVmMainActivity.VerifyTaskOffline)
+            else -> {}
         }
     }
 
