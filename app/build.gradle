@@ -47,13 +47,13 @@ android {
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     // ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
@@ -70,13 +70,13 @@ dependencies {
     // Settings Shared Preference
     implementation 'androidx.preference:preference-ktx:1.2.0'
     // Dagger Hilt
-    implementation "com.google.dagger:hilt-android:2.43.2"
+    implementation "com.google.dagger:hilt-android:2.44.2"
     implementation 'androidx.annotation:annotation:1.5.0'
-    kapt "com.google.dagger:hilt-android-compiler:2.43.2"
+    kapt "com.google.dagger:hilt-android-compiler:2.44.2"
     // Room
-    implementation "androidx.room:room-runtime:2.4.3"
-    kapt "androidx.room:room-compiler:2.4.3"
-    implementation "androidx.room:room-ktx:2.4.3"
+    implementation "androidx.room:room-runtime:2.5.0"
+    kapt "androidx.room:room-compiler:2.5.0"
+    implementation "androidx.room:room-ktx:2.5.0"
     // Xml document creation
     implementation "org.redundent:kotlin-xml-builder:1.8.0"
     // Material-Calendar-View
@@ -97,6 +97,8 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:9.25.6")
     // for Lifecycle Services
     implementation("androidx.lifecycle:lifecycle-service:2.5.1")
+    // DBF
+    implementation("org.eobjects.metamodel-extras:MetaModel-extras-dbase:5.3.4")
     /*
      LIBs
      honeywell.aar    - Honeywell EDA50K

@@ -8,11 +8,13 @@ import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
 import com.camelsoft.trademonitor._data.net.managers.TokenManager
 import com.camelsoft.trademonitor._data.net.servers.RetroMy
 import com.camelsoft.trademonitor._data.net.servers.SslImpl
+import com.camelsoft.trademonitor._data.storage.dbf.*
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._data.storage.room.RoomDataBase
 import com.camelsoft.trademonitor._data.storage.room.RoomImpl
 import com.camelsoft.trademonitor._domain.api.ITelephony
 import com.camelsoft.trademonitor._domain.api.ITokenUser
+import com.camelsoft.trademonitor._domain.api.offl_dbf.*
 import com.camelsoft.trademonitor._domain.libs.*
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.SignImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserImpl
@@ -42,51 +44,35 @@ object DataModuleSingl {
 
     @Provides
     @Singleton
-    fun provideRoom(db: RoomDataBase): IRoom {
-        return RoomImpl(db.getDaoRoom())
-    }
+    fun provideRoom(db: RoomDataBase): IRoom = RoomImpl(db.getDaoRoom())
 
     @Provides
     @Singleton
-    fun provideSettings(): Settings {
-        return Settings
-    }
+    fun provideSettings(): Settings = Settings
 
     @Provides
     @Singleton
-    fun provideExportExcelSheet(): ExportExcelSheet {
-        return ExportExcelSheet()
-    }
+    fun provideExportExcelSheet(): ExportExcelSheet = ExportExcelSheet()
 
     @Provides
     @Singleton
-    fun provideExportSouthRevision(): ExportSouthRevision {
-        return ExportSouthRevision()
-    }
+    fun provideExportSouthRevision(): ExportSouthRevision = ExportSouthRevision()
 
     @Provides
     @Singleton
-    fun provideExportJsonGoodes(): ExportJsonGoodes {
-        return ExportJsonGoodes()
-    }
+    fun provideExportJsonGoodes(): ExportJsonGoodes = ExportJsonGoodes()
 
     @Provides
     @Singleton
-    fun provideExportJsonMarks(): ExportJsonMarks {
-        return ExportJsonMarks()
-    }
+    fun provideExportJsonMarks(): ExportJsonMarks = ExportJsonMarks()
 
     @Provides
     @Singleton
-    fun provideSsl(): ISsl {
-        return SslImpl()
-    }
+    fun provideSsl(): ISsl = SslImpl()
 
     @Provides
     @Singleton
-    fun provideTokenManager(): TokenManager {
-        return TokenManager
-    }
+    fun provideTokenManager(): TokenManager = TokenManager
 
     @Provides
     @Singleton
@@ -108,21 +94,15 @@ object DataModuleSingl {
 
     @Provides
     @Singleton
-    fun provideSign(netApiSign: NetApiSign): ISign {
-        return SignImpl(netApiSign = netApiSign)
-    }
+    fun provideSign(netApiSign: NetApiSign): ISign = SignImpl(netApiSign = netApiSign)
 
     @Provides
     @Singleton
-    fun provideTelephony(): ITelephony {
-        return TelephonyImpl()
-    }
+    fun provideTelephony(): ITelephony = TelephonyImpl()
 
     @Provides
     @Singleton
-    fun provideTokenUser(telephony: ITelephony): ITokenUser {
-        return TokenUserImpl(telephony = telephony)
-    }
+    fun provideTokenUser(telephony: ITelephony): ITokenUser = TokenUserImpl(telephony = telephony)
 
     @Provides
     @Singleton
@@ -132,7 +112,29 @@ object DataModuleSingl {
 
     @Provides
     @Singleton
-    fun provideOfflineNotification(): OfflineNotification {
-        return OfflineNotification()
-    }
+    fun provideOfflineNotification(): OfflineNotification = OfflineNotification()
+
+    @Provides
+    @Singleton
+    fun provideSearchOnArtkl(): ISearchOnArtkl = SearchOnArtklDbfImpl()
+
+    @Provides
+    @Singleton
+    fun provideSearchOnFirml(): ISearchOnFirm = SearchOnFirmDbfImpl()
+
+    @Provides
+    @Singleton
+    fun provideSearchOnGrt(): ISearchOnGrt = SearchOnGrtDbfImpl()
+
+    @Provides
+    @Singleton
+    fun provideSearchOnPrice(): ISearchOnPrice = SearchOnPriceDbfImpl()
+
+    @Provides
+    @Singleton
+    fun provideSearchOnScan(settings: Settings): ISearchOnScan = SearchOnScanDbfImpl(settings)
+
+    @Provides
+    @Singleton
+    fun provideSearchOnSgrt(): ISearchOnSgrt = SearchOnSgrtDbfImpl()
 }

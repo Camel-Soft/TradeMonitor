@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.preference.PreferenceManager
 import com.camelsoft.trademonitor._presentation.models.MOffline
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.Constants.Companion.OFFL_BASE_FOLDER_NAME
+import java.io.File
 
 object Settings {
 
@@ -113,4 +115,8 @@ object Settings {
         )
     }
     val mOfflineLiveData = privateManager.mOfflineLiveData()
+
+    fun getOfflBaseFolderName(): File {
+        return File(getAppContext().externalCacheDir, File.separator+OFFL_BASE_FOLDER_NAME)
+    }
 }

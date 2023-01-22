@@ -26,7 +26,7 @@ object DataModuleService {
 
     @Provides
     @ServiceScoped
-    fun provideOfflBase(netApiOfflBase: NetApiOfflBase): IOfflBase {
-        return UseCaseRepoOfflBaseImpl(netApiOfflBase = netApiOfflBase)
+    fun provideOfflBase(netApiOfflBase: NetApiOfflBase, settings: Settings): IOfflBase {
+        return UseCaseRepoOfflBaseImpl(netApiOfflBase = netApiOfflBase, settings = settings)
     }
 }

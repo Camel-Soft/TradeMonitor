@@ -8,7 +8,10 @@ import com.camelsoft.trademonitor._presentation.utils.getParentFromAbsolute
 import com.camelsoft.trademonitor._presentation.utils.isContentTypeExists
 import com.camelsoft.trademonitor._presentation.utils.isStatusExists
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.Constants.Companion.OFFL_BASE_ARC_FILE_NAME
+import com.camelsoft.trademonitor.common.Constants.Companion.OFFL_BASE_FOLDER_TMP_NAME
 import com.camelsoft.trademonitor.common.events.EventsProgress
+import com.camelsoft.trademonitor.common.settings.Settings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.BufferOverflow
@@ -26,13 +29,16 @@ import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLPeerUnverifiedException
 import kotlin.math.roundToInt
 
-class UseCaseRepoOfflBaseImpl(private val netApiOfflBase: NetApiOfflBase): IOfflBase {
+class UseCaseRepoOfflBaseImpl(
+    private val netApiOfflBase: NetApiOfflBase,
+    private val settings: Settings
+    ): IOfflBase {
 
     override suspend fun getOfflBase(): Flow<EventsProgress<File>> = flow {
         try {
-            val taskFolder = File(getAppContext().externalCacheDir, File.separator+"offlBase")
-            val taskFolderTmp = File(taskFolder, File.separator+"offlBaseTmp")
-            val taskFile = File(taskFolderTmp, File.separator+"offlbase.zip")
+            val taskFolder = settings.getOfflBaseFolderName()
+            val taskFolderTmp = File(taskFolder, File.separator+OFFL_BASE_FOLDER_TMP_NAME)
+            val taskFile = File(taskFolderTmp, File.separator+OFFL_BASE_ARC_FILE_NAME)
 
             if (!taskFolderTmp.exists()) {
                 if (!taskFolderTmp.mkdirs()) {

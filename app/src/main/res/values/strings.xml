@@ -129,6 +129,8 @@
     <string name="error_file_not_found">Файл не найден</string>
     <string name="error_folder_not_found">Папка не найдена</string>
     <string name="error_offlbase_not_found">Off-Line базы не найдены на сервере</string>
+    <string name="error_offlbase_not_ready">Off-Line базы не готовы к использованию</string>
+    <string name="error_offlbase_oops">Оопс. Что-то пошло не так. Подробности в окне загрузки</string>
     <string name="error_content_type">Content-Type не соответствует ожидаемому. Попробуйте повторить запрос</string>
     <string name="error_file_size">Размер полученного файла не соответствует ожидаемому. Попробуйте повторить запрос</string>
     <string name="error_arc_file">Не определен файл для распаковки</string>
