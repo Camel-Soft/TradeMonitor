@@ -82,7 +82,7 @@ class FragmentAlkoViewModel @Inject constructor(
                                         is EventsSync.Error -> sendEventUiAlkoColl(EventUiAlkoColl.ShowErrorUi(answerExcel.message))
                                     }
                                 }
-                                "south_rev" -> {
+                                "south_rev", "south_rev_one", "south_rev_two" -> {
                                     sendEventUiAlkoColl(EventUiAlkoColl.ShowInfoUi(App.getAppContext().resources.getString(R.string.info_empty_export_format)))
                                 }
                                 "json" -> {

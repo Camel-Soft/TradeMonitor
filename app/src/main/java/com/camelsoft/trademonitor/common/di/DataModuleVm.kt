@@ -1,6 +1,7 @@
 package com.camelsoft.trademonitor.common.di
 
 import com.camelsoft.trademonitor._data.net.api.ISsl
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiInSouthUpload
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiScan
 import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
@@ -18,9 +19,11 @@ import com.camelsoft.trademonitor._domain.libs.ExportSouthRevision
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.HelloImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsBigImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsOfflImpl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoInSouthUploadImpl
 import com.camelsoft.trademonitor._presentation.api.IChZnParam
 import com.camelsoft.trademonitor._presentation.api.repo.IGoods
 import com.camelsoft.trademonitor._presentation.api.repo.IHello
+import com.camelsoft.trademonitor._presentation.api.repo.IInSouthUpload
 import com.camelsoft.trademonitor.common.settings.Settings
 import dagger.Module
 import dagger.Provides
@@ -204,6 +207,17 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
+    fun provideNetApiInSouthUpload(
+        settings: Settings,
+        iSsl: ISsl,
+        tokenInterceptor: TokenInterceptor
+    ): NetApiInSouthUpload {
+        val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+        return retroLoc.makeRetrofit().create(NetApiInSouthUpload::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
     fun provideUseCaseRepoGoodsBigImpl(
         netApiScan: NetApiScan,
         settings: Settings,
@@ -232,5 +246,11 @@ object DataModuleVm {
     @ViewModelScoped
     fun provideHello(netApiHello: NetApiHello): IHello {
         return HelloImpl(netApiHello = netApiHello)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideInSouthUpload(netApiInSouthUpload: NetApiInSouthUpload): IInSouthUpload {
+        return UseCaseRepoInSouthUploadImpl(netApiInSouthUpload = netApiInSouthUpload)
     }
 }

@@ -2,6 +2,8 @@ package com.camelsoft.trademonitor._data.net.servers
 
 import com.camelsoft.trademonitor._data.net.api.ISsl
 import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
+import com.camelsoft.trademonitor._presentation.utils.prepareUrl
+import com.camelsoft.trademonitor.common.settings.Settings
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,26 +13,27 @@ import javax.net.ssl.X509TrustManager
 
 class RetroMy @Inject constructor(
     private val iSsl: ISsl,
-    private val tokenInterceptor: TokenInterceptor
+    private val tokenInterceptor: TokenInterceptor,
+    private val settings: Settings
 ) {
     fun makeRetrofit(): Retrofit {
+//      val httpLoggingInterceptor = HttpLoggingInterceptor()
+//      httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(3, TimeUnit.SECONDS)
+            .callTimeout(3, TimeUnit.SECONDS)
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .sslSocketFactory(iSsl.getSslContext().socketFactory, iSsl.getTrustManagerFactory().trustManagers[0] as X509TrustManager)
+            .hostnameVerifier { hostName, sslSession -> hostName.equals(sslSession.peerHost) }
+//          .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(tokenInterceptor)
+            .build()
+
         try {
-//            val httpLoggingInterceptor = HttpLoggingInterceptor()
-//            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-            val okHttpClient = OkHttpClient.Builder()
-                .connectTimeout(3, TimeUnit.SECONDS)
-                .callTimeout(3, TimeUnit.SECONDS)
-                .followRedirects(true)
-                .followSslRedirects(true)
-                .sslSocketFactory(iSsl.getSslContext().socketFactory, iSsl.getTrustManagerFactory().trustManagers[0] as X509TrustManager)
-                .hostnameVerifier { hostName, sslSession -> hostName.equals(sslSession.peerHost) }
-//                .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(tokenInterceptor)
-                .build()
-
             return Retrofit.Builder()
-                .baseUrl("https://81.28.174.175:7000")
+                .baseUrl(settings.getConnSrvLicensing().prepareUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
 //              .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -38,7 +41,11 @@ class RetroMy @Inject constructor(
         }
         catch (e: Exception) {
             e.printStackTrace()
-            throw Exception("[RetroMy.makeRetrofit] ${e.message}")
+            return Retrofit.Builder()
+                .baseUrl("https://bad.address")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build()
         }
     }
 }

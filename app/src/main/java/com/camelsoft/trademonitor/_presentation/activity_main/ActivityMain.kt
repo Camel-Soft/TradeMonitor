@@ -25,6 +25,7 @@ import com.camelsoft.trademonitor._presentation.models.user.MUser
 import com.camelsoft.trademonitor._presentation.utils.reqPermissions
 import com.camelsoft.trademonitor._presentation.utils.timeToStringShort
 import com.camelsoft.trademonitor._presentation.utils.writeDeveloper
+import com.camelsoft.trademonitor.common.App.Companion.showServerLicensing
 import com.camelsoft.trademonitor.common.Constants.Companion.NAVIGATE_FRAGMENT_KEY
 import com.camelsoft.trademonitor.common.Constants.Companion.NAVIGATE_FRAGMENT_VALUE_OFFLINE
 import com.camelsoft.trademonitor.common.settings.Settings
@@ -46,6 +47,7 @@ class ActivityMain : AppCompatActivity() {
     private var rootFragmentId: Int? = null
     private val viewModel: ActivityMainViewModel by viewModels()
     @Inject lateinit var settings: Settings
+    private var sevenInt = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +81,7 @@ class ActivityMain : AppCompatActivity() {
         navigationClick()
         showWorkModeOffline()
         maybeNavigate()
+        sevenDown()
     }
 
     // Нажатия Navigation-списка
@@ -204,6 +207,22 @@ class ActivityMain : AppCompatActivity() {
             showError(weakContext.get()!!, resources.getString(R.string.error_in)+
                     " ActivityMain.onBackPressed: "+
                     resources.getString(R.string.error_root_fragment_id)) { finish() }
+    }
+
+    // 7-кратное нажатие на значок, чтобы показать в Настройках сервер для RetroMy
+    private fun sevenDown() {
+        bindingNavHead.navImage.setOnClickListener {
+            sevenInt++
+            if (sevenInt == 7) {
+                showServerLicensing = true
+                Toast.makeText(weakContext.get()!!, resources.getString(R.string.info_server_my), Toast.LENGTH_LONG).show()
+            }
+            if (sevenInt == 14) {
+                showServerLicensing = false
+                sevenInt = 0
+                Toast.makeText(weakContext.get()!!, resources.getString(R.string.info_server_my_hide), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     // Кнопка Вход/Регистрация

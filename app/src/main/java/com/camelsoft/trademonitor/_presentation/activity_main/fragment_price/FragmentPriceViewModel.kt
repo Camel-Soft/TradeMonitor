@@ -13,7 +13,9 @@ import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseSto
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageCollUpdate
+import com.camelsoft.trademonitor._presentation.api.repo.IInSouthUpload
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.events.EventsOkInEr
 import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +33,8 @@ class FragmentPriceViewModel @Inject constructor(
     private val settings: Settings,
     private val useCaseExportExcelSheet: UseCaseExportExcelSheet,
     private val useCaseExportSouthRevision: UseCaseExportSouthRevision,
-    private val useCaseExportJsonGoodes: UseCaseExportJsonGoodes
+    private val useCaseExportJsonGoodes: UseCaseExportJsonGoodes,
+    private val iInSouthUpload: IInSouthUpload
 ) : ViewModel() {
 
     private val _eventUiPrice =  Channel<EventUiPrice>()
@@ -82,6 +85,30 @@ class FragmentPriceViewModel @Inject constructor(
                                 "south_rev" -> {
                                     when (val answerSouRev = useCaseExportSouthRevision.execute(priceColl = it[eventVmPrice.pos])) {
                                         is EventsSync.Success -> sendEventUiPrice(EventUiPrice.ShareFile(file = answerSouRev.data, sign = it[eventVmPrice.pos].note))
+                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
+                                    }
+                                }
+                                "south_rev_one" -> {
+                                    when (val answerSouRev = useCaseExportSouthRevision.execute(priceColl = it[eventVmPrice.pos])) {
+                                        is EventsSync.Success -> {
+                                            when ( val answerUpload = iInSouthUpload.inSouthUpload(file = answerSouRev.data, south = "south1")) {
+                                                is EventsOkInEr.Success -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.data))
+                                                is EventsOkInEr.Info -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.message))
+                                                is EventsOkInEr.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerUpload.message))
+                                            }
+                                        }
+                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
+                                    }
+                                }
+                                "south_rev_two" -> {
+                                    when (val answerSouRev = useCaseExportSouthRevision.execute(priceColl = it[eventVmPrice.pos])) {
+                                        is EventsSync.Success -> {
+                                            when ( val answerUpload = iInSouthUpload.inSouthUpload(file = answerSouRev.data, south = "south2")) {
+                                                is EventsOkInEr.Success -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.data))
+                                                is EventsOkInEr.Info -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.message))
+                                                is EventsOkInEr.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerUpload.message))
+                                            }
+                                        }
                                         is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
                                     }
                                 }

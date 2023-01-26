@@ -96,6 +96,8 @@
     <string name="info_need_registration">Для использования необходимо \"Войти\" или \"Зарегистрироваться\"</string>
     <string name="info_scan_or_write">Сканируйте или введите вручную</string>
     <string name="info_length_2">Не менее 2 символов</string>
+    <string name="info_server_my">Теперь можно изменить настройки сервера лицензирования</string>
+    <string name="info_server_my_hide">Настройки сервера лицензирования скрыты</string>
 
     <string name="error">Ошибка</string>
     <string name="error_in">Ошибка в</string>
@@ -176,7 +178,8 @@
 
     <!-- Entry Connection -->
     <string name="conn">Подключения</string>
-    <string name="conn_server_loc">Локальный сервер</string>
+    <string name="conn_server_loc">Сервер Локальный</string>
+    <string name="conn_server_license">Сервер Лицензирования</string>
 
     <!-- Entry Workmode -->
     <string name="work_mode_offline">Автономно (OFF-Line)</string>
@@ -193,6 +196,8 @@
     <string name="export_file_format_title">Формат файла для экспорта</string>
     <string name="export_file_format_excel">Excel</string>
     <string name="export_file_format_south_revision">South Ревизия</string>
+    <string name="export_file_format_south_revision_one">South Ревизия Место 1</string>
+    <string name="export_file_format_south_revision_two">South Ревизия Место 2</string>
     <string name="export_file_format_json">JSON</string>
     <string name="export_file_format_ch_zn">Честный Знак</string>
 

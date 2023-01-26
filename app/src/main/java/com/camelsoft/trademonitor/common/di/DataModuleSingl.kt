@@ -82,8 +82,8 @@ object DataModuleSingl {
 
     @Provides
     @Singleton
-    fun provideRetroMy(iSsl: ISsl, tokenInterceptor: TokenInterceptor): RetroMy {
-        return RetroMy(iSsl = iSsl, tokenInterceptor = tokenInterceptor)
+    fun provideRetroMy(iSsl: ISsl, tokenInterceptor: TokenInterceptor, settings: Settings): RetroMy {
+        return RetroMy(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
     }
 
     @Provides

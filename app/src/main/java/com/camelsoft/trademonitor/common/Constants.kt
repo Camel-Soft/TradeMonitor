@@ -4,6 +4,7 @@ class Constants {
     companion object {
         // Common
         const val DEVELOPER_EMAIL = "development.camelsoft@gmail.com"
+        const val DEFAULT_SERVER_LICENSING = "81.28.174.175:7000"
 
         // Безопасность
         const val JWT_ISSUER = "tms"

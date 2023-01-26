@@ -12,6 +12,14 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+            android:title="@string/conn_server_license"
+            android:key="conn_server_licensing"
+            android:defaultValue=""
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

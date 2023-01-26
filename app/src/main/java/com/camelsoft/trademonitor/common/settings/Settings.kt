@@ -5,6 +5,7 @@ import androidx.preference.PreferenceManager
 import com.camelsoft.trademonitor._presentation.models.MOffline
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import com.camelsoft.trademonitor.common.Constants.Companion.OFFL_BASE_FOLDER_NAME
+import com.camelsoft.trademonitor.common.Constants.Companion.DEFAULT_SERVER_LICENSING
 import java.io.File
 
 object Settings {
@@ -15,6 +16,14 @@ object Settings {
         var connSrvLoc = ""
         settingsManager.getString("conn_server_loc", "")?.let { connSrvLoc = it.trim() }
         return connSrvLoc
+    }
+
+    fun getConnSrvLicensing(): String {
+        var connSrvLicensing = DEFAULT_SERVER_LICENSING
+        settingsManager.getString("conn_server_licensing", "")?.let {
+            if (it.isNotBlank()) connSrvLicensing = it.trim()
+        }
+        return connSrvLicensing
     }
 
     fun getPrefix(): String {

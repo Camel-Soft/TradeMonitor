@@ -27,6 +27,8 @@ class App: Application() {
         fun getAppContext() : Context {
             return appInstance!!.applicationContext
         }
+
+        var showServerLicensing = false
     }
 
     private fun createOfflineNotificationChannel() {
