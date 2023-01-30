@@ -32,13 +32,14 @@ fun checkBarcode(prefix: String, barcode: String): Boolean {
 
 fun getScanType(sysString: String): String {
     return when(sysString) {
-        "EAN_13" -> App.getAppContext().resources.getString(R.string.ean_13)
-        "EAN_8" -> App.getAppContext().resources.getString(R.string.ean_8)
-        "UPC_A" -> App.getAppContext().resources.getString(R.string.upc_a)
-        "UPC_E" -> App.getAppContext().resources.getString(R.string.upc_e)
-        "QR_CODE" -> App.getAppContext().resources.getString(R.string.qr_code)
-        "PDF_417" -> App.getAppContext().resources.getString(R.string.pdf_417)
-        "DATA_MATRIX" -> App.getAppContext().resources.getString(R.string.data_matrix)
+        "EAN_13", "EAN13" -> App.getAppContext().resources.getString(R.string.ean_13)
+        "EAN_8", "EAN8" -> App.getAppContext().resources.getString(R.string.ean_8)
+        "UPC_A", "UPCA" -> App.getAppContext().resources.getString(R.string.upc_a)
+        "UPC_E", "UPCE" -> App.getAppContext().resources.getString(R.string.upc_e)
+        "QR_CODE", "QR" -> App.getAppContext().resources.getString(R.string.qr_code)
+        "PDF_417", "PDF417" -> App.getAppContext().resources.getString(R.string.pdf_417)
+        "MICRO_PDF", "MICROPDF" -> App.getAppContext().resources.getString(R.string.micro_pdf_417)
+        "DATA_MATRIX", "DATAMATRIX" -> App.getAppContext().resources.getString(R.string.data_matrix)
         "EAN_13_WEIGHT" -> App.getAppContext().resources.getString(R.string.ean_13_weight)
         "HAND_MADE" -> App.getAppContext().resources.getString(R.string.hand_made)
         "SCANCODE_TYPE_NOT_DEFINED" -> App.getAppContext().resources.getString(R.string.scancode_type_not_defined)

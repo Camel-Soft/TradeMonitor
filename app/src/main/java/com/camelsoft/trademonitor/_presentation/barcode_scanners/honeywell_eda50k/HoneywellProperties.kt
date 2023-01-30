@@ -2,6 +2,7 @@ package com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda5
 
 import com.honeywell.aidc.BarcodeReader
 
+// id = 1
 fun honeyScanProp1D(): Map<String, Any> {
     val scanProperties = HashMap<String, Any>()
     scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = true
@@ -14,6 +15,7 @@ fun honeyScanProp1D(): Map<String, Any> {
     return scanProperties
 }
 
+// id = 2
 fun honeyScanProp2D(): Map<String, Any> {
     val scanProperties = HashMap<String, Any>()
     scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = false
@@ -26,6 +28,7 @@ fun honeyScanProp2D(): Map<String, Any> {
     return scanProperties
 }
 
+// id = 3
 fun honeyScanPropChecker(): Map<String, Any> {
     val scanProperties = HashMap<String, Any>()
     scanProperties[BarcodeReader.PROPERTY_EAN_13_ENABLED] = true

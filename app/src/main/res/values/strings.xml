@@ -206,6 +206,7 @@
     <string name="entry_scanner_title">Встроенный сканер</string>
     <string name="entry_scanner_empty">Отсутствует</string>
     <string name="entry_scanner_HoneywellEDA50K">Honeywell EDA50K</string>
+    <string name="entry_scanner_CsiMobyOne">CSI Moby One</string>
 
     <string name="ean_13">EAN_13</string>
     <string name="ean_8">EAN_8</string>
@@ -213,6 +214,7 @@
     <string name="upc_e">UPC_E</string>
     <string name="qr_code">QR_CODE</string>
     <string name="pdf_417">PDF_417</string>
+    <string name="micro_pdf_417">MICRO_PDF_417</string>
     <string name="data_matrix">DATA_MATRIX</string>
     <string name="ean_13_weight">EAN_13 весовой</string>
     <string name="hand_made">Ручной ввод</string>

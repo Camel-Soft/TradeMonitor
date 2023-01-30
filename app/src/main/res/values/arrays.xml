@@ -4,11 +4,13 @@
     <string-array name="scanner_entries">
         <item>@string/entry_scanner_empty</item>
         <item>@string/entry_scanner_HoneywellEDA50K</item>
+        <item>@string/entry_scanner_CsiMobyOne</item>
     </string-array>
 
     <string-array name="scanner_values">
         <item>empty</item>
         <item>honeywell_eda50k</item>
+        <item>csi_moby_one</item>
     </string-array>
 
     <!-- Settings Export File Format -->

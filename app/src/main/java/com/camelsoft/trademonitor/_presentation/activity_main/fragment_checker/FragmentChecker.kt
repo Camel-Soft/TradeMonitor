@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.api.scan.IResultScan
+import com.camelsoft.trademonitor._presentation.api.scan.IScanner
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanPropChecker
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.models.MScan
@@ -40,7 +39,7 @@ class FragmentChecker : Fragment() {
     private lateinit var weakView: WeakReference<View>
     private lateinit var weakActivity: WeakReference<AppCompatActivity>
     @Inject lateinit var settings: Settings
-    private lateinit var honeywellEDA50K: HoneywellEDA50K
+    @Inject lateinit var iScanner: IScanner
     private val viewModel: FragmentCheckerViewModel by viewModels()
     private val fragmentCheckerAdapter = FragmentCheckerAdapter()
 
@@ -56,9 +55,6 @@ class FragmentChecker : Fragment() {
         weakView = WeakReference<View>(view)
         weakActivity = WeakReference<AppCompatActivity>(requireActivity() as AppCompatActivity)
 
-        if (settings.getScanner() == "honeywell_eda50k")
-            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanPropChecker())
-
         // Фотосканер одиночный
         binding.btnScan.setOnClickListener { camStart() }
 
@@ -69,14 +65,14 @@ class FragmentChecker : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.reg()
+        iScanner.reg(weakActivity.get()!!, resultScanImpl, 3)
         // Клавиатура поверх
         weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     }
 
     override fun onPause() {
         super.onPause()
-        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
+        iScanner.unreg()
         hideKeyboard(weakContext.get()!!, weakView.get())
         // Клавиатура не поверх
         weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)

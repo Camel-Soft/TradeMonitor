@@ -49,7 +49,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
@@ -101,8 +101,10 @@ dependencies {
     implementation("org.eobjects.metamodel-extras:MetaModel-extras-dbase:5.3.4")
     /*
      LIBs
-     honeywell.aar    - Honeywell EDA50K
-     jxl-2.6.jar      - *.xls files
+     honeywell.aar      - TSD Honeywell EDA50K
+     csi_moby_one_2.2.1 - TSD CSI Moby One
+     jxl-2.6.jar        - *.xls files
+
     */
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
 }
