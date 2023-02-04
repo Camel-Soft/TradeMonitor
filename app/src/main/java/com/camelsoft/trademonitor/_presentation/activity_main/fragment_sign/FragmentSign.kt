@@ -154,6 +154,7 @@ class FragmentSign : Fragment() {
                 settings.putEmail(null)
                 settings.putPassword(null)
             }
+            settings.putLoginDate(System.currentTimeMillis())
             return true
         }
         catch (e: Exception) {

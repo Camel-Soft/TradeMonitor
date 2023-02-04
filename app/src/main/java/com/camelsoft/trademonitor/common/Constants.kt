@@ -38,5 +38,9 @@ class Constants {
         const val SGRT_NDX = "sgrt.ndx"
         const val FIRM_DBF = "firm.dbf"
         const val FIRM_NDX = "firm.ndx"
+
+        // Время
+        const val TEST_INTERVAL = 1000L*60L                         // 1 минута
+        const val AUTO_LOGOUT_INTERVAL = 1000L*60L*60L*24L*30L      // 30 дней
     }
 }

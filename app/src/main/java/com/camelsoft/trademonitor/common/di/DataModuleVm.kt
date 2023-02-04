@@ -4,6 +4,7 @@ import com.camelsoft.trademonitor._data.net.api.ISsl
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiInSouthUpload
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
 import com.camelsoft.trademonitor._data.net.api.retro.NetApiScan
+import com.camelsoft.trademonitor._data.net.api.retro.NetApiSign
 import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
 import com.camelsoft.trademonitor._data.net.servers.RetroLoc
 import com.camelsoft.trademonitor._data.net.servers.RetroMy
@@ -17,10 +18,12 @@ import com.camelsoft.trademonitor._domain.libs.ExportJsonGoodes
 import com.camelsoft.trademonitor._domain.libs.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.libs.ExportSouthRevision
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.HelloImpl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.SignImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsBigImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsOfflImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoInSouthUploadImpl
 import com.camelsoft.trademonitor._presentation.api.IChZnParam
+import com.camelsoft.trademonitor._presentation.api.ISign
 import com.camelsoft.trademonitor._presentation.api.repo.IGoods
 import com.camelsoft.trademonitor._presentation.api.repo.IHello
 import com.camelsoft.trademonitor._presentation.api.repo.IInSouthUpload
@@ -178,6 +181,22 @@ object DataModuleVm {
     fun provideUseCaseChZnParamImpl(): IChZnParam {
         return UseCaseChZnParamImpl()
     }
+
+    @Provides
+    @ViewModelScoped
+    fun provideRetroMy(iSsl: ISsl, tokenInterceptor: TokenInterceptor, settings: Settings): RetroMy {
+        return RetroMy(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideNetApiSign(retroMy: RetroMy): NetApiSign {
+        return retroMy.makeRetrofit().create(NetApiSign::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSign(netApiSign: NetApiSign): ISign = SignImpl(netApiSign = netApiSign)
 
     @Provides
     @ViewModelScoped

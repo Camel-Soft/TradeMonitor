@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_security.TokenUserVerifier
 import com.camelsoft.trademonitor._presentation.models.user.MUser
+import com.camelsoft.trademonitor._presentation.utils.isAutoLogout
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -34,6 +35,11 @@ class ActivityMainViewModel @Inject constructor(
 
     init {
         tokenUserVerifier.mUser.observeForever(observerToMUser)
+        // Если прошло более 30 дней непрерывного подключения, то делаем АвтоВыход
+        if (isAutoLogout()) {
+            tokenUserVerifier.setNewToken(null)
+            sendEventUi(EventsUiMainActivity.LogOut)
+        }
     }
 
     override fun onCleared() {

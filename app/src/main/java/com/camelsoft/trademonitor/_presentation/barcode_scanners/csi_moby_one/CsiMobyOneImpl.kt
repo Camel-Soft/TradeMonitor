@@ -57,9 +57,7 @@ class CsiMobyOneImpl : IScanner {
             this.context = context
             this.iResultScan = iResultScan
             val scanDevice = ScanDevice() // Валится здесь, если устройство не CSI
-            scanDevice.resetScan()
             scanDevice.outScanMode = 0
-            scanDevice.openScan()
             scanDevice.indicatorLightMode = 1
             scanDevice.setScanUnVibrate()
             scanDevice.setScanUnBeep()

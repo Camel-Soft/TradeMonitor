@@ -87,6 +87,19 @@ object Settings {
         else return privateManager.getString("password", null)
     }
 
+    fun putLoginDate(loginDate: Long) {
+        synchronized(this) {
+            val editor = privateManager.edit()
+            editor.putLong("loginDate", loginDate)
+            editor.apply()
+        }
+    }
+
+    fun getLoginDate(): Long {
+        if (!privateManager.contains("loginDate")) return 0L
+        else return privateManager.getLong("loginDate", 0L)
+    }
+
     fun putPrice(price: String?) {
         synchronized(this) {
             val editor = privateManager.edit()

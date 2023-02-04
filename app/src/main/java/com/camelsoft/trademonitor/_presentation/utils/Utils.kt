@@ -9,7 +9,9 @@ import androidx.core.content.ContextCompat.startActivity
 import com.camelsoft.trademonitor.BuildConfig
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor.common.App.Companion.getAppContext
+import com.camelsoft.trademonitor.common.Constants.Companion.AUTO_LOGOUT_INTERVAL
 import com.camelsoft.trademonitor.common.Constants.Companion.DEVELOPER_EMAIL
+import com.camelsoft.trademonitor.common.settings.Settings
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -94,6 +96,12 @@ fun che(): Boolean {
         file.createNewFile()
         false
     }
+}
+
+fun isAutoLogout(): Boolean {
+    val loginDate = Settings.getLoginDate()
+    if (loginDate == 0L) return false
+    if (loginDate+AUTO_LOGOUT_INTERVAL > System.currentTimeMillis()) return false else return true
 }
 
 fun hideKeyboard(context: Context, view: View?) {

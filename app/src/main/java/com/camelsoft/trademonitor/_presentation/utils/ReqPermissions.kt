@@ -20,6 +20,7 @@ fun reqPermissions(context: Context, report: (EventsSync<Boolean>) -> Unit) {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.VIBRATE,
                 // Костыль. Запрашивать ACCESS_NETWORK_STATE не обязательно
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                     Manifest.permission.POST_NOTIFICATIONS
