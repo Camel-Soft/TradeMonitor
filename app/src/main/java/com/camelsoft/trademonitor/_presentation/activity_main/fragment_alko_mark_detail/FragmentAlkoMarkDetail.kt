@@ -19,9 +19,8 @@ import androidx.navigation.fragment.findNavController
 import com.camelsoft.trademonitor.R
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.api.scan.IResultScan
+import com.camelsoft.trademonitor._presentation.api.scan.IScanner
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanProp1D
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.utils.*
 import com.camelsoft.trademonitor._presentation.dialogs.showError
@@ -48,7 +47,7 @@ class FragmentAlkoMarkDetail : Fragment() {
     private lateinit var weakActivity: WeakReference<AppCompatActivity>
     private var argAlkoMark: MAlkoMark? = null
     @Inject lateinit var settings: Settings
-    private lateinit var honeywellEDA50K: HoneywellEDA50K
+    @Inject lateinit var iScanner: IScanner
     private val viewModel: FragmentAlkoMarkDetailViewModel by viewModels()
 
     override fun onCreateView(
@@ -70,10 +69,6 @@ class FragmentAlkoMarkDetail : Fragment() {
 
         // Устанавливаем цвет верхней панели - белый
         weakActivity.get()!!.supportActionBar?.setBackgroundDrawable(ColorDrawable(getAppContext().getColor(R.color.white)))
-
-        // Встроенный сканер
-        if (settings.getScanner() == "honeywell_eda50k")
-            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanProp1D())
 
         // Если null - выход
         // Если не null - готовимся к Update
@@ -154,12 +149,12 @@ class FragmentAlkoMarkDetail : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.reg()
+        iScanner.reg(weakActivity.get()!!, resultScanImpl, 1)
     }
 
     override fun onPause() {
         super.onPause()
-        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
+        iScanner.unreg()
         hideKeyboard(weakContext.get()!!, weakView.get())
     }
 

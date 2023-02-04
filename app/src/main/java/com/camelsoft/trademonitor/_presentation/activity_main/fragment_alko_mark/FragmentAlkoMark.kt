@@ -24,18 +24,16 @@ import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
 import com.camelsoft.trademonitor._presentation.models.alko.MAlkoMark
 import com.camelsoft.trademonitor._presentation.api.scan.IResultScan
 import com.camelsoft.trademonitor._presentation.api.scan.IResultScanList
+import com.camelsoft.trademonitor._presentation.api.scan.IScanner
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera.ActivityCamera
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.ActivityCameraList
 import com.camelsoft.trademonitor._presentation.barcode_scanners.activity_camera_list.models.MBarcodeFormat
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.HoneywellEDA50K
-import com.camelsoft.trademonitor._presentation.barcode_scanners.honeywell_eda50k.honeyScanProp2D
 import com.camelsoft.trademonitor._presentation.models.MScan
 import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
 import com.camelsoft.trademonitor._presentation.utils.hideKeyboard
 import com.camelsoft.trademonitor.common.App
-import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
 import com.camelsoft.trademonitor.databinding.FragmentAlkoMarkBinding
 import com.google.zxing.BarcodeFormat
@@ -54,8 +52,7 @@ class FragmentAlkoMark : Fragment() {
     private lateinit var weakActivity: WeakReference<AppCompatActivity>
     private val viewModel: FragmentAlkoMarkViewModel by viewModels()
     private lateinit var parentAlkoColl: MAlkoColl
-    @Inject lateinit var settings: Settings
-    private lateinit var honeywellEDA50K: HoneywellEDA50K
+    @Inject lateinit var iScanner: IScanner
     private val adapterAlkoMark = FragmentAlkoMarkAdapter()
 
     override fun onCreateView(
@@ -71,9 +68,6 @@ class FragmentAlkoMark : Fragment() {
         weakContext = WeakReference<Context>(requireContext())
         weakView = WeakReference<View>(view)
         weakActivity = WeakReference<AppCompatActivity>(requireActivity() as AppCompatActivity)
-
-        if (settings.getScanner() == "honeywell_eda50k")
-            honeywellEDA50K = HoneywellEDA50K(weakContext.get()!!, resultScanImpl, honeyScanProp2D())
 
         // Забираем данные о родительской сборке в переменную и проверяем на null
         // Если null, то показываем сообщение об ошибке и выходим
@@ -119,7 +113,7 @@ class FragmentAlkoMark : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.reg()
+        iScanner.reg(weakActivity.get()!!, resultScanImpl, 2)
         viewModel.onEventAlkoMark(EventVmAlkoMark.OnPublishPrice)
         // Клавиатура поверх
         weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -127,7 +121,7 @@ class FragmentAlkoMark : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        if (settings.getScanner() == "honeywell_eda50k") honeywellEDA50K.unreg()
+        iScanner.unreg()
         hideKeyboard(weakContext.get()!!, weakView.get())
         // Клавиатура не поверх
         weakActivity.get()!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
