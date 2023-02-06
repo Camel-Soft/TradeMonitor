@@ -138,6 +138,7 @@
     <string name="error_arc_file">Не определен файл для распаковки</string>
     <string name="error_folder_unzip">Не определена папка с распакованными файлами</string>
     <string name="error_folder_publish">Не определена папка с опубликованными файлами</string>
+    <string name="error_server_loc">Адрес Сервера Локального не определен. Перейдите в Настройки и установите адрес</string>
 
     <string name="attention">Внимание</string>
     <string name="attention_cameras">Действующие камеры на устройстве не обнаружены</string>
@@ -158,6 +159,7 @@
     <string name="monitor_alko_call">Сборки марок</string>
     <string name="monitor_checker_label">Прайс-Чекер</string>
     <string name="monitor_checker_call">Прайс-Чекер</string>
+    <string name="monitor_sklad_label">Выбрать склад</string>
     <string name="monitor_offlsource_label">OFF-Line источник</string>
 
     <string name="coll_created">Сборка создана</string>

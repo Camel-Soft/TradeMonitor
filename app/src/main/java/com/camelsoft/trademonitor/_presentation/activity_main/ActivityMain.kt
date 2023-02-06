@@ -88,9 +88,12 @@ class ActivityMain : AppCompatActivity() {
     private fun navigationClick() {
         binding.mainNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navMenuPrice -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskPrice)
-                R.id.navMenuAlko -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskAlko)
-                R.id.navMenuChecker -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskChecker)
+                R.id.navMenuSklad -> {
+                    if (settings.getConnSrvLoc().isNotBlank())  // if нужен для Hello
+                        navController.navigate(R.id.fragGraphSklad)
+                    else
+                        showInfo(weakContext.get()!!, resources.getString(R.string.error_server_loc)) {}
+                }
                 R.id.navMenuOffline -> viewModel.eventsVm(EventsVmMainActivity.VerifyTaskOffline)
                 R.id.navMenuSettings -> navController.navigate(R.id.fragGraphSettings)
                 R.id.navMenuAbout -> writeDeveloper(weakContext.get()!!)
@@ -105,7 +108,7 @@ class ActivityMain : AppCompatActivity() {
     // Рулит отображением пункта меню OFF-Line источник
     private fun showWorkModeOffline() {
         settings.workModeOfflineLiveData.observe(this) {
-            binding.mainNavView.menu.getItem(0).subMenu?.getItem(3)?.isVisible = it
+            binding.mainNavView.menu.getItem(0).subMenu?.getItem(1)?.isVisible = it
         }
     }
 

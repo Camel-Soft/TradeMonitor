@@ -1,10 +1,7 @@
 package com.camelsoft.trademonitor.common.di
 
 import com.camelsoft.trademonitor._data.net.api.ISsl
-import com.camelsoft.trademonitor._data.net.api.retro.NetApiInSouthUpload
-import com.camelsoft.trademonitor._data.net.api.retro.NetApiHello
-import com.camelsoft.trademonitor._data.net.api.retro.NetApiScan
-import com.camelsoft.trademonitor._data.net.api.retro.NetApiSign
+import com.camelsoft.trademonitor._data.net.api.retro.*
 import com.camelsoft.trademonitor._data.net.interceptors.TokenInterceptor
 import com.camelsoft.trademonitor._data.net.servers.RetroLoc
 import com.camelsoft.trademonitor._data.net.servers.RetroMy
@@ -18,6 +15,7 @@ import com.camelsoft.trademonitor._domain.libs.ExportJsonGoodes
 import com.camelsoft.trademonitor._domain.libs.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.libs.ExportSouthRevision
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.HelloImpl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.ObjectImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.SignImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsBigImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsOfflImpl
@@ -27,6 +25,7 @@ import com.camelsoft.trademonitor._presentation.api.ISign
 import com.camelsoft.trademonitor._presentation.api.repo.IGoods
 import com.camelsoft.trademonitor._presentation.api.repo.IHello
 import com.camelsoft.trademonitor._presentation.api.repo.IInSouthUpload
+import com.camelsoft.trademonitor._presentation.api.repo.IObject
 import com.camelsoft.trademonitor.common.settings.Settings
 import dagger.Module
 import dagger.Provides
@@ -190,6 +189,12 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
+    fun provideRetroLoc(iSsl: ISsl, tokenInterceptor: TokenInterceptor, settings: Settings): RetroLoc {
+        return RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+    }
+
+    @Provides
+    @ViewModelScoped
     fun provideNetApiSign(retroMy: RetroMy): NetApiSign {
         return retroMy.makeRetrofit().create(NetApiSign::class.java)
     }
@@ -200,39 +205,32 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
-    fun provideNetApiScan(retroMy: RetroMy, settings: Settings,
-                          iSsl: ISsl, tokenInterceptor: TokenInterceptor
-    ): NetApiScan {
+    fun provideNetApiScan(retroMy: RetroMy, retroLoc: RetroLoc, settings: Settings): NetApiScan {
         if (settings.getConnSrvLoc().isBlank())
             return retroMy.makeRetrofit().create(NetApiScan::class.java)
-        else {
-            val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+        else
             return retroLoc.makeRetrofit().create(NetApiScan::class.java)
-        }
     }
 
     @Provides
     @ViewModelScoped
-    fun provideNetApiHello(retroMy: RetroMy, settings: Settings,
-                           iSsl: ISsl, tokenInterceptor: TokenInterceptor
-    ): NetApiHello {
+    fun provideNetApiHello(retroMy: RetroMy, retroLoc: RetroLoc, settings: Settings): NetApiHello {
         if (settings.getConnSrvLoc().isBlank())
             return retroMy.makeRetrofit().create(NetApiHello::class.java)
-        else {
-            val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+        else
             return retroLoc.makeRetrofit().create(NetApiHello::class.java)
-        }
     }
 
     @Provides
     @ViewModelScoped
-    fun provideNetApiInSouthUpload(
-        settings: Settings,
-        iSsl: ISsl,
-        tokenInterceptor: TokenInterceptor
-    ): NetApiInSouthUpload {
-        val retroLoc = RetroLoc(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
+    fun provideNetApiInSouthUpload(retroLoc: RetroLoc): NetApiInSouthUpload {
         return retroLoc.makeRetrofit().create(NetApiInSouthUpload::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideNetApiObject(retroLoc: RetroLoc): NetApiObject {
+        return retroLoc.makeRetrofit().create(NetApiObject::class.java)
     }
 
     @Provides
@@ -271,5 +269,11 @@ object DataModuleVm {
     @ViewModelScoped
     fun provideInSouthUpload(netApiInSouthUpload: NetApiInSouthUpload): IInSouthUpload {
         return UseCaseRepoInSouthUploadImpl(netApiInSouthUpload = netApiInSouthUpload)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideObject(netApiObject: NetApiObject): IObject {
+        return ObjectImpl(netApiObject = netApiObject)
     }
 }

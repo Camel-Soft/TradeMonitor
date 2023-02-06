@@ -9,20 +9,10 @@
         android:contentDescription="@string/generals">
         <menu>
             <item
-                android:id="@+id/navMenuPrice"
+                android:id="@+id/navMenuSklad"
                 android:icon="@drawable/img_done_24"
-                android:title="@string/monitor_price_label"
-                android:contentDescription="@string/monitor_price_label"/>
-            <item
-                android:id="@+id/navMenuAlko"
-                android:icon="@drawable/img_done_24"
-                android:title="@string/monitor_alko_label"
-                android:contentDescription="@string/monitor_alko_label"/>
-            <item
-                android:id="@+id/navMenuChecker"
-                android:icon="@drawable/img_done_24"
-                android:title="@string/monitor_checker_label"
-                android:contentDescription="@string/monitor_checker_label"/>
+                android:title="@string/monitor_sklad_label"
+                android:contentDescription="@string/monitor_sklad_label"/>
             <item
                 android:id="@+id/navMenuOffline"
                 android:icon="@drawable/img_source_24"
