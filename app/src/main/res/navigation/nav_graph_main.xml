@@ -147,7 +147,7 @@
     <fragment
         android:id="@+id/fragGraphSklad"
         android:name="com.camelsoft.trademonitor._presentation.activity_main.fragment_object.FragmentObject"
-        android:label="@string/monitor_sklad_label"
+        android:label="@string/monitor_object_label"
         tools:layout="@layout/fragment_object" >
         <action
             android:id="@+id/action_fragGraphSklad_to_fragGraphMain"

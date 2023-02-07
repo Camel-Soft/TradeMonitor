@@ -60,6 +60,23 @@ class FragmentPrice : Fragment() {
                     is EventUiPrice.ShowInfoUi -> showInfo(weakContext.get()!!, eventUiPrice.message) {}
                     is EventUiPrice.ScrollToPos -> binding.rvColl.scrollToPosition(eventUiPrice.position)
                     is EventUiPrice.ShareFile -> shareFile(weakContext.get()!!, eventUiPrice.file, eventUiPrice.sign)
+                    is EventUiPrice.ConfirmSouthUpload -> {
+                        when (eventUiPrice.south) {
+                            "south1" -> showConfirm(
+                                weakContext.get()!!,
+                                resources.getString(R.string.export),
+                                resources.getString(R.string.begin_export_in)+"\n"+resources.getString(R.string.export_file_format_south_revision_one)+" ?") {
+                                viewModel.onEventPrice(EventVmPrice.OnSouthUpload(south = eventUiPrice.south, pos = eventUiPrice.pos))
+                            }
+                            "south2" -> showConfirm(
+                                weakContext.get()!!,
+                                resources.getString(R.string.export),
+                                resources.getString(R.string.begin_export_in)+"\n"+resources.getString(R.string.export_file_format_south_revision_two)+" ?") {
+                                viewModel.onEventPrice(EventVmPrice.OnSouthUpload(south = eventUiPrice.south, pos = eventUiPrice.pos))
+                            }
+                            else -> {}
+                        }
+                    }
                 }
             }
         }

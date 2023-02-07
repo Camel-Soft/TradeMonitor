@@ -1,9 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/refreshLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="._presentation.activity_main.fragment_object.FragmentObject">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textCurrent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/current"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textAddrBig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            tools:text="11. Миндаль"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/textCurrent" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/textAddrBig"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textAddrSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:gravity="start"
+            android:maxLines="1"
+            tools:text="192.168.0.245:7777"
+            android:textSize="12sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintTop_toBottomOf="@+id/textAddrBig" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textVariants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@string/variants"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintTop_toBottomOf="@+id/textAddrSmall" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvObject"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textVariants" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

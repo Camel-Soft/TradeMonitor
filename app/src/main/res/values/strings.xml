@@ -87,6 +87,11 @@
     <string name="offlsource_download_success">OFF-Line источник загружен успешно</string>
     <string name="offlsource_download_unsuccess">OFF-Line источник загружен не полностью</string>
     <string name="offlsource_download_request">Загрузить OFF-Line источник?</string>
+    <string name="current">Текущий</string>
+    <string name="variants">Варианты</string>
+    <string name="object_select">Выбор объекта</string>
+    <string name="apply_current">Сделать текущим</string>
+    <string name="begin_export_in">Начать экспорт в</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>
@@ -159,7 +164,7 @@
     <string name="monitor_alko_call">Сборки марок</string>
     <string name="monitor_checker_label">Прайс-Чекер</string>
     <string name="monitor_checker_call">Прайс-Чекер</string>
-    <string name="monitor_sklad_label">Выбрать склад</string>
+    <string name="monitor_object_label">Торговые объекты</string>
     <string name="monitor_offlsource_label">OFF-Line источник</string>
 
     <string name="coll_created">Сборка создана</string>

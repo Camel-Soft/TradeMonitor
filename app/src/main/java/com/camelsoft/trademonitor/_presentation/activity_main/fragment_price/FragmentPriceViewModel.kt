@@ -88,30 +88,8 @@ class FragmentPriceViewModel @Inject constructor(
                                         is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
                                     }
                                 }
-                                "south_rev_one" -> {
-                                    when (val answerSouRev = useCaseExportSouthRevision.execute(priceColl = it[eventVmPrice.pos])) {
-                                        is EventsSync.Success -> {
-                                            when ( val answerUpload = iInSouthUpload.inSouthUpload(file = answerSouRev.data, south = "south1")) {
-                                                is EventsOkInEr.Success -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.data))
-                                                is EventsOkInEr.Info -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.message))
-                                                is EventsOkInEr.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerUpload.message))
-                                            }
-                                        }
-                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
-                                    }
-                                }
-                                "south_rev_two" -> {
-                                    when (val answerSouRev = useCaseExportSouthRevision.execute(priceColl = it[eventVmPrice.pos])) {
-                                        is EventsSync.Success -> {
-                                            when ( val answerUpload = iInSouthUpload.inSouthUpload(file = answerSouRev.data, south = "south2")) {
-                                                is EventsOkInEr.Success -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.data))
-                                                is EventsOkInEr.Info -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.message))
-                                                is EventsOkInEr.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerUpload.message))
-                                            }
-                                        }
-                                        is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
-                                    }
-                                }
+                                "south_rev_one" -> sendEventUiPrice(EventUiPrice.ConfirmSouthUpload(south = "south1", pos = eventVmPrice.pos))
+                                "south_rev_two" -> sendEventUiPrice(EventUiPrice.ConfirmSouthUpload(south = "south2", pos = eventVmPrice.pos))
                                 "json" -> {
                                     when (val answerJsonGoodes = useCaseExportJsonGoodes.execute(priceColl = it[eventVmPrice.pos])) {
                                         is EventsSync.Success -> sendEventUiPrice(EventUiPrice.ShareFile(file = answerJsonGoodes.data, sign = it[eventVmPrice.pos].note))
@@ -126,6 +104,22 @@ class FragmentPriceViewModel @Inject constructor(
                                             " FragmentPriceViewModel.onEventPrice.EventVmPrice.OnShareCollClick: "+
                                             getAppContext().resources.getString(R.string.error_export_file_format)))
                                 }
+                            }
+                        }
+                    }
+                }
+                is EventVmPrice.OnSouthUpload -> {
+                    viewModelScope.launch {
+                        _listPriceColl.value?.let {
+                            when (val answerSouRev = useCaseExportSouthRevision.execute(priceColl = it[eventVmPrice.pos])) {
+                                is EventsSync.Success -> {
+                                    when ( val answerUpload = iInSouthUpload.inSouthUpload(file = answerSouRev.data, south = eventVmPrice.south)) {
+                                        is EventsOkInEr.Success -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.data))
+                                        is EventsOkInEr.Info -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.message))
+                                        is EventsOkInEr.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerUpload.message))
+                                    }
+                                }
+                                is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
                             }
                         }
                     }

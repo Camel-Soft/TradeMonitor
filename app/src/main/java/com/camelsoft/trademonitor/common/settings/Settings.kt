@@ -18,6 +18,28 @@ object Settings {
         return connSrvLoc
     }
 
+    fun putConnSrvLoc(address: String) {
+        synchronized(this) {
+            val editor = settingsManager.edit()
+            editor.putString("conn_server_loc", address)
+            editor.apply()
+        }
+    }
+
+    fun getConnSrvLocName(): String {
+        var connSrvLocName = ""
+        settingsManager.getString("conn_server_loc_name", "")?.let { connSrvLocName = it.trim() }
+        return connSrvLocName
+    }
+
+    fun putConnSrvLocName(name: String) {
+        synchronized(this) {
+            val editor = settingsManager.edit()
+            editor.putString("conn_server_loc_name", name)
+            editor.apply()
+        }
+    }
+
     fun getConnSrvLicensing(): String {
         var connSrvLicensing = DEFAULT_SERVER_LICENSING
         settingsManager.getString("conn_server_licensing", "")?.let {

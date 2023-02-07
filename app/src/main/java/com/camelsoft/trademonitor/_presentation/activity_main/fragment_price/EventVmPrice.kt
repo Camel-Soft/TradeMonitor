@@ -6,4 +6,5 @@ sealed class EventVmPrice {
     data class OnUpdateCollClick(val pos: Int, val newNote: String): EventVmPrice()
     data class OnShareCollClick(val pos: Int): EventVmPrice()
     object OnGetColl: EventVmPrice()
+    data class OnSouthUpload(val south: String, val pos: Int): EventVmPrice()
 }

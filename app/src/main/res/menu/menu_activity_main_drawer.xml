@@ -11,8 +11,8 @@
             <item
                 android:id="@+id/navMenuSklad"
                 android:icon="@drawable/img_done_24"
-                android:title="@string/monitor_sklad_label"
-                android:contentDescription="@string/monitor_sklad_label"/>
+                android:title="@string/monitor_object_label"
+                android:contentDescription="@string/monitor_object_label"/>
             <item
                 android:id="@+id/navMenuOffline"
                 android:icon="@drawable/img_source_24"
