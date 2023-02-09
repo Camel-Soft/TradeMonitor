@@ -7,7 +7,6 @@ import com.camelsoft.trademonitor._data.net.servers.RetroLoc
 import com.camelsoft.trademonitor._data.net.servers.RetroMy
 import com.camelsoft.trademonitor._data.storage.room.IRoom
 import com.camelsoft.trademonitor._domain.api.offl_dbf.*
-import com.camelsoft.trademonitor._domain.use_cases.use_cases_chzn.UseCaseChZnParamImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.*
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.*
 import com.camelsoft.trademonitor._domain.libs.ExportExcelSheet
@@ -15,17 +14,14 @@ import com.camelsoft.trademonitor._domain.libs.ExportJsonGoodes
 import com.camelsoft.trademonitor._domain.libs.ExportJsonMarks
 import com.camelsoft.trademonitor._domain.libs.ExportSouthRevision
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.HelloImpl
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.InnImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.ObjectImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.SignImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsBigImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoGoodsOfflImpl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_repository.UseCaseRepoInSouthUploadImpl
-import com.camelsoft.trademonitor._presentation.api.IChZnParam
 import com.camelsoft.trademonitor._presentation.api.ISign
-import com.camelsoft.trademonitor._presentation.api.repo.IGoods
-import com.camelsoft.trademonitor._presentation.api.repo.IHello
-import com.camelsoft.trademonitor._presentation.api.repo.IInSouthUpload
-import com.camelsoft.trademonitor._presentation.api.repo.IObject
+import com.camelsoft.trademonitor._presentation.api.repo.*
 import com.camelsoft.trademonitor.common.settings.Settings
 import dagger.Module
 import dagger.Provides
@@ -177,12 +173,6 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
-    fun provideUseCaseChZnParamImpl(): IChZnParam {
-        return UseCaseChZnParamImpl()
-    }
-
-    @Provides
-    @ViewModelScoped
     fun provideRetroMy(iSsl: ISsl, tokenInterceptor: TokenInterceptor, settings: Settings): RetroMy {
         return RetroMy(iSsl = iSsl, tokenInterceptor = tokenInterceptor, settings = settings)
     }
@@ -235,6 +225,12 @@ object DataModuleVm {
 
     @Provides
     @ViewModelScoped
+    fun provideNetApiInn(retroLoc: RetroLoc): NetApiInn {
+        return retroLoc.makeRetrofit().create(NetApiInn::class.java)
+    }
+
+    @Provides
+    @ViewModelScoped
     fun provideUseCaseRepoGoodsBigImpl(
         netApiScan: NetApiScan,
         settings: Settings,
@@ -275,5 +271,11 @@ object DataModuleVm {
     @ViewModelScoped
     fun provideObject(netApiObject: NetApiObject): IObject {
         return ObjectImpl(netApiObject = netApiObject)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideInn(netApiInn: NetApiInn): IInn {
+        return InnImpl(netApiInn = netApiInn)
     }
 }

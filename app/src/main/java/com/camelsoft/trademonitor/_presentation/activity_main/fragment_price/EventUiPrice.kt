@@ -8,4 +8,5 @@ sealed class EventUiPrice {
     data class ScrollToPos(val position: Int): EventUiPrice()
     data class ShareFile(val file: File, val sign: String): EventUiPrice()
     data class ConfirmSouthUpload(val south: String, val pos: Int): EventUiPrice()
+    data class ShowProgress(val show: Boolean, val textTop: String, val textBottom: String): EventUiPrice()
 }

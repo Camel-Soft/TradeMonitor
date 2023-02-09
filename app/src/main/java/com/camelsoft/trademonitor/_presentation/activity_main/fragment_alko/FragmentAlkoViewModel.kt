@@ -9,12 +9,14 @@ import com.camelsoft.trademonitor._presentation.models.alko.MAlkoColl
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExpChZnMilkWithdrawal
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportExcelMarks
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_export.UseCaseExportJsonMarks
+import com.camelsoft.trademonitor._domain.use_cases.use_cases_net.EventsNet
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollDelete
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollGetAll
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollInsert
 import com.camelsoft.trademonitor._domain.use_cases.use_cases_storage.UseCaseStorageAlkoCollUpdate
-import com.camelsoft.trademonitor._presentation.api.IChZnParam
+import com.camelsoft.trademonitor._presentation.api.repo.IInn
 import com.camelsoft.trademonitor._presentation.dialogs.specify_ch_zn.makeNoteChZn
+import com.camelsoft.trademonitor._presentation.models.secondary.MStringString
 import com.camelsoft.trademonitor.common.App
 import com.camelsoft.trademonitor.common.settings.Settings
 import com.camelsoft.trademonitor.common.events.EventsSync
@@ -34,7 +36,7 @@ class FragmentAlkoViewModel @Inject constructor(
     private val useCaseExportExcelMarks: UseCaseExportExcelMarks,
     private val useCaseExportJsonMarks: UseCaseExportJsonMarks,
     private val useCaseExpChZnMilkWithdrawal: UseCaseExpChZnMilkWithdrawal,
-    private val chZnParam: IChZnParam
+    private val iInn: IInn
 ): ViewModel() {
 
     private val _eventUiAlkoColl =  Channel<EventUiAlkoColl>()
@@ -92,7 +94,17 @@ class FragmentAlkoViewModel @Inject constructor(
                                     }
                                 }
                                 "ch_zn" -> {
-                                    sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = chZnParam.getInnList()))
+                                    when (val answer = iInn.getInn()) {
+                                        is EventsNet.Info -> sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = ArrayList()))
+                                        is EventsNet.Error -> sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = ArrayList()))
+                                        is EventsNet.Success -> {
+                                            val arrayList = ArrayList<MStringString>()
+                                            answer.data.forEach { mInn ->
+                                                arrayList.add(MStringString(string1 = mInn.inn, string2 = mInn.name))
+                                            }
+                                            sendEventUiAlkoColl(EventUiAlkoColl.SpecifyChZnUi(position = eventVmAlkoColl.pos, itemsInn = arrayList))
+                                        }
+                                    }
                                 }
                                 else -> {
                                     sendEventUiAlkoColl(

@@ -111,15 +111,32 @@ class FragmentPriceViewModel @Inject constructor(
                 is EventVmPrice.OnSouthUpload -> {
                     viewModelScope.launch {
                         _listPriceColl.value?.let {
+                            sendEventUiPrice(EventUiPrice.ShowProgress(
+                                show = true,
+                                textTop = getAppContext().resources.getString(R.string.stage_copy),
+                                textBottom = getAppContext().resources.getString(R.string.wait)
+                            ))
                             when (val answerSouRev = useCaseExportSouthRevision.execute(priceColl = it[eventVmPrice.pos])) {
                                 is EventsSync.Success -> {
                                     when ( val answerUpload = iInSouthUpload.inSouthUpload(file = answerSouRev.data, south = eventVmPrice.south)) {
-                                        is EventsOkInEr.Success -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.data))
-                                        is EventsOkInEr.Info -> sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.message))
-                                        is EventsOkInEr.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerUpload.message))
+                                        is EventsOkInEr.Success -> {
+                                            sendEventUiPrice(EventUiPrice.ShowProgress(show = false, textTop = "", textBottom = "" ))
+                                            sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.data))
+                                        }
+                                        is EventsOkInEr.Info -> {
+                                            sendEventUiPrice(EventUiPrice.ShowProgress(show = false, textTop = "", textBottom = "" ))
+                                            sendEventUiPrice(EventUiPrice.ShowInfoUi(answerUpload.message))
+                                        }
+                                        is EventsOkInEr.Error -> {
+                                            sendEventUiPrice(EventUiPrice.ShowProgress(show = false, textTop = "", textBottom = "" ))
+                                            sendEventUiPrice(EventUiPrice.ShowErrorUi(answerUpload.message))
+                                        }
                                     }
                                 }
-                                is EventsSync.Error -> sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
+                                is EventsSync.Error -> {
+                                    sendEventUiPrice(EventUiPrice.ShowProgress(show = false, textTop = "", textBottom = "" ))
+                                    sendEventUiPrice(EventUiPrice.ShowErrorUi(answerSouRev.message))
+                                }
                             }
                         }
                     }
@@ -132,8 +149,8 @@ class FragmentPriceViewModel @Inject constructor(
             }
         }catch (e: Exception) {
             e.printStackTrace()
-            sendEventUiPrice(EventUiPrice.ShowErrorUi(getAppContext().resources.getString(R.string.error_in)+
-                    " FragmentPriceViewModel.onEventPrice: "+e.message))
+            sendEventUiPrice(EventUiPrice.ShowProgress(show = false, textTop = "", textBottom = "" ))
+            sendEventUiPrice(EventUiPrice.ShowErrorUi("[FragmentPriceViewModel.onEventPrice] ${e.localizedMessage}"))
         }
     }
 

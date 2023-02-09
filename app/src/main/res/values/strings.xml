@@ -92,6 +92,7 @@
     <string name="object_select">Выбор объекта</string>
     <string name="apply_current">Сделать текущим</string>
     <string name="begin_export_in">Начать экспорт в</string>
+    <string name="wait">ждите …</string>
 
     <string name="settings">Настройки</string>
     <string name="settings_app">В настройки приложения</string>

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.camelsoft.trademonitor.R
+import com.camelsoft.trademonitor._presentation.dialogs.ShowProgress
 import com.camelsoft.trademonitor._presentation.dialogs.showConfirm
 import com.camelsoft.trademonitor._presentation.dialogs.showError
 import com.camelsoft.trademonitor._presentation.dialogs.showInfo
@@ -27,6 +28,7 @@ class FragmentPrice : Fragment() {
     private lateinit var weakContext: WeakReference<Context>
     private lateinit var weakView: WeakReference<View>
     private val viewModel: FragmentPriceViewModel by viewModels()
+    private val showProgress: ShowProgress by lazy { initShowProgress() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +79,14 @@ class FragmentPrice : Fragment() {
                             else -> {}
                         }
                     }
+                    is EventUiPrice.ShowProgress -> {
+                        if (!eventUiPrice.show) showProgress.hideDialog()
+                        else {
+                            showProgress.setTextTop(eventUiPrice.textTop)
+                            showProgress.setTextBottom(eventUiPrice.textBottom)
+                            showProgress.showDialog()
+                        }
+                    }
                 }
             }
         }
@@ -115,4 +125,6 @@ class FragmentPrice : Fragment() {
         super.onPause()
         hideKeyboard(weakContext.get()!!, weakView.get())
     }
+
+    private fun initShowProgress() = ShowProgress(weakContext.get()!!)
 }
